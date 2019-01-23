@@ -16,12 +16,12 @@ install:
 before_script:
   - psql -c 'create database "capstone-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+  # before_deploy:
+  - npm run build-client # make the bundle
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: guarded-coast-17554 # see README
+  api_key:
+    secure: 'dVNRhoDpIlB7avACD4oY8twgHcfQ4fl+McTskecAoj6Ot/Xuj2FM1NMRma32jiSRx+OD2Q326dSGm/lJYO3GetY2xQ6Zjb3TsFs4a7h+o452k1httRhuxL1+7+rd9sLP399NlHhnV6XyxZA6pElMM9VxDKndEuRUvWjEIrNcCttPlBj46ofcAB1RJ7EEOeHYUksO3J6F8pqnMSyIZ9y/zMJcKlBsozJ4KE8M0gDCJtYWjVasqVlzvGBVejbabo/LDU3jcgEMwbiC9m05Efu+MkOW454ELz3H+BM73KwiT0h/dtjvxuUd4VarzsYAM9J+3nINECelW+uCAznL89HVmX7ClPFmhkcJcP+or/W0dCXHwKgKT8CLfySUBJRIpgVEvVAXrUOnrSf5uSpjdTB2aB1AhmS+4JocVL1UiDYw4tnZNT1qK9e7aP+nQoL7M+lNLHznhj7k9eMglWbuOA2oUZOeU/PngtBjRolWLf33xVI197eGv1E8kpV5LZA1GjLPe2PtyHtJamYxxyNyP/H9ho/fhzKs5ivo1VH/DfEZH2lwyQ/+gyQDPPwtK/DySFJ8YGSdr5ULViz//BLPOCfH8oDkcaOlaSAk/Kb2r2MgbCcnFAxvw1Lyxo50h4R8Kv6gWpgzTx1MjGk0h4YD3/6A2jkZoE4x+6wak3qho24AtOM=' # see README
