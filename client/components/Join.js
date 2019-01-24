@@ -1,13 +1,15 @@
 import React from 'react'
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 
 const Join = () => {
-  console.log('at join component')
   return (
-    <form /*onSubmit={x}*/>
-      <label htmlFor="code">Enter your Game Room Code</label>
-      <input name="code" defaultValue="####" />
-    </form>
+    <div>
+      <Link to="./home">Back to home</Link>
+      <form align="center" /*onSubmit={x}*/>
+        <label htmlFor="code">Enter your Game Room Code</label>
+        <input name="code" defaultValue="####" />
+      </form>
+    </div>
   )
 }
 

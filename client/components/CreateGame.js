@@ -1,10 +1,13 @@
 import React from 'react'
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 
 const CreateGame = () => {
   return (
-    <div align="center">
-      <button type="button">Get Code</button>
+    <div>
+      <Link to="./home">Back to home</Link>
+      <div align="center">
+        <button type="button">Get Code</button>
+      </div>
     </div>
   )
 }

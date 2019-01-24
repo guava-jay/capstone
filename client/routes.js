@@ -1,13 +1,9 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
-//import PropTypes from 'prop-types'
 import {Welcome, Join, CreateGame} from './components'
 import {me} from './store'
 
-/**
- * COMPONENT
- */
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData()
@@ -35,7 +31,3 @@ const mapDispatch = dispatch => {
 // The `withRouter` wrapper makes sure that updates are not blocked
 // when the url changes
 export default withRouter(connect(null, mapDispatch)(Routes))
-
-// Routes.propTypes = {
-//   loadInitialData: PropTypes.func.isRequired,
-// }

@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 
 const Navbar = () => (
   <div align="center">
-    <hr />
     <nav>
       <Link to="/join">Join a Game</Link>
       <Link to="/newGame">Create a New Game</Link>
