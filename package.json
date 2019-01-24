@@ -45,7 +45,7 @@
     "firebase": "^5.8.0",
     "firebase-admin": "^6.5.1",
     "history": "^4.6.3",
-    "morgan": "^1.8.1",
+    "morgan": "^1.9.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "pg": "^6.1.2",
