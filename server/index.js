@@ -44,7 +44,7 @@ if (process.env.NODE_ENV !== 'production') require('../secrets')
 // })
 
 // Back-end firebase is admin.database()
-const database = admin.database()
+// const database = admin.database()
 
 // Write from the back end
 /*
