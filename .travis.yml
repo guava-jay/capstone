@@ -1,27 +1,32 @@
 language: node_js
 node_js:
-  - node # uses most recent stable node version
+- node
 services:
-  - postgresql # starts up postgres
+- postgresql
 addons:
-  postgresql: '9.6' # highest available postgres version on Travis
-dist: trusty # uses trusty environment
-sudo: false # when on trusty, uses Docker containers for speed
+  postgresql: '9.6'
+dist: trusty
+sudo: false
 notifications:
   email:
-    on_success: change # default: change (only when going from broken to fixed)
-    on_failure: always # default: always (which is annoying, as it should be)
+    on_success: change
+    on_failure: always
 install:
-  - npm ci # faster, goes only from package-lock
+- npm ci
 before_script:
-  - psql -c 'create database "capstone-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
-
+- psql -c 'create database "capstone-test";' -U postgres
 before_deploy:
-  - npm run build-client # make the bundle
-  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+- npm run build-client
+- rm -rf node_modules
 deploy:
-  skip_cleanup: true # prevents travis from deleting the build
+  skip_cleanup: true
   provider: heroku
-  app: stackbox # see README
+  app: stackbox
   api_key:
-    secure: uJwgZqdnJx6vo69TV7H8MTmAyqhTyqRrD6YKUesTuILJdoOoP/r52LYksN38lHnRJdkPxcJNwMGRssLDRhZD6cmMAJvzGuex4wo6ruqOFiE+snDA1tDXYMHRGsJlvMGfhfppR3kwAc9ejqEcDeoquckSA062M7AuI7rO09kJzkLu3fM8aFJxJd7bDh6P1zvJU/ZY5Vzh6YDoc6EO6Wj37yzAOCA3miYFgx9lLrXDj55Jgswh1MTKXzFzw3cGo/c1laG5qCQ6AT71vTyQ6aoxreGYoijK559S+5Yell0qv7EByKZnRsHK5LKLnyVN7cHGzFY7tLXzvsd5VRbxjuA7VdH499kGGVr91NwBySCXsaBy6pCoK+xLmCJGjOWeMxu8cWd+4AndROaVoHwPFK8U1Qw3oDTVeK5jCeeOvFzl6jbWGvB1VT/BjLrzB3lxVTIzj2YdVptFD235VdlfwIcpxhlEauBafEW6XFCE69FYWELwW2ENjn1bd2Jxu4hNufggBzkYzjd3w12j3KXEXWYq9OKjzq52OBxqsEgG12YAv+ub58KUZQwAdGrOcm76EEpFks6E2D/Q0FAMRRJGFM0jFYasmsO2sAZM0GAMet8w54knEvDrbqe/3mAGJoLkaX9IZwwFF7IxALjTWcot7ZaPu7Fl1ix+rxPMheIF9XLDuJs= # see README
+    secure: uJwgZqdnJx6vo69TV7H8MTmAyqhTyqRrD6YKUesTuILJdoOoP/r52LYksN38lHnRJdkPxcJNwMGRssLDRhZD6cmMAJvzGuex4wo6ruqOFiE+snDA1tDXYMHRGsJlvMGfhfppR3kwAc9ejqEcDeoquckSA062M7AuI7rO09kJzkLu3fM8aFJxJd7bDh6P1zvJU/ZY5Vzh6YDoc6EO6Wj37yzAOCA3miYFgx9lLrXDj55Jgswh1MTKXzFzw3cGo/c1laG5qCQ6AT71vTyQ6aoxreGYoijK559S+5Yell0qv7EByKZnRsHK5LKLnyVN7cHGzFY7tLXzvsd5VRbxjuA7VdH499kGGVr91NwBySCXsaBy6pCoK+xLmCJGjOWeMxu8cWd+4AndROaVoHwPFK8U1Qw3oDTVeK5jCeeOvFzl6jbWGvB1VT/BjLrzB3lxVTIzj2YdVptFD235VdlfwIcpxhlEauBafEW6XFCE69FYWELwW2ENjn1bd2Jxu4hNufggBzkYzjd3w12j3KXEXWYq9OKjzq52OBxqsEgG12YAv+ub58KUZQwAdGrOcm76EEpFks6E2D/Q0FAMRRJGFM0jFYasmsO2sAZM0GAMet8w54knEvDrbqe/3mAGJoLkaX9IZwwFF7IxALjTWcot7ZaPu7Fl1ix+rxPMheIF9XLDuJs=
+env.private_key:
+- openssl aes-256-cbc -K $encrypted_8dd3122f3fcc_key -iv $encrypted_8dd3122f3fcc_iv
+  -in private_key.txt.enc -out private_key.txt -d
+env:
+  client_email:
+    secure: DRBejB1bw/jb9LVAwnUoH3yGZtTfpHD/cwMsmIpm6IMnxhEPr5Fz7Tbg9o4rk4CwwwIBRKuK3rfWgQ1+GFJ6c1HAjAihp7N0sEIISFlFO0THA+nOmRXYFf36CFKpx+wtFka3Z6u7U3SKMtXNSagebEBGmKP8rmVcPn7RJkfUe6GnrdCcXifPFkzxStVCw9kYF8P3iqbb2QZqgsB3dvY9moigRwQNJk3sMQ5BONS48NI7v3T2u1AR5NA9vSjdQfRCoKvd40vYYw0acwX2saBdy0yqVR25sbeboSGQH8KVX+8hb9f7UY3gtWHHF87mBnhJyIH63V0GA4EnmbEwffTfAKijYYWxm4aOIpY/22u/s8VAbjgotHjN3mY8BD+hrjRwvNQYzzrKtjMaBmIGWvO2od9ZSQ2tx4CG1cW8CbhUgm2H3s0/7XP523ZYYG5V2eYCOgokQEsGle3Xu/R69B22lP3L1Lhnb0BtMNsKn1XsHWKUgJ0SB+QpPseLruWunpChRmbtZmHJX7Msec9Hz4uyE5q4ccIe4psoxtXYY6E+MxuOLXYTFFmN1HfHoBpgUuR1Ts84WJnglN1mtZNR19yRSS/o2jIOmLgzrO5yKPdoQIhAUoisJI8sdscaQaXR8axY3lIOuPqtqaJZcZgfBYep7WIp0vEsDzOd9wW9RvtsqmI=
