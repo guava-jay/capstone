@@ -16,12 +16,13 @@ install:
 # before_script:
 #   - psql -c 'create database "capstone-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy:
+  - npm run build-client # make the bundle
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: stackbox # see README
+  api_key:
+    secure: uJwgZqdnJx6vo69TV7H8MTmAyqhTyqRrD6YKUesTuILJdoOoP/r52LYksN38lHnRJdkPxcJNwMGRssLDRhZD6cmMAJvzGuex4wo6ruqOFiE+snDA1tDXYMHRGsJlvMGfhfppR3kwAc9ejqEcDeoquckSA062M7AuI7rO09kJzkLu3fM8aFJxJd7bDh6P1zvJU/ZY5Vzh6YDoc6EO6Wj37yzAOCA3miYFgx9lLrXDj55Jgswh1MTKXzFzw3cGo/c1laG5qCQ6AT71vTyQ6aoxreGYoijK559S+5Yell0qv7EByKZnRsHK5LKLnyVN7cHGzFY7tLXzvsd5VRbxjuA7VdH499kGGVr91NwBySCXsaBy6pCoK+xLmCJGjOWeMxu8cWd+4AndROaVoHwPFK8U1Qw3oDTVeK5jCeeOvFzl6jbWGvB1VT/BjLrzB3lxVTIzj2YdVptFD235VdlfwIcpxhlEauBafEW6XFCE69FYWELwW2ENjn1bd2Jxu4hNufggBzkYzjd3w12j3KXEXWYq9OKjzq52OBxqsEgG12YAv+ub58KUZQwAdGrOcm76EEpFks6E2D/Q0FAMRRJGFM0jFYasmsO2sAZM0GAMet8w54knEvDrbqe/3mAGJoLkaX9IZwwFF7IxALjTWcot7ZaPu7Fl1ix+rxPMheIF9XLDuJs= # see README
+
