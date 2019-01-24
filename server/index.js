@@ -11,28 +11,9 @@ const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
 
-// Firebase App is always required and must be first
-var firebase = require('firebase/app')
+// const admin = require('firebase-admin')
 
-// Add additional services that you want to use
-require('firebase/auth')
-require('firebase/database')
-//require("firebase/firestore");
-//require("firebase/messaging");
-require('firebase/functions')
-
-// Comment out (or don't require) services that you don't want to use
-// require("firebase/storage");
-
-var config = {
-  apiKey: 'AIzaSyC06e0qnZ45BnyVL8mvGC1BC24aoedgRBk',
-  authDomain: 'guava-stackbox.firebaseapp.com',
-  databaseURL: 'https://guava-stackbox.firebaseio.com',
-  projectId: 'guava-stackbox'
-  // storageBucket: "<BUCKET>.appspot.com",
-  // messagingSenderId: "<SENDER_ID>",
-}
-firebase.initializeApp(config)
+// const serviceAccount = require('path/to/serviceAccountKey.json')
 
 module.exports = app
 
@@ -51,6 +32,39 @@ if (process.env.NODE_ENV === 'test') {
  * Node process on process.env
  */
 if (process.env.NODE_ENV !== 'production') require('../secrets')
+
+// Initialize database with global variables
+// admin.initializeApp({
+//   credential: admin.credential.cert({
+//     projectId: process.env.project_id,
+//     clientEmail: process.env.client_email,
+//     privateKey: process.env.private_key
+//   }),
+//   databaseURL: 'https://guava-stackbox.firebaseio.com'
+// })
+
+// Back-end firebase is admin.database()
+// const database = admin.database()
+
+// Write from the back end
+/*
+const ref = database.ref('users/').set({
+  bob: 'hi',
+  john: 'hey',
+  tom: 'hello',
+  daniel: 'heya'
+})
+*/
+
+// Read from the front end
+/*
+database
+  .ref('users')
+  .once('value')
+  .then(function(snapshot) {
+    console.log(snapshot.val())
+  })
+  */
 
 // passport registration
 passport.serializeUser((user, done) => done(null, user.id))
