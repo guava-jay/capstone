@@ -10,6 +10,30 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+
+// Firebase App is always required and must be first
+var firebase = require('firebase/app')
+
+// Add additional services that you want to use
+require('firebase/auth')
+require('firebase/database')
+//require("firebase/firestore");
+//require("firebase/messaging");
+require('firebase/functions')
+
+// Comment out (or don't require) services that you don't want to use
+// require("firebase/storage");
+
+var config = {
+  apiKey: 'AIzaSyC06e0qnZ45BnyVL8mvGC1BC24aoedgRBk',
+  authDomain: 'guava-stackbox.firebaseapp.com',
+  databaseURL: 'https://guava-stackbox.firebaseio.com',
+  projectId: 'guava-stackbox'
+  // storageBucket: "<BUCKET>.appspot.com",
+  // messagingSenderId: "<SENDER_ID>",
+}
+firebase.initializeApp(config)
+
 module.exports = app
 
 // This is a global Mocha hook, used for resource cleanup.
