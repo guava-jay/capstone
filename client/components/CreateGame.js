@@ -4,16 +4,8 @@ import {connect} from 'react-redux'
 import {createNewGame} from '../store/game'
 
 class CreateGame extends Component {
-  addNewGame = () => {
-    console.log('addNewGame onClick running')
-    let arr = []
-    let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    for (let i = 0; i < 8; i++) {
-      const index = Math.floor(36 * Math.random())
-      arr.push(chars[index])
-    }
-    let slug = arr.join('')
-    this.props.createNewGame(slug)
+  callback = () => {
+    this.props.createNewGame()
   }
 
   render() {
@@ -21,7 +13,7 @@ class CreateGame extends Component {
       <div>
         <Link to="./home">Back to home</Link>
         <div align="center">
-          <button type="button" onClick={this.addNewGame}>
+          <button type="button" onClick={this.callback}>
             Get Code
           </button>
         </div>
@@ -31,7 +23,7 @@ class CreateGame extends Component {
 }
 
 const mapDispatch = dispatch => ({
-  createNewGame: slug => dispatch(createNewGame(slug))
+  createNewGame: () => dispatch(createNewGame())
 })
 
 export default withRouter(connect(null, mapDispatch)(CreateGame))
