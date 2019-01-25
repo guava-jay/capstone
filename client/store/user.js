@@ -78,6 +78,8 @@ export const setPlayerThunk = (room, name = 'displayName') => {
  */
 export default function(state = defaultUser, action) {
   switch (action.type) {
+    case SET_PLAYER:
+      return {...action.player}
     default:
       return state
   }

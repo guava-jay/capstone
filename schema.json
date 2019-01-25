@@ -1,0 +1,41 @@
+{
+  "gamerooms": {
+    "wxyz": {
+      "players": {
+        "abc123": {
+          "score": 3
+        },
+        "def456": {
+          "score": 1
+        }
+      },
+      "active_game": {
+        "game_name": "quiz",
+        "current_question": 1
+      },
+      "status": "playing"
+    }
+  },
+  "game_list": {
+    "quiz": {
+      "1": {
+        "question": "An example question?",
+        "choices": {
+          "a": "A possible answer",
+          "b": "A possible answer",
+          "c": "A possible answer"
+        },
+        "answer": "a"
+      },
+      "2": {
+        "question": "An example question?",
+        "choices": {
+          "a": "A possible answer",
+          "b": "A possible answer",
+          "c": "A possible answer"
+        },
+        "answer": "a"
+      }
+    }
+  }
+}

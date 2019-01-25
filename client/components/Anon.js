@@ -7,8 +7,6 @@ class Anon extends React.Component {
     this.props.setPlayerThunk('ABDEF', 'Bob')
   }
 
-  componentWill
-
   render() {
     return (
       <div>
@@ -22,4 +20,8 @@ const mapDispatch = dispatch => {
   return {setPlayerThunk: (room, name) => dispatch(setPlayerThunk(room, name))}
 }
 
-export default connect(null, mapDispatch)(Anon)
+const mapState = state => ({
+  user: state.user
+})
+
+export default connect(mapState, mapDispatch)(Anon)

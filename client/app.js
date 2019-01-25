@@ -2,44 +2,30 @@ import React from 'react'
 import firebase from './firebase'
 import {Navbar} from './components'
 import Routes from './routes'
+import {connect} from 'react-redux'
 
 // Front-end firebase is firebase.database()
+const database = firebase.database()
 
-// Write from the front end (we won't really be doing this)
-/*
-function writeUserData(userId, name, email, imageUrl) {
-  firebase
-    .database()
-    .ref('users/2')
-    .set({
-      username: 'Eve',
-      email: 'beep',
-      profile_picture: 'imageUrl'
-    })
-}
-*/
-
-// Read from the front end
-/*
-function readData () {
+class App extends React.Component {
+  render() {
+    console.log(this)
+    // Move this to back-end?
     database
-    .ref('/users')
-    .once('value')
-    .then(function(snapshot) {
-      console.log(snapshot.val())
-    })
+      .ref(`rooms/ABDEF/players/${this.props.user.uid}`)
+      .onDisconnect()
+      .remove() // can also use (set(null))
+
+    return (
+      <div>
+        <Routes />
+      </div>
+    )
   }
-*/
-
-const App = () => {
-  // writeUserData()
-  // readData()
-
-  return (
-    <div>
-      <Routes />
-    </div>
-  )
 }
 
-export default App
+const mapState = state => ({
+  user: state.user
+})
+
+export default connect(mapState)(App)
