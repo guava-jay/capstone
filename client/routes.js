@@ -11,6 +11,7 @@ class Routes extends Component {
   render() {
     return (
       <Switch>
+        <Route exact path="/" component={Welcome} />
         <Route exact path="/home" component={Welcome} />
         <Route exact path="/join" component={Join} />
         <Route exact path="/newGame" component={CreateGame} />
