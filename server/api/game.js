@@ -3,19 +3,15 @@ const database = require('../db/index')
 module.exports = router
 
 router.post('/', (req, res, next) => {
-  const ref = database.ref('users/').set({
-    bob: 'hi',
-    john: 'hey',
-    tom: 'hello',
-    daniel: 'heya'
-  })
-
-  // Read from the front end
-
-  database
-    .ref('users')
-    .once('value')
-    .then(function(snapshot) {
-      res.send(snapshot.val())
+  const slug = req.body.slug
+  try {
+    database.ref('gamerooms/').set({
+      slug,
+      status: 'waiting'
     })
+    res.status(201).send(slug)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Error creating new game')
+  }
 })
