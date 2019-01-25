@@ -8,10 +8,6 @@ const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
 
-const admin = require('firebase-admin')
-
-// const serviceAccount = require('path/to/serviceAccountKey.json')
-
 module.exports = app
 
 /**
@@ -23,37 +19,6 @@ module.exports = app
  * Node process on process.env
  */
 if (process.env.NODE_ENV !== 'production') require('../secrets')
-
-// Initialize database with global variables
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.project_id,
-    clientEmail: process.env.client_email,
-    privateKey: process.env.private_key.replace(/\\n/g, '\n')
-  }),
-  databaseURL: 'https://guava-stackbox.firebaseio.com'
-})
-
-// Back-end firebase is admin.database()
-const database = admin.database()
-
-// Write from the back end
-
-// const ref = database.ref('users/').set({
-//   bob: 'hi',
-//   john: 'hey',
-//   tom: 'hello',
-//   daniel: 'heya'
-// })
-
-// Read from the front end
-
-// database
-//   .ref('users')
-//   .once('value')
-//   .then(function (snapshot) {
-//     console.log(snapshot.val())
-//   })
 
 const createApp = () => {
   // logging middleware
@@ -77,6 +42,7 @@ const createApp = () => {
   app.use(passport.initialize())
   app.use(passport.session())
 
+  app.use('/api', require('./api'))
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')))
 
