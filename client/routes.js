@@ -2,11 +2,10 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import {Welcome, Join, CreateGame} from './components'
-import {me} from './store'
 
 class Routes extends Component {
   componentDidMount() {
-    this.props.loadInitialData()
+    console.log('mounted from routes js placeholder')
   }
 
   render() {
@@ -21,11 +20,7 @@ class Routes extends Component {
 }
 
 const mapDispatch = dispatch => {
-  return {
-    loadInitialData() {
-      dispatch(me())
-    }
-  }
+  return {}
 }
 
 // The `withRouter` wrapper makes sure that updates are not blocked
