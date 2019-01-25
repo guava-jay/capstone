@@ -5,10 +5,12 @@ module.exports = router
 router.post('/', (req, res, next) => {
   const slug = req.body.slug
   try {
-    database.ref('gamerooms/').set({
-      slug,
-      status: 'waiting'
-    })
+    database
+      .ref(`rooms/`)
+      .child(slug)
+      .set({
+        status: 'waiting'
+      })
     res.status(201).send(slug)
   } catch (err) {
     console.error(err)
