@@ -12,20 +12,19 @@ const createGame = slug => ({
 })
 
 //thunk creators
-export const createNewGame = slug => async dispatch => {
-  console.log('in thunk createNewGame')
-  const {data: game} = await axios.post('/api/game', slug)
-  dispatch(createGame(game))
+export const createNewGame = () => async dispatch => {
+  console.log('in create new game thunk')
+  const {data: slug} = await axios.post('/api/game')
+  dispatch(createGame(slug))
 }
 
 const initialState = {}
 
 //reducer
 const gameReducer = (state = initialState, action) => {
-  console.log('in reducer')
   switch (action.type) {
     case CREATE_GAME:
-      return {...state, game: action.slug}
+      return {...state, slug: action.slug}
     default:
       return state
   }

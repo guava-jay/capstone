@@ -4,10 +4,6 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import {Welcome, Join, CreateGame} from './components'
 
 class Routes extends Component {
-  componentDidMount() {
-    console.log('mounted from routes js placeholder')
-  }
-
   render() {
     return (
       <Switch>
