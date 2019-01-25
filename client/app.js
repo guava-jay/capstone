@@ -4,7 +4,6 @@ import {Navbar} from './components'
 import Routes from './routes'
 
 // Front-end firebase is firebase.database()
-const database = firebase.database()
 
 // Write from the front end (we won't really be doing this)
 /*

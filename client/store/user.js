@@ -1,11 +1,13 @@
 import axios from 'axios'
 import history from '../history'
+import firebase from '../firebase'
 
 /**
  * ACTION TYPES
  */
-const GET_USER = 'GET_USER'
-const REMOVE_USER = 'REMOVE_USER'
+// const GET_USER = 'GET_USER'
+// const REMOVE_USER = 'REMOVE_USER'
+const SET_PLAYER = 'SET_PLAYER'
 
 /**
  * INITIAL STATE
@@ -17,10 +19,23 @@ const defaultUser = {}
  */
 // const getUser = user => ({type: GET_USER, user})
 // const removeUser = () => ({type: REMOVE_USER})
+const setPlayer = player => ({type: SET_PLAYER, player})
 
 /**
  * THUNK CREATORS
  */
+const database = firebase.database()
+
+// Login thunk
+export const setPlayerThunk = () => {
+  return async dispatch => {
+    // dispatch(startAuthorizing());
+
+    const data = await firebase.auth().signInAnonymouslyAndRetrieveData()
+    console.log(data.user.uid)
+  }
+}
+
 // export const me = () => async dispatch => {
 //   try {
 //     const res = await axios.get('/auth/me')
