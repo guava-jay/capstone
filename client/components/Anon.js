@@ -4,8 +4,10 @@ import {setPlayerThunk} from '../store/user'
 
 class Anon extends React.Component {
   componentDidMount() {
-    this.props.setPlayerThunk()
+    this.props.setPlayerThunk('ABDEF', 'Bob')
   }
+
+  componentWill
 
   render() {
     return (
@@ -17,7 +19,7 @@ class Anon extends React.Component {
 }
 
 const mapDispatch = dispatch => {
-  return {setPlayerThunk: () => dispatch(setPlayerThunk())}
+  return {setPlayerThunk: (room, name) => dispatch(setPlayerThunk(room, name))}
 }
 
 export default connect(null, mapDispatch)(Anon)

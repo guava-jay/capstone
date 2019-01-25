@@ -27,11 +27,13 @@ const setPlayer = player => ({type: SET_PLAYER, player})
 const database = firebase.database()
 
 // Login thunk
-export const setPlayerThunk = () => {
+export const setPlayerThunk = (room, name = 'displayName') => {
   return async dispatch => {
-    // dispatch(startAuthorizing());
-
     const data = await firebase.auth().signInAnonymouslyAndRetrieveData()
+    database.ref(`rooms/${room}/players/${data.user.uid}`).set({
+      name
+    })
+    dispatch(setPlayer({name, uid: data.user.uid}))
     console.log(data.user.uid)
   }
 }
