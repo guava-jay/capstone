@@ -8,6 +8,10 @@ const Join = () => {
       <form align="center" /*onSubmit={x}*/>
         <label htmlFor="code">Enter your Game Room Code</label>
         <input name="code" defaultValue="####" />
+
+        <label htmlFor="playerName">Choose a player name</label>
+        <input name="playerName" defaultValue="guest" />
+        <button type="submit">Join</button>
       </form>
     </div>
   )

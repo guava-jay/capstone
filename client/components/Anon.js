@@ -4,7 +4,7 @@ import {setPlayerThunk} from '../store/user'
 
 class Anon extends React.Component {
   componentDidMount() {
-    this.props.setPlayerThunk('ABDEF', 'Bob')
+    // this.props.setPlayerThunk('ABDEF', 'Bob')
   }
 
   render() {
