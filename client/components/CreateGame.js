@@ -4,17 +4,13 @@ import {connect} from 'react-redux'
 import {createNewGame} from '../store/game'
 
 class CreateGame extends Component {
-  callback = () => {
-    this.props.createNewGame()
-  }
-
   render() {
     return (
       <div>
         <Link to="./home">Back to home</Link>
         <div align="center">
-          <button type="button" onClick={this.callback}>
-            Get Code
+          <button type="button" onClick={() => this.props.createNewGame()}>
+            Create game room
           </button>
         </div>
       </div>
