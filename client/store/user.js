@@ -1,6 +1,7 @@
 import axios from 'axios'
 import history from '../history'
 import firebase from '../firebase'
+import {CREATE_GAME} from './game'
 
 /**
  * ACTION TYPES
@@ -77,6 +78,8 @@ export const setPlayerThunk = uid => {
  */
 export default function(state = defaultUser, action) {
   switch (action.type) {
+    case CREATE_GAME:
+      return {...state, role: 'host'}
     case SET_PLAYER:
       return {...state, uid: action.playeruid}
     default:

@@ -16,14 +16,21 @@ class Room extends React.Component {
   }
 
   render() {
-    console.log(this.props, 'props')
+    //checking for user disconnect
+    if (this.props.user.role === 'host') {
+      database
+        .ref(`rooms/${this.props.game.slug}`)
+        .onDisconnect()
+        .remove()
+    }
     return <h1>hi room</h1>
   }
 }
 
 const mapState = state => {
   return {
-    slug: state.game.slug
+    game: state.game,
+    user: state.user
   }
 }
 
