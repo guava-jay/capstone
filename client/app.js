@@ -1,5 +1,5 @@
 import React from 'react'
-import firebase from './firebase'
+import firebase from 'firebase'
 import Routes from './routes'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
@@ -9,16 +9,12 @@ import {setPlayerThunk} from './store/user'
 const database = firebase.database()
 
 class App extends React.Component {
-  componentDidMount() {
-    this.props.setPlayerThunk('ABDEF', 'Eve')
-  }
-
   render() {
     // Move this to back-end?
-    database
-      .ref(`rooms/ABDEF/players/${this.props.user.uid}`)
-      .onDisconnect()
-      .remove() // can also use (set(null))
+    // database
+    //   .ref(`rooms/ABDEF/players/${this.props.user.uid}`)
+    //   .onDisconnect()
+    //   .remove() // can also use (set(null))
 
     return (
       <div>

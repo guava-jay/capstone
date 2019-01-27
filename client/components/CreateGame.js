@@ -9,7 +9,10 @@ class CreateGame extends Component {
       <div>
         <Link to="./home">Back to home</Link>
         <div align="center">
-          <button type="button" onClick={() => this.props.createNewGame()}>
+          <button
+            type="button"
+            onClick={() => this.props.createNewGame(this.props.user.uid)}
+          >
             Create game room
           </button>
         </div>
@@ -18,8 +21,13 @@ class CreateGame extends Component {
   }
 }
 
+const mapState = state => {
+  return {
+    user: state.user
+  }
+}
 const mapDispatch = dispatch => ({
-  createNewGame: () => dispatch(createNewGame())
+  createNewGame: uid => dispatch(createNewGame(uid))
 })
 
-export default withRouter(connect(null, mapDispatch)(CreateGame))
+export default withRouter(connect(mapState, mapDispatch)(CreateGame))

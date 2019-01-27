@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const database = require('../db/index')
+const firebase = require('firebase-admin')
 module.exports = router
 
 //slug generator
@@ -16,6 +17,7 @@ let generateSlug = () => {
 //create a game room and set this device as host
 router.post('/', async (req, res, next) => {
   try {
+    console.log(req.body.uid)
     let slug = generateSlug()
     const ref = database.ref(`rooms/`)
     await ref.once('value').then(function(snapshot) {
@@ -29,7 +31,8 @@ router.post('/', async (req, res, next) => {
         .ref(`rooms/`)
         .child(slug)
         .set({
-          status: 'waiting'
+          status: 'waiting',
+          host: req.body.uid
         })
     })
     res.status(201).json(slug)

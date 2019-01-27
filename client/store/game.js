@@ -12,9 +12,8 @@ const createGame = slug => ({
 })
 
 //thunk creators
-export const createNewGame = () => async dispatch => {
-  const {data: slug} = await axios.post('/api/game')
-  console.log(`/newGame/${slug}`, 'slug')
+export const createNewGame = uid => async dispatch => {
+  const {data: slug} = await axios.post('/api/game', {uid})
   history.push(`/newGame/${slug}`)
   dispatch(createGame(slug))
 }

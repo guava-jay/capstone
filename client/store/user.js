@@ -19,7 +19,7 @@ const defaultUser = {}
  */
 // const getUser = user => ({type: GET_USER, user})
 // const removeUser = () => ({type: REMOVE_USER})
-const setPlayer = player => ({type: SET_PLAYER, player})
+const setPlayer = playeruid => ({type: SET_PLAYER, playeruid})
 
 /**
  * THUNK CREATORS
@@ -27,14 +27,13 @@ const setPlayer = player => ({type: SET_PLAYER, player})
 const database = firebase.database()
 
 // Login thunk
-export const setPlayerThunk = (room, name = 'displayName') => {
+export const setPlayerThunk = uid => {
   return async dispatch => {
-    const data = await firebase.auth().signInAnonymouslyAndRetrieveData()
-    database.ref(`rooms/${room}/players/${data.user.uid}`).set({
-      name
-    })
-    dispatch(setPlayer({name, uid: data.user.uid}))
-    console.log(data.user.uid)
+    // const data = await firebase.auth().signInAnonymouslyAndRetrieveData()
+    // database.ref(`rooms/${room}/players/${data.user.uid}`).set({
+    //   name
+    // })
+    dispatch(setPlayer(uid))
   }
 }
 
@@ -79,7 +78,7 @@ export const setPlayerThunk = (room, name = 'displayName') => {
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case SET_PLAYER:
-      return {...action.player}
+      return {...state, uid: action.playeruid}
     default:
       return state
   }
