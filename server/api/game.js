@@ -17,7 +17,6 @@ let generateSlug = () => {
 //create a game room and set this device as host
 router.post('/', async (req, res, next) => {
   try {
-    console.log(req.body.uid)
     let slug = generateSlug()
     const ref = database.ref(`rooms/`)
     await ref.once('value').then(function(snapshot) {
@@ -53,14 +52,17 @@ router.post('/join', async (req, res, next) => {
         ref
           .child(req.body.slug)
           .child('players')
+          .child(req.body.uid)
           .set({
             [req.body.uid]: req.body.displayName
           })
+        res.status(200).end()
       } else {
         next()
       }
     })
   } catch (err) {
+    console.error(err)
     next()
   }
 })

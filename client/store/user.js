@@ -53,8 +53,8 @@ export const joinGameThunk = (slug, uid, displayName) => {
         uid,
         displayName
       })
-      // await database.ref(`/rooms/${room}/players`).set({ [uid]: displayName })
-      // dispatch(joinGame("player"))
+      history.push(`/newGame/${slug}`)
+      dispatch(joinGame('player'))
     } catch (error) {
       console.error(error)
     }
