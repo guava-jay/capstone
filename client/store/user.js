@@ -9,6 +9,7 @@ import {CREATE_GAME} from './game'
 // const GET_USER = 'GET_USER'
 // const REMOVE_USER = 'REMOVE_USER'
 const SET_PLAYER = 'SET_PLAYER'
+const JOIN_GAME = 'JOIN_GAME'
 
 /**
  * INITIAL STATE
@@ -21,6 +22,7 @@ const defaultUser = {}
 // const getUser = user => ({type: GET_USER, user})
 // const removeUser = () => ({type: REMOVE_USER})
 const setPlayer = playeruid => ({type: SET_PLAYER, playeruid})
+const joinGame = role => ({type: JOIN_GAME, role})
 
 /**
  * THUNK CREATORS
@@ -28,56 +30,44 @@ const setPlayer = playeruid => ({type: SET_PLAYER, playeruid})
 const database = firebase.database()
 
 // Login thunk
-export const setPlayerThunk = uid => {
+export const setPlayerThunk = () => {
   return async dispatch => {
-    // const data = await firebase.auth().signInAnonymouslyAndRetrieveData()
-    // database.ref(`rooms/${room}/players/${data.user.uid}`).set({
-    //   name
-    // })
-    dispatch(setPlayer(uid))
+    const {user} = await firebase
+      .auth()
+      .signInAnonymously()
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code
+        var errorMessage = error.message
+        // ...
+      })
+    dispatch(setPlayer(user.uid))
   }
 }
 
-// export const me = () => async dispatch => {
-//   try {
-//     const res = await axios.get('/auth/me')
-//     dispatch(getUser(res.data || defaultUser))
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
-
-// export const auth = (email, password, method) => async dispatch => {
-//   let res
-//   try {
-//     res = await axios.post(`/auth/${method}`, {email, password})
-//   } catch (authError) {
-//     return dispatch(getUser({error: authError}))
-//   }
-
-//   try {
-//     dispatch(getUser(res.data))
-//     history.push('/home')
-//   } catch (dispatchOrHistoryErr) {
-//     console.error(dispatchOrHistoryErr)
-//   }
-// }
-
-// export const logout = () => async dispatch => {
-//   try {
-//     await axios.post('/auth/logout')
-//     dispatch(removeUser())
-//     history.push('/login')
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
+export const joinGameThunk = (slug, uid, displayName) => {
+  return async dispatch => {
+    try {
+      await axios.post('/api/game/join', {
+        slug,
+        uid,
+        displayName
+      })
+      // await database.ref(`/rooms/${room}/players`).set({ [uid]: displayName })
+      // dispatch(joinGame("player"))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
 
 /**
  * REDUCER
  */
 export default function(state = defaultUser, action) {
   switch (action.type) {
+    case JOIN_GAME:
+      return {...state, role: action.role}
     case CREATE_GAME:
       return {...state, role: 'host'}
     case SET_PLAYER:

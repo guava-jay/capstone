@@ -41,3 +41,26 @@ router.post('/', async (req, res, next) => {
     res.status(500).send('Error creating new game')
   }
 })
+
+//player joining a game
+router.post('/join', async (req, res, next) => {
+  try {
+    //check if room exists
+    const ref = database.ref(`rooms/`)
+    await ref.once('value').then(function(snapshot) {
+      let roomExist = snapshot.hasChild(req.body.slug)
+      if (roomExist) {
+        ref
+          .child(req.body.slug)
+          .child('players')
+          .set({
+            [req.body.uid]: req.body.displayName
+          })
+      } else {
+        next()
+      }
+    })
+  } catch (err) {
+    next()
+  }
+})

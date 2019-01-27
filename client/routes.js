@@ -16,17 +16,8 @@ firebase
   })
 
 class Routes extends Component {
-  async componentDidMount() {
-    const {user} = await firebase
-      .auth()
-      .signInAnonymously()
-      .catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
-        // ...
-      })
-    this.props.setPlayerThunk(user.uid)
+  componentDidMount() {
+    this.props.setPlayerThunk()
   }
 
   render() {
@@ -59,7 +50,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    setPlayerThunk: uid => dispatch(setPlayerThunk(uid))
+    setPlayerThunk: () => dispatch(setPlayerThunk())
   }
 }
 
