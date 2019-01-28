@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import {JOIN_GAME} from './user'
 
 //Action types
 export const CREATE_GAME = 'CREATE_GAME'
@@ -24,6 +25,8 @@ const initialState = {}
 //reducer
 const gameReducer = (state = initialState, action) => {
   switch (action.type) {
+    case JOIN_GAME:
+      return {...state, slug: action.slug}
     case CREATE_GAME:
       return {...state, slug: action.slug}
     default:

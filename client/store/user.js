@@ -9,7 +9,7 @@ import {CREATE_GAME} from './game'
 // const GET_USER = 'GET_USER'
 // const REMOVE_USER = 'REMOVE_USER'
 const SET_PLAYER = 'SET_PLAYER'
-const JOIN_GAME = 'JOIN_GAME'
+export const JOIN_GAME = 'JOIN_GAME'
 
 /**
  * INITIAL STATE
@@ -22,7 +22,7 @@ const defaultUser = {}
 // const getUser = user => ({type: GET_USER, user})
 // const removeUser = () => ({type: REMOVE_USER})
 const setPlayer = playeruid => ({type: SET_PLAYER, playeruid})
-const joinGame = role => ({type: JOIN_GAME, role})
+const joinGame = (slug, role) => ({type: JOIN_GAME, slug, role})
 
 /**
  * THUNK CREATORS
@@ -54,7 +54,7 @@ export const joinGameThunk = (slug, uid, displayName) => {
         displayName
       })
       history.push(`/newGame/${slug}`)
-      dispatch(joinGame('player'))
+      dispatch(joinGame(slug, 'player'))
     } catch (error) {
       console.error(error)
     }
