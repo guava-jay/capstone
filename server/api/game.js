@@ -54,7 +54,7 @@ router.post('/join', async (req, res, next) => {
           .child('players')
           .child(req.body.uid)
           .set({
-            [req.body.uid]: req.body.displayName
+            displayName: req.body.displayName
           })
         res.status(200).end()
       } else {
