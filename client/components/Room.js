@@ -6,10 +6,14 @@ const database = firebase.database()
 class Room extends React.Component {
   constructor() {
     super()
-    database.ref(`/rooms/${this.props.game.slug}/players`).on()
+    this.state = {
+      players: []
+    }
+    //database.ref(`/rooms/${this.props.game.slug}/players`).on()
   }
 
   componentDidMount() {
+    console.log('hello world')
     //checks to see if room exists
     database
       .ref('/rooms')
@@ -18,6 +22,18 @@ class Room extends React.Component {
         if (!snapshot.hasChild(this.props.match.params.slug)) {
           this.props.history.push('/')
         }
+      })
+    //players
+    database
+      .ref(`/rooms/${this.props.game.slug}/players`)
+      .on('value', snapshot => {
+        let playersArr = []
+        snapshot.forEach(player => {
+          console.log('playersArr:', playersArr)
+          console.log(database.ref(`/rooms/${this.props.game.slug}/players`))
+          playersArr.push(player)
+        })
+        this.setState({players: playersArr})
       })
   }
 
@@ -29,7 +45,11 @@ class Room extends React.Component {
         .ref(`rooms/${this.props.game.slug}`)
         .onDisconnect()
         .remove()
-      return <h1>code: {this.props.game.slug}</h1>
+      return (
+        <h1>
+          code: {this.props.game.slug}, {this.state.players}
+        </h1>
+      )
       //host device
     }
     // player device
