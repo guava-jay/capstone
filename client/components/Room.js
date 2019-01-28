@@ -9,11 +9,12 @@ class Room extends React.Component {
     this.state = {
       players: []
     }
+    this.setState = this.setState.bind(this)
     //database.ref(`/rooms/${this.props.game.slug}/players`).on()
   }
 
   componentDidMount() {
-    console.log('hello world')
+    console.log('this in component:', this, this.state)
     //checks to see if room exists
     database
       .ref('/rooms')
@@ -24,17 +25,26 @@ class Room extends React.Component {
         }
       })
     //players
-    database
-      .ref(`/rooms/${this.props.game.slug}/players`)
-      .on('value', snapshot => {
-        let playersArr = []
-        snapshot.forEach(player => {
-          console.log('playersArr:', playersArr)
-          console.log(database.ref(`/rooms/${this.props.game.slug}/players`))
-          playersArr.push(player)
-        })
-        this.setState({players: playersArr})
-      })
+    let playersRef = database.ref(
+      `/rooms/${this.props.match.params.slug}/players`
+    )
+    playersRef.on(
+      'value',
+      snapshot => {
+        let playerArr = []
+        if (snapshot.val()) {
+          let playerKeys = Object.keys(snapshot.val())
+          playerKeys.forEach(key => {
+            playerArr.push({[key]: snapshot.val()[key]})
+          })
+          console.log(playerArr)
+          this.setState({players: playerArr})
+        }
+      },
+      errorObject => {
+        console.log('The read failed:', errorObject.code)
+      }
+    )
   }
 
   render() {
@@ -46,9 +56,16 @@ class Room extends React.Component {
         .onDisconnect()
         .remove()
       return (
-        <h1>
-          code: {this.props.game.slug}, {this.state.players}
-        </h1>
+        <div>
+          <h1>code: {this.props.game.slug}</h1>
+          <ul>
+            {this.state.players.map((player, i) => {
+              console.log(player)
+              let pid = Object.keys(player)[0]
+              return <li key={i + ''}> {player[pid].displayName}</li>
+            })}
+          </ul>
+        </div>
       )
       //host device
     }
