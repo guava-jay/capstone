@@ -6,6 +6,7 @@ const database = firebase.database()
 class Room extends React.Component {
   constructor() {
     super()
+    database.ref(`/rooms/${this.props.game.slug}/players`).on()
   }
 
   componentDidMount() {
