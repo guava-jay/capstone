@@ -2,7 +2,7 @@ import axios from 'axios'
 import history from '../history'
 
 //Action types
-const CREATE_GAME = 'CREATE_GAME'
+export const CREATE_GAME = 'CREATE_GAME'
 const DELETE_GAME = 'DELETE_GAME'
 
 //Action creators
@@ -10,11 +10,12 @@ const createGame = slug => ({
   type: CREATE_GAME,
   slug
 })
+//and then join game the role will be player
 
 //thunk creators
-export const createNewGame = () => async dispatch => {
-  console.log('in create new game thunk')
-  const {data: slug} = await axios.post('/api/game')
+export const createNewGame = uid => async dispatch => {
+  const {data: slug} = await axios.post('/api/game', {uid})
+  history.push(`/newGame/${slug}`)
   dispatch(createGame(slug))
 }
 

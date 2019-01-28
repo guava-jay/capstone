@@ -1,46 +1,36 @@
 import React from 'react'
-import firebase from './firebase'
-import {Navbar} from './components'
+import firebase from 'firebase'
 import Routes from './routes'
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
+import {setPlayerThunk} from './store/user'
 
 // Front-end firebase is firebase.database()
 const database = firebase.database()
 
-// Write from the front end (we won't really be doing this)
-/*
-function writeUserData(userId, name, email, imageUrl) {
-  firebase
-    .database()
-    .ref('users/2')
-    .set({
-      username: 'Eve',
-      email: 'beep',
-      profile_picture: 'imageUrl'
-    })
-}
-*/
+class App extends React.Component {
+  render() {
+    // Move this to back-end?
+    // database
+    //   .ref(`rooms/ABDEF/players/${this.props.user.uid}`)
+    //   .onDisconnect()
+    //   .remove() // can also use (set(null))
 
-// Read from the front end
-/*
-function readData () {
-    database
-    .ref('/users')
-    .once('value')
-    .then(function(snapshot) {
-      console.log(snapshot.val())
-    })
+    return (
+      <div>
+        <Routes />
+      </div>
+    )
   }
-*/
-
-const App = () => {
-  // writeUserData()
-  // readData()
-
-  return (
-    <div>
-      <Routes />
-    </div>
-  )
 }
 
-export default App
+const mapState = state => ({
+  user: state.user
+})
+
+const mapDispatch = dispatch => {
+  return {setPlayerThunk: (room, name) => dispatch(setPlayerThunk(room, name))}
+}
+
+export default withRouter(connect(mapState, mapDispatch)(App))
+// export default App
