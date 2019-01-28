@@ -3,9 +3,11 @@
     "wxyz": {
       "players": {
         "abc123": {
+          "displayName": "Jane",
           "score": 3
         },
         "def456": {
+          "displayName": "John",
           "score": 1
         }
       },

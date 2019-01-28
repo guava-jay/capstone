@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
-import {Welcome, Join, CreateGame, Anon, Room} from './components'
+import {Welcome, Join, CreateGame, Room} from './components'
 import {setPlayerThunk} from './store/user'
 import firebase from 'firebase'
 
@@ -35,7 +35,6 @@ class Routes extends Component {
         <Route path="/join" component={Join} />
         <Route exact path="/newGame" component={CreateGame} />
         <Route path="/newGame/:slug" component={Room} />
-        <Route path="/anon" component={Anon} />
         <Redirect to="/" />
       </Switch>
     )

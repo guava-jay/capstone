@@ -52,12 +52,14 @@ class Room extends React.Component {
       )
       //host device
     }
+
     // player device
     if (this.props.user.role === 'player') {
       database
         .ref(`rooms/${this.props.game.slug}/players/${this.props.user.uid}`)
         .onDisconnect()
         .remove()
+
       return <h1>player device waiting for game to start</h1>
     }
 
