@@ -31,12 +31,14 @@ class Room extends React.Component {
       return <h1>code: {this.props.game.slug}</h1>
       //host device
     }
-    //player device
-    // if (this.props.user.role === 'player') {
-    //   return (
-    //     <h1>player device waiting for game to start</h1>
-    //   )
-    // }
+    // player device
+    if (this.props.user.role === 'player') {
+      database
+        .ref(`rooms/${this.props.game.slug}/players/${this.props.user.uid}`)
+        .onDisconnect()
+        .remove()
+      return <h1>player device waiting for game to start</h1>
+    }
 
     return <h1>loading</h1>
   }
