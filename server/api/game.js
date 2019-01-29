@@ -15,7 +15,7 @@ let generateSlug = () => {
 }
 
 //testing
-router.get('/', async (req, res, next) => {
+router.get('/', (req, res, next) => {
   try {
     res.json('helloworld')
   } catch (error) {
