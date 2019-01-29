@@ -21,13 +21,13 @@ class Routes extends Component {
   }
 
   render() {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        console.log(user.uid, 'use from routes')
-      } else {
-        console.log('no users')
-      }
-    })
+    // firebase.auth().onAuthStateChanged(function(user) {
+    //   if (user) {
+    //     console.log(user.uid, 'use from routes')
+    //   } else {
+    //     console.log('no users')
+    //   }
+    // })
     return (
       <Switch>
         <Route exact path="/" component={Welcome} />

@@ -2,6 +2,8 @@ import React from 'react'
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {joinGameThunk} from '../store/user'
+import firebase from '../firebase'
+const database = firebase.database()
 
 class Join extends React.Component {
   constructor() {
@@ -9,18 +11,65 @@ class Join extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
+    e.persist()
     e.preventDefault()
-    //something to check # of players in game
-    //if (players exists && if players.length>4 )
-    this.props.joinGameThunk(
-      e.target.code.value,
-      this.props.user.uid,
-      e.target.playerName.value
+    let gameExists = false
+    let gameFull = false
+    //query DB for game
+    let gameRef = database.ref(`/rooms/${e.target.code.value}`)
+    await gameRef.once(
+      'value',
+      gameSnap => {
+        if (gameSnap.val()) {
+          //if game/slug exists
+          gameExists = true
+        }
+      },
+      errorObject => {
+        console.log('The read failed:', errorObject.code)
+      }
     )
-    //else{
-    //alert: no more room
-    //}
+    //query DB for players in game
+    if (gameExists) {
+      //if the game exists, check if full
+      let playersRef = database.ref(`/rooms/${e.target.code.value}/players`)
+      await playersRef.once(
+        'value',
+        playerSnap => {
+          if (playerSnap.val()) {
+            //if more than 0 players
+            let playerKeys = Object.keys(playerSnap.val())
+            if (playerKeys.length >= 4) {
+              //check length; if full...
+              gameFull = true //...set gameFull to true
+            }
+          }
+        },
+        errorObject => {
+          console.log('The read failed:', errorObject.code)
+        }
+      )
+    }
+
+    if (gameExists) {
+      //if game exists
+      if (gameFull) {
+        //if full
+        alert('Error: game room is full') //return error message
+      } else {
+        //otherwise
+        this.props.joinGameThunk(
+          //add player
+          e.target.code.value,
+          this.props.user.uid,
+          e.target.playerName.value
+        )
+      }
+    } else {
+      //if game doesn't exist
+      alert('Error: invalid game code') //return error message
+    }
   }
 
   render() {
