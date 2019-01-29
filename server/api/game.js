@@ -43,7 +43,7 @@ router.post('/', async (req, res, next) => {
           host: req.body.uid,
           active_game: {
             game_name: 'quiz',
-            current_question: 0
+            current_question: null
           }
         })
     })

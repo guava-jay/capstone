@@ -47,11 +47,13 @@ router.put(`/changequestion`, async (req, res, next) => {
     let answeredQuestions = []
     await database.ref(`rooms/${slug}`).once('value', snapshot => {
       if (!snapshot.val()) {
-        console.log('next is supposed to end the request....')
+        res.status(404).send('Error: Room not found')
         next('Error: Room not found')
       }
-      if (snapshot.child('status').val() !== 'playing')
-        console.error(`Game status is ${snapshot.child('status').val()}`)
+      if (snapshot.child('status').val() !== 'playing') {
+        res.status(500).send("Error: Game is not set to 'Playing'")
+        next(`Game status is ${snapshot.child('status').val()}`)
+      }
       answeredQuestions = snapshot.child('answered_questions')
     })
 
@@ -68,9 +70,9 @@ router.put(`/changequestion`, async (req, res, next) => {
         console.error(`Selected question ${newQuestionId} is not valid`)
     })
     console.log(newQuestion)
-
     await database
       .ref(`rooms/${slug}/`)
+      .child('active_game')
       .child('current_question')
       .set(newQuestionId)
 
@@ -90,9 +92,11 @@ router.put('/answer', async (req, res, next) => {
     //ah hell what was i doing. i need to... get the current question id from the room. yeah
     let currentQuestion = 0
     await database.ref(`rooms/${slug}/`).once('value', snapshot => {
-      if (!snapshot.val()) throw new Error(`Could not find room ${slug}`)
+      //if the room is invalid we're done
+      if (!snapshot.val()) next(`Could not find room ${slug}`)
+      //if the user is invalid we're done
       if (!snapshot.child(req.body.uid))
-        throw new Error(`Could not find user ${req.body.uid}`)
+        next(`Could not find user ${req.body.uid}`)
       currentQuestion = snapshot.child('current_question').val()
     })
     //now add their response
