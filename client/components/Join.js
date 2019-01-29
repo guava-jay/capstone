@@ -11,11 +11,16 @@ class Join extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
+    //something to check # of players in game
+    //if (players exists && if players.length>4 )
     this.props.joinGameThunk(
       e.target.code.value,
       this.props.user.uid,
       e.target.playerName.value
     )
+    //else{
+    //alert: no more room
+    //}
   }
 
   render() {

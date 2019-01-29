@@ -14,6 +14,15 @@ let generateSlug = () => {
   return arr.join('')
 }
 
+//testing
+router.get('/', (req, res, next) => {
+  try {
+    res.json('helloworld')
+  } catch (error) {
+    next(error)
+  }
+})
+
 //create a game room and set this device as host
 router.post('/', async (req, res, next) => {
   try {
@@ -31,7 +40,11 @@ router.post('/', async (req, res, next) => {
         .child(slug)
         .set({
           status: 'waiting',
-          host: req.body.uid
+          host: req.body.uid,
+          active_game: {
+            game_name: 'quiz',
+            current_question: 0
+          }
         })
     })
     res.status(201).json(slug)
@@ -47,11 +60,9 @@ router.post('/join', async (req, res, next) => {
     //check if room exists
     const slug = req.body.slug.toUpperCase()
     const ref = database.ref(`rooms/`)
-    console.log('ref', ref)
     await ref.once('value').then(function(snapshot) {
       let roomExist = snapshot.hasChild(slug)
       if (roomExist) {
-        console.log('room exists')
         ref
           .child(slug)
           .child('players')

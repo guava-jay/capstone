@@ -6,15 +6,6 @@ import HostView from './HostView'
 import PlayerView from './PlayerView'
 
 class Room extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      players: []
-    }
-    this.setState = this.setState.bind(this)
-    //database.ref(`/rooms/${this.props.game.slug}/players`).on()
-  }
-
   componentDidMount() {
     //checks to see if room exists
     database
@@ -25,41 +16,16 @@ class Room extends React.Component {
           this.props.history.push('/')
         }
       })
-    //players
-    let playersRef = database.ref(
-      `/rooms/${this.props.match.params.slug}/players`
-    )
-    playersRef.on(
-      'value',
-      snapshot => {
-        let playerArr = []
-        if (snapshot.val()) {
-          let playerKeys = Object.keys(snapshot.val())
-          playerKeys.forEach(key => {
-            playerArr.push({[key]: snapshot.val()[key]})
-          })
-          this.setState({players: playerArr})
-        } else {
-          this.setState({players: []})
-        }
-      },
-      errorObject => {
-        console.log('The read failed:', errorObject.code)
-      }
-    )
   }
 
   render() {
     //checking for user disconnect
-
     if (this.props.user.role === 'host') {
       database
         .ref(`rooms/${this.props.game.slug}`)
         .onDisconnect()
         .remove()
-      return (
-        <HostView slug={this.props.game.slug} players={this.state.players} />
-      )
+      return <HostView slug={this.props.game.slug} />
       //host device
     }
 
@@ -70,7 +36,7 @@ class Room extends React.Component {
         .onDisconnect()
         .remove()
 
-      return <PlayerView />
+      return <PlayerView slug={this.props.game.slug} />
     }
 
     return <h1>loading</h1>
