@@ -66,15 +66,24 @@ export default class PlayerView extends React.Component {
     console.log(this.state)
     return (
       <div>
-        {// Change this to this.state.gameStatus
-        this.state.answerChoices ? (
+        {this.state.gameStatus === 'waiting' ? (
           <div>
-            {this.state.answerChoices.map((choice, idx) => (
-              <button key={idx}>{choice}</button>
-            ))}
+            <h1>Waiting to start...</h1>
           </div>
         ) : (
-          <h1> player device waiting for game to start</h1>
+          <div>
+            <h1>Choose carefully...</h1>
+            {// Change this to this.state.gameStatus
+            this.state.answerChoices ? (
+              <div>
+                {this.state.answerChoices.map((choice, idx) => (
+                  <button key={idx}>{choice}</button>
+                ))}
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
         )}
       </div>
     )
