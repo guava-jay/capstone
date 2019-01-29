@@ -6,7 +6,7 @@ export default class PlayerView extends React.Component {
   constructor() {
     super()
     this.state = {
-      gameStatus: 'waiting',
+      gameStatus: '',
       gameName: null,
       currentQuestion: null,
       answerChoices: []
@@ -67,13 +67,15 @@ export default class PlayerView extends React.Component {
     return (
       <div>
         {this.state.gameStatus === 'waiting' ? (
-          <div>
-            <h1>Waiting to start...</h1>
-          </div>
+          <h1>Waiting to start...</h1>
         ) : (
+          ''
+        )}
+
+        {this.state.gameStatus === 'playing' ? (
           <div>
             <h1>Choose carefully...</h1>
-            {// Change this to this.state.gameStatus
+            {// Show answer choices
             this.state.answerChoices ? (
               <div>
                 {this.state.answerChoices.map((choice, idx) => (
@@ -84,7 +86,11 @@ export default class PlayerView extends React.Component {
               ''
             )}
           </div>
+        ) : (
+          ''
         )}
+
+        {this.state.gameStatus === 'finished' ? <h1>Done!</h1> : ''}
       </div>
     )
   }
