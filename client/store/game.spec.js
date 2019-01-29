@@ -10,32 +10,32 @@ const middlewares = [thunkMiddleware]
 const mockStore = configureMockStore(middlewares)
 
 describe('Game reducer', () => {
-  // let store
-  // let mockAxios
-  // const initialState = { game: {} }
+  let store
+  let mockAxios
+  const initialState = {game: {}}
 
-  // beforeEach(() => {
-  //     mockAxios = new MockAdapter(axios)
-  //     store = mockStore(initialState)
-  // })
-
-  // afterEach(() => {
-  //     mockAxios.restore()
-  //     store.clearActions()
-  // })
-
-  describe('initial state', () => {
-    it('should return the initial state', () => {
-      expect(gameReducer(undefined, {})).to.deep.equal({})
-    })
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios)
+    store = mockStore(initialState)
   })
 
-  // slug returns 4 letters
-  // it('should return 4 letters for slugs', async () => {
-  //     mockAxios.onGet('/api/game').replyOnce(201, "SLUG")
-  //     await store.dispatch(createNewGame("someuid"))
-  //     const actions = store.getActions()
-  //     expect(actions[0].slug).to.have.length(4)
+  afterEach(() => {
+    mockAxios.restore()
+    store.clearActions()
+  })
 
-  // })
+  describe('initial state', () => {
+    // it('should return the initial state', () => {
+    //     expect(gameReducer(undefined, {})).to.deep.equal({})
+    // })
+    //   })
+
+    // slug returns 4 letters
+    it('should return 4 letters for slugs', async () => {
+      mockAxios.onPost('/api/game').replyOnce(201, 'SLUG')
+      await store.dispatch(createNewGame('someuid'))
+      const actions = store.getActions()
+      expect(actions[0].slug).to.have.length(4)
+    })
+  })
 })
