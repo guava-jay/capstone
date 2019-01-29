@@ -47,6 +47,7 @@ export const setPlayerThunk = () => {
 
 export const joinGameThunk = (slug, uid, displayName) => {
   return async dispatch => {
+    slug = slug.toUpperCase()
     try {
       await axios.post('/api/game/join', {
         slug,
