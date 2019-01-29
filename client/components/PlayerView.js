@@ -44,14 +44,21 @@ export default class PlayerView extends React.Component {
 
     // Listens to changes of the currentQuestion
     currentQuestionRef.on('value', async snapshot => {
-      if (snapshot.val()) {
+      if (snapshot.val() >= 0) {
         const answerChoices = await database
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
           .once('value')
           .then(snapshot => snapshot.val())
 
+        console.log(answerChoices)
+
         this.setState({currentQuestion: snapshot.val(), answerChoices})
       }
+    })
+
+    // Listens to changes of the gameStatus
+    database.ref(`/rooms/${this.props.slug}/status`).on('value', snapshot => {
+      this.setState({gameStatus: snapshot.val()})
     })
   }
 
@@ -61,7 +68,11 @@ export default class PlayerView extends React.Component {
       <div>
         {// Change this to this.state.gameStatus
         this.state.answerChoices ? (
-          <h1>currentQuestion: {this.state.currentQuestion}</h1>
+          <div>
+            {this.state.answerChoices.map((choice, idx) => (
+              <button key={idx}>{choice}</button>
+            ))}
+          </div>
         ) : (
           <h1> player device waiting for game to start</h1>
         )}
