@@ -2,6 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import firebase from '../firebase'
 const database = firebase.database()
+import HostView from './HostView'
+import PlayerView from './PlayerView'
 
 class Room extends React.Component {
   constructor() {
@@ -14,7 +16,6 @@ class Room extends React.Component {
   }
 
   componentDidMount() {
-    console.log('this in component:', this, this.state)
     //checks to see if room exists
     database
       .ref('/rooms')
@@ -37,8 +38,9 @@ class Room extends React.Component {
           playerKeys.forEach(key => {
             playerArr.push({[key]: snapshot.val()[key]})
           })
-          console.log(playerArr)
           this.setState({players: playerArr})
+        } else {
+          this.setState({players: []})
         }
       },
       errorObject => {
@@ -56,16 +58,7 @@ class Room extends React.Component {
         .onDisconnect()
         .remove()
       return (
-        <div>
-          <h1>code: {this.props.game.slug}</h1>
-          <ul>
-            {this.state.players.map((player, i) => {
-              console.log(player)
-              let pid = Object.keys(player)[0]
-              return <li key={i + ''}> {player[pid].displayName}</li>
-            })}
-          </ul>
-        </div>
+        <HostView slug={this.props.game.slug} players={this.state.players} />
       )
       //host device
     }
@@ -77,7 +70,7 @@ class Room extends React.Component {
         .onDisconnect()
         .remove()
 
-      return <h1>player device waiting for game to start</h1>
+      return <PlayerView />
     }
 
     return <h1>loading</h1>
