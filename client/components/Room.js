@@ -36,7 +36,7 @@ class Room extends React.Component {
         .onDisconnect()
         .remove()
 
-      return <PlayerView />
+      return <PlayerView slug={this.props.game.slug} />
     }
 
     return <h1>loading</h1>
