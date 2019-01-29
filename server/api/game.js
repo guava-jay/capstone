@@ -45,14 +45,15 @@ router.post('/', async (req, res, next) => {
 router.post('/join', async (req, res, next) => {
   try {
     //check if room exists
+    const slug = req.body.slug.toUpperCase()
     const ref = database.ref(`rooms/`)
     console.log('ref', ref)
     await ref.once('value').then(function(snapshot) {
-      let roomExist = snapshot.hasChild(req.body.slug)
+      let roomExist = snapshot.hasChild(slug)
       if (roomExist) {
         console.log('room exists')
         ref
-          .child(req.body.slug)
+          .child(slug)
           .child('players')
           .child(req.body.uid)
           .set({
