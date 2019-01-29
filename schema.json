@@ -4,7 +4,10 @@
       "players": {
         "abc123": {
           "displayName": "Jane",
-          "score": 3
+          "score": 3,
+          "responses": {
+            "1": "a"
+          }
         },
         "def456": {
           "displayName": "John",

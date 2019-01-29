@@ -12,7 +12,14 @@ export default class PlayerView extends React.Component {
       answerChoices: []
     }
     this.setState = this.setState.bind(this)
+    this.setChoice = this.setChoice.bind(this)
   }
+
+  setChoice(event) {
+    event.preventDefault()
+    console.log(event.target.name)
+  }
+
   async componentDidMount() {
     // Get reference to current question: used to watch for changes
     const currentQuestionRef = database.ref(
@@ -79,7 +86,14 @@ export default class PlayerView extends React.Component {
             this.state.answerChoices ? (
               <div>
                 {this.state.answerChoices.map((choice, idx) => (
-                  <button key={idx}>{choice}</button>
+                  <button
+                    name={idx}
+                    type="submit"
+                    onClick={this.setChoice}
+                    key={idx}
+                  >
+                    {choice}
+                  </button>
                 ))}
               </div>
             ) : (
