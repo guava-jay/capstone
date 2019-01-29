@@ -31,7 +31,11 @@ router.post('/', async (req, res, next) => {
         .child(slug)
         .set({
           status: 'waiting',
-          host: req.body.uid
+          host: req.body.uid,
+          active_game: {
+            game_name: 'quiz',
+            current_question: 0
+          }
         })
     })
     res.status(201).json(slug)
