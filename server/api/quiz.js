@@ -3,19 +3,20 @@ const database = require('../db/index')
 const firebase = require('firebase-admin')
 module.exports = router
 
-//slug generator
-let generateSlug = () => {
-  let arr = []
-  let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  for (let i = 0; i < 4; i++) {
-    const index = Math.floor(36 * Math.random())
-    arr.push(chars[index])
-  }
-  return arr.join('')
-}
-
 //fetch a question based on its ID
-router.get(`/:qID`, async (req, res, next) => {})
+router.get(`/:qID`, async (req, res, next) => {
+  try {
+    await database
+      .ref(`game_list/quiz/${req.params.qID}/`)
+      .once('value')
+      .then(snapshot => {
+        res.send(snapshot.val())
+      })
+  } catch (err) {
+    console.error(err)
+    next()
+  }
+})
 
 //change the current question
 //this one will set it randomly, and return the question ID
