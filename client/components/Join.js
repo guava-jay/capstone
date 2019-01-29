@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {joinGameThunk} from '../store/user'
 import firebase from '../firebase'
 const database = firebase.database()
+// eslint-disable-next-line
 
 class Join extends React.Component {
   constructor() {
