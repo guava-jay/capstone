@@ -13,9 +13,10 @@ describe('game api routes', () => {
 
     it('can run more than one test', async () => {
       const res = await request(app)
-        .get('/api/game')
-        .expect(200)
-      expect(res.body).to.equal('helloworld')
+        .post('/api/game')
+        .send({uid: 'uid'})
+        .expect(201)
+      expect(res.body).to.have.lengthOf(4)
     })
   })
 })
