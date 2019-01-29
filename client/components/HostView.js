@@ -2,8 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import firebase from '../firebase'
 const database = firebase.database()
+import {startGame} from '../store/game'
 
-export default class HostView extends React.Component {
+class HostView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -11,12 +12,11 @@ export default class HostView extends React.Component {
       ready: false,
       playing: false
     }
-    this.startGame = this.startGame.bind(this)
   }
 
-  startGame() {
-    this.setState({playing: true})
-  }
+  // startGame() {
+  //   this.setState({playing: true})
+  // }
 
   componentDidMount() {
     //players
@@ -57,7 +57,7 @@ export default class HostView extends React.Component {
         </ul>
         <button
           type="button"
-          onClick={this.startGame}
+          onClick={this.props.startGame(this.props.slug)}
           disabled={!this.state.ready}
         >
           Start Game
@@ -66,3 +66,8 @@ export default class HostView extends React.Component {
     )
   }
 }
+
+const mapDispatch = dispatch => ({
+  startGame: slug => dispatch(startGame(slug))
+})
+export default connect(null, mapDispatch)(HostView)
