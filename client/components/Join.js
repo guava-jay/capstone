@@ -8,10 +8,6 @@ const database = firebase.database()
 class Join extends React.Component {
   constructor() {
     super()
-    // this.state = {
-    //   gameExists: false,
-    //   gameFull: false
-    // }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -22,27 +18,29 @@ class Join extends React.Component {
     let gameFull = false
     //query DB for game
     let gameRef = database.ref(`/rooms/${e.target.code.value}`)
-    await gameRef.once('value', gameSnap => {
-      console.log('gameSnap.val()', gameSnap.val())
-      if (gameSnap.val()) {
-        //if game/slug exists
-        console.log('game exists (line 25)')
-        gameExists = true
+    await gameRef.once(
+      'value',
+      gameSnap => {
+        if (gameSnap.val()) {
+          //if game/slug exists
+          gameExists = true
+        }
+      },
+      errorObject => {
+        console.log('The read failed:', errorObject.code)
       }
-    })
+    )
     //query DB for players in game
     if (gameExists) {
       //if the game exists, check if full
-      console.log('game exists (line 32)')
       let playersRef = database.ref(`/rooms/${e.target.code.value}/players`)
       await playersRef.once(
         'value',
         playerSnap => {
-          console.log('playerSnap.val()', playerSnap.val())
           if (playerSnap.val()) {
             //if more than 0 players
             let playerKeys = Object.keys(playerSnap.val())
-            if (playerKeys.length >= 2) {
+            if (playerKeys.length >= 4) {
               //check length; if full...
               gameFull = true //...set gameFull to true
             }
@@ -104,33 +102,3 @@ const mapDispatch = dispatch => {
 }
 
 export default withRouter(connect(mapState, mapDispatch)(Join))
-
-// handleSubmit(e) {
-//   e.preventDefault()
-//   //query DB for game
-//   let gameRef = database.ref(`/rooms/${e.target.code.value}`)
-//   gameRef.once('value', gameSnap => {
-//     console.log('gameSnap.val()', gameSnap.val())
-//     if (gameSnap.val()) {   //if game/slug exists
-//       console.log('game exists (line 25)')
-//       this.setState({ gameExists: true }) //set gameExists to true
-//     }
-//   })
-//   //query DB for players in game
-//   if (this.state.gameExists) { //if the game exists, check if full
-//     console.log('game exists (line 32)')
-//     let playersRef = database.ref(`/rooms/${e.target.code.value}/players`)
-//     playersRef.once('value', playerSnap => {
-//       console.log('playerSnap.val()', playerSnap.val())
-//       if (playerSnap.val()) {  //if more than 0 players
-//         let playerKeys = Object.keys(playerSnap.val())
-//         if (playerKeys.length >= 2) { //check length; if full...
-//           this.setState({ gameFull: true }) //...set gameFull to true
-//         }
-//       }
-//     },
-//       errorObject => {
-//         console.log('The read failed:', errorObject.code)
-//       }
-//     )
-//   }
