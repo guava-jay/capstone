@@ -7,9 +7,15 @@ export default class HostView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      players: []
+      players: [],
+      ready: false,
+      playing: false
     }
-    this.setState = this.setState.bind(this)
+    this.startGame = this.startGame.bind(this)
+  }
+
+  startGame() {
+    this.setState({playing: true})
   }
 
   componentDidMount() {
@@ -24,9 +30,9 @@ export default class HostView extends React.Component {
           playerKeys.forEach(key => {
             playerArr.push({[key]: snapshot.val()[key]})
           })
-          this.setState({players: playerArr})
+          this.setState({players: playerArr, ready: true})
         } else {
-          this.setState({players: []})
+          this.setState({players: [], ready: false})
         }
       },
       errorObject => {
@@ -36,7 +42,11 @@ export default class HostView extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.playing ? (
+      <div>
+        <h1>Time to play!</h1>
+      </div>
+    ) : (
       <div>
         <h1>code: {this.props.slug}</h1>
         <ul>
@@ -45,6 +55,13 @@ export default class HostView extends React.Component {
             return <li key={i + ''}> {player[pid].displayName}</li>
           })}
         </ul>
+        <button
+          type="button"
+          onClick={this.startGame}
+          disabled={!this.state.ready}
+        >
+          Start Game
+        </button>
       </div>
     )
   }

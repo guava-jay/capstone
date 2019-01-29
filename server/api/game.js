@@ -47,11 +47,9 @@ router.post('/join', async (req, res, next) => {
     //check if room exists
     const slug = req.body.slug.toUpperCase()
     const ref = database.ref(`rooms/`)
-    console.log('ref', ref)
     await ref.once('value').then(function(snapshot) {
       let roomExist = snapshot.hasChild(slug)
       if (roomExist) {
-        console.log('room exists')
         ref
           .child(slug)
           .child('players')
