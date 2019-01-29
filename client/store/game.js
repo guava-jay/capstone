@@ -4,7 +4,6 @@ import {JOIN_GAME} from './user'
 
 //Action types
 export const CREATE_GAME = 'CREATE_GAME'
-const DELETE_GAME = 'DELETE_GAME'
 
 //Action creators
 const createGame = slug => ({

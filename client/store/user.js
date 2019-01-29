@@ -3,32 +3,18 @@ import history from '../history'
 import firebase from '../firebase'
 import {CREATE_GAME} from './game'
 
-/**
- * ACTION TYPES
- */
-// const GET_USER = 'GET_USER'
-// const REMOVE_USER = 'REMOVE_USER'
+//ACTION TYPES
 const SET_PLAYER = 'SET_PLAYER'
 export const JOIN_GAME = 'JOIN_GAME'
 
-/**
- * INITIAL STATE
- */
+//INITIAL STATE
 const defaultUser = {}
 
-/**
- * ACTION CREATORS
- */
-// const getUser = user => ({type: GET_USER, user})
-// const removeUser = () => ({type: REMOVE_USER})
+//ACTION CREATORS
 const setPlayer = playeruid => ({type: SET_PLAYER, playeruid})
 const joinGame = (slug, role) => ({type: JOIN_GAME, slug, role})
 
-/**
- * THUNK CREATORS
- */
-const database = firebase.database()
-
+//THUNK CREATORS
 // Login thunk
 export const setPlayerThunk = () => {
   return async dispatch => {
@@ -44,7 +30,7 @@ export const setPlayerThunk = () => {
     dispatch(setPlayer(user.uid))
   }
 }
-
+// Join thunk
 export const joinGameThunk = (slug, uid, displayName) => {
   return async dispatch => {
     slug = slug.toUpperCase()
@@ -62,9 +48,7 @@ export const joinGameThunk = (slug, uid, displayName) => {
   }
 }
 
-/**
- * REDUCER
- */
+//REDUCER
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case JOIN_GAME:

@@ -10,12 +10,6 @@ const database = firebase.database()
 
 class App extends React.Component {
   render() {
-    // Move this to back-end?
-    // database
-    //   .ref(`rooms/ABDEF/players/${this.props.user.uid}`)
-    //   .onDisconnect()
-    //   .remove() // can also use (set(null))
-
     return (
       <div>
         <Routes />
@@ -33,4 +27,3 @@ const mapDispatch = dispatch => {
 }
 
 export default withRouter(connect(mapState, mapDispatch)(App))
-// export default App
