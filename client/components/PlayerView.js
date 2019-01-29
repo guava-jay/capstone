@@ -56,9 +56,7 @@ export default class PlayerView extends React.Component {
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
           .once('value')
           .then(snapshot => snapshot.val())
-
         console.log(answerChoices)
-
         this.setState({currentQuestion: snapshot.val(), answerChoices})
       }
     })
