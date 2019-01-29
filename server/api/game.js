@@ -14,6 +14,15 @@ let generateSlug = () => {
   return arr.join('')
 }
 
+//testing
+router.get('/', (req, res, next) => {
+  try {
+    res.json('helloworld')
+  } catch (error) {
+    next(error)
+  }
+})
+
 //create a game room and set this device as host
 router.post('/', async (req, res, next) => {
   try {
