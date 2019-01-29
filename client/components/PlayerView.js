@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import firebase from '../firebase'
 const database = firebase.database()
 
@@ -21,7 +20,9 @@ export default class PlayerView extends React.Component {
 
     const currentQuestion = await currentQuestionRef
       .once('value')
-      .then(snapshot => this.setState({currentQuestion: snapshot.val()}))
+      .then(snapshot => {
+        this.setState({currentQuestion: snapshot.val()})
+      })
 
     // const gameName = await database
     //   .ref(`/rooms/${this.props.slug}/active_game/game_name`)
@@ -34,15 +35,17 @@ export default class PlayerView extends React.Component {
       if (snapshot.val()) {
         // this.setState({currentQuestion: snapshot.val()})
         // console.log(this.state)
-        console.log(snapshot.val())
+        this.setState({currentQuestion: snapshot.val()})
+        // console.log(snapshot.val())
       }
     })
   }
 
   render() {
+    console.log(this.state)
     return (
       <div>
-        {this.state.currentQuestion ? (
+        {this.state.currentQuestion >= 0 ? (
           <h1>currentQuestion: {this.state.currentQuestion}</h1>
         ) : (
           <h1> player device waiting for game to start</h1>
