@@ -13,7 +13,6 @@ class PlayerView extends React.Component {
       currentQuestion: null,
       answerChoices: [],
       responses: {}
-      // disableSubmit: true
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -29,8 +28,6 @@ class PlayerView extends React.Component {
       ...this.state.responses,
       [currentQuestion]: currentResponse
     }
-
-    // TODO: Fix this, as it un-disables the submit button every time you change your answer
     this.setState({responses})
   }
 
@@ -43,9 +40,6 @@ class PlayerView extends React.Component {
 
     const currentQuestion = this.state.currentQuestion
     const answer = this.state.responses[currentQuestion]
-
-    console.log(this.state)
-    console.log(this.props)
     this.props.setResponseThunk(slug, uid, answer)
   }
 
@@ -55,23 +49,24 @@ class PlayerView extends React.Component {
       `/rooms/${this.props.slug}/active_game/current_question`
     )
 
-    // Set inital game name
+    // Get inital game name
     const gameName = await database
       .ref(`/rooms/${this.props.slug}/active_game/game_name`)
       .once('value')
       .then(snapshot => snapshot.val())
 
-    // Set initial game status
+    // Get initial game status
     const gameStatus = await database
       .ref(`/rooms/${this.props.slug}/status`)
       .once('value')
       .then(snapshot => snapshot.val())
 
-    // Set inital current question
+    // Get inital current question
     const currentQuestion = await currentQuestionRef
       .once('value')
       .then(snapshot => snapshot.val())
 
+    // Set state based on db
     this.setState({
       gameName,
       gameStatus,
@@ -85,7 +80,6 @@ class PlayerView extends React.Component {
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
           .once('value')
           .then(snapshot => snapshot.val())
-        // console.log(answerChoices)
         this.setState({currentQuestion: snapshot.val(), answerChoices})
       }
     })
@@ -97,11 +91,6 @@ class PlayerView extends React.Component {
   }
 
   render() {
-    const answeredCurrentQuestion = !!this.state.responses[
-      this.state.currentQuestion
-    ]
-
-    console.log(answeredCurrentQuestion)
     return (
       <div>
         {this.state.gameStatus === 'waiting' ? (
