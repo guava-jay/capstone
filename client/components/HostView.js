@@ -46,7 +46,7 @@ class HostView extends React.Component {
 
   render() {
     return this.state.playing ? (
-      <HostPlaying />
+      <HostPlaying players={this.state.players} />
     ) : (
       <div>
         <h1>code: {this.props.slug}</h1>
