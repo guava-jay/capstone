@@ -9,15 +9,31 @@ export default class PlayerView extends React.Component {
       gameStatus: '',
       gameName: null,
       currentQuestion: null,
-      answerChoices: []
+      answerChoices: [],
+      responses: {}
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
   }
 
+  // Can select between an answer multiple times...
   setChoice(event) {
     event.preventDefault()
     console.log(event.target.name)
+    const currentQuestion = this.state.currentQuestion
+    const currentResponse = event.target.name
+    const responses = {
+      ...this.state.responses,
+      [currentQuestion]: currentResponse
+    }
+
+    // ...But can only submit once per question
+    // submitChoice(){
+
+    // }
+
+    this.setState({responses})
+    // {responses[this.state.currentQuestion]: event.target.name}
   }
 
   async componentDidMount() {
@@ -93,6 +109,8 @@ export default class PlayerView extends React.Component {
                     {choice}
                   </button>
                 ))}
+                <br />
+                <button>Submit choice</button>
               </div>
             ) : (
               ''
