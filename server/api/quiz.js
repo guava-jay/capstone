@@ -1,20 +1,30 @@
+/* eslint-disable complexity */
 const router = require('express').Router()
 const database = require('../db/index')
-const firebase = require('firebase-admin')
 module.exports = router
 
-//fetch a question based on its ID
+//constants to make sure every path is handled correctly.
+//if we change the db structure later this makes it easier to change
+const ACTIVE_GAME = 'active_game'
+const ANSWERED_QUESTIONS = 'active_game/answered_question'
+const CURRENT_QUESTION = 'active_game/current_question'
 
-//fetch a question based on its room ID
-router.get(`/rooms/:slug`, async (req, res, next) => {
+//helper function to get number of questions in quiz
+let totalNumberOfQuestions = async () => {
+  let result = 0
   try {
-    await database.ref(`rooms/${req.params.slug}`).once('value', snapshot => {})
+    await database.ref(`game_list/quiz/`).once('value', snapshot => {
+      if (!snapshot.val()) console.error('Could not find question list')
+      // console.log(snapshot.numChildren())
+      result = snapshot.numChildren()
+    })
   } catch (err) {
     console.error(err)
-    next()
   }
-})
+  return result
+}
 
+//fetch a question based on its ID
 router.get(`/:qID`, async (req, res, next) => {
   try {
     await database
@@ -29,54 +39,71 @@ router.get(`/:qID`, async (req, res, next) => {
 })
 
 //change the current question
-//this one will set it randomly, and return the question ID
-
-//
-
+//this one will set it randomly, and return the number of questions remaining
+//it expects slug for the current room
 router.put(`/changequestion`, async (req, res, next) => {
   //the touppercase isn't strictly needed but it can't hurt
   const slug = req.body.slug.toUpperCase()
-
   try {
-    let totalNumberOfQuestions = 0
+    let numQuestions = await totalNumberOfQuestions()
+    let currentQuestionId = null
     let newQuestionId = 0
-    let newQuestion = {}
     //add array and num remaining
 
     //first pull the array of answered questions from the room
     let answeredQuestions = []
     await database.ref(`rooms/${slug}`).once('value', snapshot => {
+      //if the room doesn't exist exit with error
       if (!snapshot.val()) {
         res.status(404).send('Error: Room not found')
-        next('Error: Room not found')
+        return
       }
-      if (snapshot.child('status').val() !== 'playing') {
-        res.status(500).send("Error: Game is not set to 'Playing'")
-        next(`Game status is ${snapshot.child('status').val()}`)
-      }
-      answeredQuestions = snapshot.child('answered_questions')
+      answeredQuestions = snapshot.child(`${ANSWERED_QUESTIONS}/`).val()
+      currentQuestionId = snapshot.child(`${CURRENT_QUESTION}/`).val()
     })
 
-    //then do a math.random and check if its in the array
-    //if yes reroll until you get something new
-    //probably a better way to do that.... compare sets and get new set of values in b not in a. i imagine thats possible
+    //check if answeredquestions is null (meaning this function has never been called, so the game is starting)
+    if (!answeredQuestions) answeredQuestions = []
+    else if (answeredQuestions === 'none')
+      //check if answeredquestions is 'none' (meaning this function has been called ONCE, so the first question has just been answered)
+      answeredQuestions = [currentQuestionId]
+    else if (typeof answeredQuestions === 'number')
+      //if answeredquestions contains only one value convert it into an array (so we can do array fns)
+      answeredQuestions = [answeredQuestions]
+    else if (answeredQuestions.length === numQuestions - 1) {
+      //if we have answered all the questions we don't need to do anything else. just return 0 remaining
+      res.send({remainingQuestions: 0})
+      return
+    } else
+      //otherwise, we have 2 or more questions answered. add the current question to the answered array.
+      answeredQuestions.push(currentQuestionId)
 
-    await database.ref(`game_list/quiz/`).once('value', snapshot => {
-      if (!snapshot.val()) console.error('Could not find question list')
-      totalNumberOfQuestions = snapshot.numChildren()
-      newQuestionId = Math.floor(Math.random() * totalNumberOfQuestions)
-      newQuestion = snapshot.child(newQuestionId).val()
-      if (!newQuestion)
-        console.error(`Selected question ${newQuestionId} is not valid`)
-    })
-    console.log(newQuestion)
+    //now make an array of all the unanswered questions
+    const unansweredQuestions = []
+    for (let i = 0; i < numQuestions; i++) {
+      if (!answeredQuestions.includes(i)) {
+        unansweredQuestions.push(i)
+      }
+    }
+
+    //now pick an unanswered question from this array
+    newQuestionId =
+      unansweredQuestions[
+        Math.floor(Math.random() * unansweredQuestions.length)
+      ]
+
+    //set the new question id to equal the randomly chosen question
+    await database.ref(`/rooms/${slug}/${CURRENT_QUESTION}/`).set(newQuestionId)
+
+    //this is just a little fix for if the game has just started
+    if (!answeredQuestions.length) answeredQuestions = 'none'
+
+    //append answered questions
     await database
-      .ref(`rooms/${slug}/`)
-      .child('active_game')
-      .child('current_question')
-      .set(newQuestionId)
+      .ref(`rooms/${slug}/${ANSWERED_QUESTIONS}`)
+      .set(answeredQuestions)
 
-    res.status(201).send(newQuestion)
+    res.status(201).send({remainingQuestions: unansweredQuestions.length})
   } catch (err) {
     console.error(err)
     next(err)
@@ -97,7 +124,7 @@ router.put('/answer', async (req, res, next) => {
       if (!snapshot.child(req.body.uid))
         next(`Could not find user ${req.body.uid}`)
       //get the question ID for the room
-      currentQuestion = snapshot.child('active_game/current_question').val()
+      currentQuestion = snapshot.child('ACTIVE_GAME/CURRENT_QUESTION').val()
       console.log('after await we have', currentQuestion)
     })
     //now add their response
