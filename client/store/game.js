@@ -27,10 +27,11 @@ export const startGameThunk = slug => async dispatch => {
 
 export const checkAnswersThunk = (
   answers,
-  currentQuestion
+  currentQuestion,
+  slug
 ) => async dispatch => {
   console.log('i hit check answers')
-  await axios.put(`/api/quiz/score`, {answers, currentQuestion})
+  await axios.put(`/api/quiz/score`, {answers, currentQuestion, slug})
 }
 
 const initialState = {}

@@ -25,10 +25,37 @@ let totalNumberOfQuestions = async () => {
 }
 
 //checks submitted answers and scores them back to player in firebase
-router.put('/score', (req, res, next) => {
+router.put('/score', async (req, res, next) => {
   console.log(req.body.answers, 'req body answers')
-  console.log(req.body.currentQuestion, 'req body question')
+  // console.log(req.body.currentQuestion, 'req body question')
   //grab the answer from db and check it then set play scores back
+  console.log(req.body.slug, 'slug')
+  try {
+    const answer = database.ref(
+      `/game_list/quiz/${req.body.currentQuestion}/answer`
+    )
+    let answerValue
+    await answer.once('value', snapshot => {
+      answerValue = snapshot.val()
+      for (let key in req.body.answers) {
+        if (req.body.answers[key] == answerValue) {
+          console.log('correct', key)
+          let currentScore = database.ref(
+            `/rooms/${req.body.slug}/players/${key}/currentScore`
+          )
+          currentScore.once('value', snapshot => {
+            let newScore = snapshot.val() + 1
+            // console.log(snapshot.val(), 'newScore')
+            currentScore.set(newScore)
+          })
+        } else {
+          console.log('incorrect', key)
+        }
+      }
+    })
+  } catch (err) {
+    next(err)
+  }
 })
 
 //fetch a question based on its ID

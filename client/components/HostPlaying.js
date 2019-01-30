@@ -56,11 +56,10 @@ class HostPlaying extends React.Component {
         console.log(this.state.count, 'count from host playing')
       }
       if (this.state.count === this.props.players.length) {
-        //make a thunk that grabs the answer to the backend and checks it
-        //pass in current question
         this.props.checkAnswersThunk(
-          this.state.answers,
-          this.state.currentQuestion
+          snapshot.val(),
+          this.state.currentQuestion,
+          this.props.game.slug
         )
       }
     })
@@ -98,8 +97,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    checkAnswersThunk: (answers, currentQuestion) =>
-      dispatch(checkAnswersThunk(answers, currentQuestion))
+    checkAnswersThunk: (answers, currentQuestion, slug) =>
+      dispatch(checkAnswersThunk(answers, currentQuestion, slug))
   }
 }
 
