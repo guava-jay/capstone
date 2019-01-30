@@ -44,6 +44,8 @@ class PlayerView extends React.Component {
     const currentQuestion = this.state.currentQuestion
     const answer = this.state.responses[currentQuestion]
 
+    console.log(this.state)
+    console.log(this.props)
     this.props.setResponseThunk(slug, uid, answer)
   }
 
@@ -98,7 +100,7 @@ class PlayerView extends React.Component {
   }
 
   render() {
-    // console.log(this.state)
+    console.log(this.state)
     return (
       <div>
         {this.state.gameStatus === 'waiting' ? (
@@ -153,8 +155,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    setResponseThunk: (slug, uid, displayName) =>
-      dispatch(setResponseThunk(slug, uid, displayName))
+    setResponseThunk: (slug, uid, answer) =>
+      dispatch(setResponseThunk(slug, uid, answer))
   }
 }
 

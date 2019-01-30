@@ -86,8 +86,8 @@ router.put(`/changequestion`, async (req, res, next) => {
 //route for player submitting their answer to /quiz/answer
 //expects the request body to contain player uid, slug and answer
 router.put('/answer', async (req, res, next) => {
+  console.log('hit API')
   const slug = req.body.slug.toUpperCase()
-  // console.log('hit API')
   try {
     //check that it's all valid
     let currentQuestion = 0
@@ -101,7 +101,10 @@ router.put('/answer', async (req, res, next) => {
       currentQuestion = snapshot.child('active_game/current_question').val()
       console.log('after await we have', currentQuestion)
     })
-    //now add their response
+
+    // database.ref('testPostman').set('working')
+
+    // now add their response
     await database
       .ref(`rooms/${slug}/players/${req.body.uid}/`)
       .child('answers')

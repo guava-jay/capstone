@@ -49,10 +49,11 @@ export const joinGameThunk = (slug, uid, displayName) => {
 }
 
 export const setResponseThunk = (slug, uid, answer) => {
+  console.log('hit outer thunk')
   return async dispatch => {
-    console.log('hit response')
+    console.log('hit inner thunk')
     try {
-      await axios.put('/answer', {
+      await axios.put('/api/quiz/answer', {
         slug,
         uid,
         answer
