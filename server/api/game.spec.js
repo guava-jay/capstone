@@ -1,6 +1,7 @@
 const {expect} = require('chai')
 const request = require('supertest')
 const app = require('../index')
+//const database = require('../db/index')
 
 describe('game api routes', () => {
   describe('GET api/game', () => {
@@ -33,6 +34,8 @@ describe('game api routes', () => {
             .expect(404)
         })
       })
+      //console.log(database.ref(`/api/rooms/${this.props.slug}`))
+      //.remove()
     })
   })
 })
