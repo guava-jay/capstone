@@ -17,7 +17,6 @@ describe('game api routes', () => {
         .send({uid: 'uid'})
         .expect(201)
       expect(res.body).to.have.lengthOf(4)
-      console.log(res.body)
       let slug = res.body
 
       describe('/api/game/join', () => {

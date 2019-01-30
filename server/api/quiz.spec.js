@@ -9,16 +9,9 @@ describe('quiz api routes', () => {
         .post('/api/game')
         .send({uid: 'uid'})
       console.log(slug)
-
       await request(app)
-        .get(`api/quiz/rooms/${slug}`)
+        .get(`api/quiz/rooms/${slug}`) //${slug}
         .expect(200)
-      // it('returns helloworld', async () => {
-      //   const res = await request(app)
-      //     .get('/api/game')
-      //     .expect(200)
-      //   expect(res.body).to.equal('helloworld')
-      // })
     })
   })
   describe('GET api/quiz/:qID', () => {
