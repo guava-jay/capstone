@@ -79,7 +79,7 @@ router.put(`/changequestion`, async (req, res, next) => {
     res.status(201).send(newQuestion)
   } catch (err) {
     console.error(err)
-    next()
+    next(err)
   }
 })
 
@@ -97,16 +97,19 @@ router.put('/answer', async (req, res, next) => {
       if (!snapshot.child(req.body.uid))
         next(`Could not find user ${req.body.uid}`)
       //get the question ID for the room
-      currentQuestion = snapshot.child('current_question').val()
+      currentQuestion = snapshot.child('active_game/current_question').val()
+      console.log('after await we have', currentQuestion)
     })
     //now add their response
     await database
-      .ref(`rooms/${slug}/${req.body.uid}/`)
+      .ref(`rooms/${slug}/players/${req.body.uid}/`)
       .child('answers')
       .child(currentQuestion)
       .set(req.body.answer)
+
+    res.send('done')
   } catch (err) {
     console.error(err)
-    next()
+    next(err)
   }
 })
