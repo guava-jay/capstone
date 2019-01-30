@@ -79,17 +79,16 @@ router.put(`/changequestion`, async (req, res, next) => {
     res.status(201).send(newQuestion)
   } catch (err) {
     console.error(err)
-    next()
+    next(err)
   }
 })
 
 //route for player submitting their answer to /quiz/answer
-//expects the request body to contain player uID, slug and answer
+//expects the request body to contain player uid, slug and answer
 router.put('/answer', async (req, res, next) => {
   const slug = req.body.slug.toUpperCase()
   try {
     //check that it's all valid
-    //ah hell what was i doing. i need to... get the current question id from the room. yeah
     let currentQuestion = 0
     await database.ref(`rooms/${slug}/`).once('value', snapshot => {
       //if the room is invalid we're done
@@ -97,12 +96,20 @@ router.put('/answer', async (req, res, next) => {
       //if the user is invalid we're done
       if (!snapshot.child(req.body.uid))
         next(`Could not find user ${req.body.uid}`)
-      currentQuestion = snapshot.child('current_question').val()
+      //get the question ID for the room
+      currentQuestion = snapshot.child('active_game/current_question').val()
+      console.log('after await we have', currentQuestion)
     })
     //now add their response
-    await database.ref(`rooms/${slug}/${req.body.uid}/`)
+    await database
+      .ref(`rooms/${slug}/players/${req.body.uid}/`)
+      .child('answers')
+      .child(currentQuestion)
+      .set(req.body.answer)
+
+    res.send('done')
   } catch (err) {
     console.error(err)
-    next()
+    next(err)
   }
 })
