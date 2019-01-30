@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from '../firebase'
 const database = firebase.database()
 import {connect} from 'react-redux'
+import Highlight from 'react-highlight'
 
 class HostPlaying extends React.Component {
   constructor() {
@@ -42,12 +43,26 @@ class HostPlaying extends React.Component {
     })
   }
   render() {
+    console.log(this.props, 'props from host playing')
     return (
       <div>
+        <div>
+          <h2>Players</h2>
+          <ul>
+            {this.props.players.map(x => {
+              let key = Object.keys(x)
+              return <li key={key}>{x[key].displayName}</li>
+            })}
+          </ul>
+        </div>
         {this.state.question.prompt ? (
           <h1>{this.state.question.prompt}</h1>
         ) : null}
-        {this.state.question.func ? <h1>{this.state.question.func}</h1> : null}
+        {this.state.question.func ? (
+          <Highlight language="javascript">
+            {this.state.question.func}
+          </Highlight>
+        ) : null}
       </div>
     )
   }
