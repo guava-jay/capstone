@@ -61,6 +61,8 @@ class HostPlaying extends React.Component {
           this.state.currentQuestion,
           this.props.game.slug
         )
+        //checking answers and updating scores here
+        //need to reset the current answers in state and wait for next question
       }
     })
   }
