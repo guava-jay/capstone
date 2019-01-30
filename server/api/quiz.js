@@ -137,6 +137,10 @@ router.put('/answer', async (req, res, next) => {
       .child(currentQuestion)
       .set(req.body.answer)
 
+    await database
+      .ref(`rooms/${slug}/active_game/current_answers/${req.body.uid}`)
+      .set(req.body.answer)
+
     res.send('done')
   } catch (err) {
     console.error(err)
