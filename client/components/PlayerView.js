@@ -1,23 +1,46 @@
 import React from 'react'
 import firebase from '../firebase'
+import {setResponseThunk} from '../store/user'
+import {connect} from 'react-redux'
 const database = firebase.database()
 
-export default class PlayerView extends React.Component {
+class PlayerView extends React.Component {
   constructor() {
     super()
     this.state = {
       gameStatus: '',
       gameName: null,
       currentQuestion: null,
-      answerChoices: []
+      answerChoices: [],
+      responses: {}
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
+    this.submitChoice = this.submitChoice.bind(this)
   }
 
+  // Can select between an answer multiple times...
   setChoice(event) {
     event.preventDefault()
-    console.log(event.target.name)
+    const currentQuestion = this.state.currentQuestion
+    const currentResponse = event.target.name
+    const responses = {
+      ...this.state.responses,
+      [currentQuestion]: currentResponse
+    }
+    this.setState({responses})
+  }
+
+  // ...But can only submit once per question
+  submitChoice(event) {
+    event.preventDefault()
+
+    const slug = this.props.slug
+    const uid = this.props.user.uid
+
+    const currentQuestion = this.state.currentQuestion
+    const answer = this.state.responses[currentQuestion]
+    this.props.setResponseThunk(slug, uid, answer)
   }
 
   async componentDidMount() {
@@ -26,23 +49,24 @@ export default class PlayerView extends React.Component {
       `/rooms/${this.props.slug}/active_game/current_question`
     )
 
-    // Set inital game name
+    // Get inital game name
     const gameName = await database
       .ref(`/rooms/${this.props.slug}/active_game/game_name`)
       .once('value')
       .then(snapshot => snapshot.val())
 
-    // Set initial game status
+    // Get initial game status
     const gameStatus = await database
       .ref(`/rooms/${this.props.slug}/status`)
       .once('value')
       .then(snapshot => snapshot.val())
 
-    // Set inital current question
+    // Get inital current question
     const currentQuestion = await currentQuestionRef
       .once('value')
       .then(snapshot => snapshot.val())
 
+    // Set state based on db
     this.setState({
       gameName,
       gameStatus,
@@ -56,7 +80,6 @@ export default class PlayerView extends React.Component {
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
           .once('value')
           .then(snapshot => snapshot.val())
-        console.log(answerChoices)
         this.setState({currentQuestion: snapshot.val(), answerChoices})
       }
     })
@@ -68,7 +91,6 @@ export default class PlayerView extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div>
         {this.state.gameStatus === 'waiting' ? (
@@ -93,6 +115,13 @@ export default class PlayerView extends React.Component {
                     {choice}
                   </button>
                 ))}
+                <br />
+                <button
+                  // disabled={this.state.disableSubmit}
+                  onClick={this.submitChoice}
+                >
+                  Submit choice
+                </button>
               </div>
             ) : (
               ''
@@ -107,3 +136,18 @@ export default class PlayerView extends React.Component {
     )
   }
 }
+
+const mapState = state => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    setResponseThunk: (slug, uid, answer) =>
+      dispatch(setResponseThunk(slug, uid, answer))
+  }
+}
+
+export default connect(mapState, mapDispatch)(PlayerView)
