@@ -50,9 +50,6 @@ class PlayerView extends React.Component {
   }
 
   async componentDidMount() {
-    // console.log(this)
-    // console.log(this.props)
-
     // Get reference to current question: used to watch for changes
     const currentQuestionRef = database.ref(
       `/rooms/${this.props.slug}/active_game/current_question`
@@ -100,7 +97,11 @@ class PlayerView extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    const answeredCurrentQuestion = !!this.state.responses[
+      this.state.currentQuestion
+    ]
+
+    console.log(answeredCurrentQuestion)
     return (
       <div>
         {this.state.gameStatus === 'waiting' ? (
