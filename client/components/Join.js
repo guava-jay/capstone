@@ -6,6 +6,8 @@ import firebase from '../firebase'
 const database = firebase.database()
 // eslint-disable-next-line
 
+const MAX_PLAYERS = 4
+
 class Join extends React.Component {
   constructor() {
     super()
@@ -17,6 +19,7 @@ class Join extends React.Component {
     e.preventDefault()
     let gameExists = false
     let gameFull = false
+    let gameWaiting = false
     let code = e.target.code.value.toUpperCase()
 
     //query DB for game
@@ -27,6 +30,9 @@ class Join extends React.Component {
         if (gameSnap.val()) {
           //if game/slug exists
           gameExists = true
+          if (gameSnap.child('gameStatus').val() === 'waiting') {
+            gameWaiting = true
+          }
         }
       },
       errorObject => {
@@ -34,7 +40,7 @@ class Join extends React.Component {
       }
     )
     //query DB for players in game
-    if (gameExists) {
+    if (gameExists && gameWaiting) {
       //if the game exists, check if full
       let playersRef = database.ref(`/rooms/${code}/players`)
       await playersRef.once(
@@ -43,7 +49,7 @@ class Join extends React.Component {
           if (playerSnap.val()) {
             //if more than 0 players
             let playerKeys = Object.keys(playerSnap.val())
-            if (playerKeys.length >= 4) {
+            if (playerKeys.length >= MAX_PLAYERS) {
               //check length; if full...
               gameFull = true //...set gameFull to true
             }
@@ -60,6 +66,8 @@ class Join extends React.Component {
       if (gameFull) {
         //if full
         alert('Error: game room is full') //return error message
+      } else if (!gameWaiting) {
+        alert('Error: Game cannot be joined')
       } else {
         //otherwise
         this.props.joinGameThunk(
@@ -84,7 +92,9 @@ class Join extends React.Component {
           <input name="playerName" />
           <label htmlFor="code">Enter your Game Room Code</label>
           <input name="code" placeholder="####" />
-          <button type="submit">Join</button>
+          <p>
+            <button type="submit">Join</button>
+          </p>
         </form>
       </div>
     )
