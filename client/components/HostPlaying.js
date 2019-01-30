@@ -3,27 +3,23 @@ import firebase from '../firebase'
 const database = firebase.database()
 import {connect} from 'react-redux'
 import Highlight from 'react-highlight'
+import {checkAnswersThunk} from '../store/game'
 
 class HostPlaying extends React.Component {
   constructor() {
     super()
     this.state = {
-      question: {}
+      currentQuestion: null,
+      question: {},
+      answers: {},
+      count: 0
     }
   }
   componentDidMount() {
+    //listening for current question and upating
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`
     )
-
-    // const gameName = await database
-    //     .ref(`/rooms/${this.props.game.slug}/active_game/game_name`)
-    //     .once('value')
-    //     .then(snapshot => snapshot.val())
-
-    // const currentQuestion = await currentQuestionRef
-    //     .once('value')
-    //     .then(snapshot => snapshot.val())
 
     currentQuestionRef.on('value', async snapshot => {
       if (snapshot.val() >= 0) {
@@ -37,13 +33,39 @@ class HostPlaying extends React.Component {
             func = snapshot.val().function || null
           })
         this.setState({
+          currentQuestion: snapshot.val(),
           question: {prompt, func}
         })
       }
     })
+
+    //listening for answers first and checking them later
+    //we still need to add timer here
+    const answerRef = database.ref(
+      `rooms/${this.props.game.slug}/active_game/current_answers`
+    )
+
+    answerRef.on('value', snapshot => {
+      if (snapshot.val()) {
+        console.log('yes')
+        this.setState(prevState => {
+          return {
+            count: prevState.count + 1
+          }
+        })
+        console.log(this.state.count, 'count from host playing')
+      }
+      if (this.state.count === this.props.players.length) {
+        //make a thunk that grabs the answer to the backend and checks it
+        //pass in current question
+        this.props.checkAnswersThunk(
+          this.state.answers,
+          this.state.currentQuestion
+        )
+      }
+    })
   }
   render() {
-    console.log(this.props, 'props from host playing')
     return (
       <div>
         <div>
@@ -74,4 +96,11 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(HostPlaying)
+const mapDispatch = dispatch => {
+  return {
+    checkAnswersThunk: (answers, currentQuestion) =>
+      dispatch(checkAnswersThunk(answers, currentQuestion))
+  }
+}
+
+export default connect(mapState, mapDispatch)(HostPlaying)

@@ -24,6 +24,13 @@ let totalNumberOfQuestions = async () => {
   return result
 }
 
+//checks submitted answers and scores them back to player in firebase
+router.put('/score', (req, res, next) => {
+  console.log(req.body.answers, 'req body answers')
+  console.log(req.body.currentQuestion, 'req body question')
+  //grab the answer from db and check it then set play scores back
+})
+
 //fetch a question based on its ID
 router.get(`/:qID`, async (req, res, next) => {
   try {
