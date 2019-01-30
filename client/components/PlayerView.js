@@ -44,20 +44,23 @@ class PlayerView extends React.Component {
   }
 
   async componentDidMount() {
+    const ROOM = `/rooms/${this.props.slug}`
+    const ACTIVE_GAME = ROOM + '/active_game'
+
     // Get reference to current question: used to watch for changes
-    const currentQuestionRef = database.ref(
-      `/rooms/${this.props.slug}/active_game/current_question`
-    )
+    const currentQuestionRef = database.ref(`${ACTIVE_GAME}/current_question`)
+
+    // Get reference to game status
+    const gameStatusRef = await database.ref(`${ROOM}/status`)
 
     // Get inital game name
     const gameName = await database
-      .ref(`/rooms/${this.props.slug}/active_game/game_name`)
+      .ref(`${ACTIVE_GAME}/game_name`)
       .once('value')
       .then(snapshot => snapshot.val())
 
     // Get initial game status
-    const gameStatus = await database
-      .ref(`/rooms/${this.props.slug}/status`)
+    const gameStatus = await gameStatusRef
       .once('value')
       .then(snapshot => snapshot.val())
 
@@ -85,7 +88,7 @@ class PlayerView extends React.Component {
     })
 
     // Listens to changes of the gameStatus
-    database.ref(`/rooms/${this.props.slug}/status`).on('value', snapshot => {
+    gameStatusRef.on('value', snapshot => {
       this.setState({gameStatus: snapshot.val()})
     })
   }
