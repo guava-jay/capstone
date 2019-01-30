@@ -10,7 +10,7 @@ class HostPlaying extends React.Component {
       question: {}
     }
   }
-  async componentDidMount() {
+  componentDidMount() {
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`
     )
