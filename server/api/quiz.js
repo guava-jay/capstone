@@ -87,7 +87,7 @@ router.put(`/changequestion`, async (req, res, next) => {
 //expects the request body to contain player uid, slug and answer
 router.put('/answer', async (req, res, next) => {
   const slug = req.body.slug.toUpperCase()
-  console.log('hit API')
+  // console.log('hit API')
   try {
     //check that it's all valid
     let currentQuestion = 0
