@@ -45,7 +45,6 @@ class HostView extends React.Component {
   }
 
   render() {
-    console.log(this.props, 'propps')
     return this.state.playing ? (
       <HostPlaying />
     ) : (
