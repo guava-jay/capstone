@@ -48,6 +48,21 @@ export const joinGameThunk = (slug, uid, displayName) => {
   }
 }
 
+export const setResponseThunk = (slug, uid, answer) => {
+  return async dispatch => {
+    console.log('hit response')
+    try {
+      await axios.put('/answer', {
+        slug,
+        uid,
+        answer
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
 //REDUCER
 export default function(state = defaultUser, action) {
   switch (action.type) {

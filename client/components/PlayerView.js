@@ -1,8 +1,10 @@
 import React from 'react'
 import firebase from '../firebase'
+import {setResponseThunk} from '../store/user'
+import {connect} from 'react-redux'
 const database = firebase.database()
 
-export default class PlayerView extends React.Component {
+class PlayerView extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -11,15 +13,16 @@ export default class PlayerView extends React.Component {
       currentQuestion: null,
       answerChoices: [],
       responses: {}
+      // disableSubmit: true
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
+    this.submitChoice = this.submitChoice.bind(this)
   }
 
   // Can select between an answer multiple times...
   setChoice(event) {
     event.preventDefault()
-    console.log(event.target.name)
     const currentQuestion = this.state.currentQuestion
     const currentResponse = event.target.name
     const responses = {
@@ -27,16 +30,27 @@ export default class PlayerView extends React.Component {
       [currentQuestion]: currentResponse
     }
 
-    // ...But can only submit once per question
-    // submitChoice(){
-
-    // }
-
+    // TODO: Fix this, as it un-disables the submit button every time you change your answer
     this.setState({responses})
-    // {responses[this.state.currentQuestion]: event.target.name}
+  }
+
+  // ...But can only submit once per question
+  submitChoice(event) {
+    event.preventDefault()
+
+    const slug = this.props.slug
+    const uid = this.props.user.uid
+
+    const currentQuestion = this.state.currentQuestion
+    const answer = this.state.responses[currentQuestion]
+
+    this.props.setResponseThunk(slug, uid, answer)
   }
 
   async componentDidMount() {
+    // console.log(this)
+    // console.log(this.props)
+
     // Get reference to current question: used to watch for changes
     const currentQuestionRef = database.ref(
       `/rooms/${this.props.slug}/active_game/current_question`
@@ -72,7 +86,7 @@ export default class PlayerView extends React.Component {
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
           .once('value')
           .then(snapshot => snapshot.val())
-        console.log(answerChoices)
+        // console.log(answerChoices)
         this.setState({currentQuestion: snapshot.val(), answerChoices})
       }
     })
@@ -84,7 +98,7 @@ export default class PlayerView extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <div>
         {this.state.gameStatus === 'waiting' ? (
@@ -110,7 +124,12 @@ export default class PlayerView extends React.Component {
                   </button>
                 ))}
                 <br />
-                <button>Submit choice</button>
+                <button
+                  // disabled={this.state.disableSubmit}
+                  onClick={this.submitChoice}
+                >
+                  Submit choice
+                </button>
               </div>
             ) : (
               ''
@@ -125,3 +144,18 @@ export default class PlayerView extends React.Component {
     )
   }
 }
+
+const mapState = state => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    setResponseThunk: (slug, uid, displayName) =>
+      dispatch(setResponseThunk(slug, uid, displayName))
+  }
+}
+
+export default connect(mapState, mapDispatch)(PlayerView)
