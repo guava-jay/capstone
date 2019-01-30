@@ -19,6 +19,11 @@ export const createNewGame = uid => async dispatch => {
   dispatch(createGame(slug))
 }
 
+export const startGameThunk = slug => async dispatch => {
+  console.log('i hit start game thunk ', slug)
+  await axios.put(`/api/game/${slug}`)
+}
+
 const initialState = {}
 
 //reducer

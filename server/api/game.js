@@ -14,7 +14,7 @@ let generateSlug = () => {
   return arr.join('')
 }
 
-//testing
+//testing we can delete later once testing is more efficient
 router.get('/', (req, res, next) => {
   try {
     res.json('helloworld')
@@ -43,7 +43,7 @@ router.post('/', async (req, res, next) => {
           host: req.body.uid,
           active_game: {
             game_name: 'quiz',
-            current_question: null
+            current_question: 0
           }
         })
     })
@@ -78,5 +78,14 @@ router.post('/join', async (req, res, next) => {
   } catch (err) {
     console.error(err)
     next()
+  }
+})
+
+//toggle game room to playing
+router.put('/:slug', (req, res, next) => {
+  try {
+    database.ref(`/rooms/${req.params.slug}/`).update({status: 'playing'})
+  } catch (err) {
+    next(err)
   }
 })
