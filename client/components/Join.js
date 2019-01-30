@@ -17,8 +17,10 @@ class Join extends React.Component {
     e.preventDefault()
     let gameExists = false
     let gameFull = false
+    let code = e.target.code.value.toUpperCase()
+
     //query DB for game
-    let gameRef = database.ref(`/rooms/${e.target.code.value}`)
+    let gameRef = database.ref(`/rooms/${code}`)
     await gameRef.once(
       'value',
       gameSnap => {
@@ -34,7 +36,7 @@ class Join extends React.Component {
     //query DB for players in game
     if (gameExists) {
       //if the game exists, check if full
-      let playersRef = database.ref(`/rooms/${e.target.code.value}/players`)
+      let playersRef = database.ref(`/rooms/${code}/players`)
       await playersRef.once(
         'value',
         playerSnap => {
