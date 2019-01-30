@@ -49,7 +49,7 @@ router.post('/', async (req, res, next) => {
     })
     res.status(201).json(slug)
   } catch (err) {
-    console.error(err)
+    //console.error(err)
     res.status(500).send('Error creating new game')
   }
 })
@@ -70,13 +70,13 @@ router.post('/join', async (req, res, next) => {
           .set({
             displayName: req.body.displayName
           })
-        res.status(200).end()
+        res.status(201).end()
       } else {
         next()
       }
     })
   } catch (err) {
-    console.error(err)
+    //console.error(err)
     next()
   }
 })
