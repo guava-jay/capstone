@@ -11,76 +11,29 @@ const MAX_PLAYERS = 4
 class Join extends React.Component {
   constructor() {
     super()
+
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  async handleSubmit(e) {
+  handleSubmit(e) {
     e.persist()
     e.preventDefault()
-    let gameExists = false
-    let gameFull = false
-    let gameWaiting = false
-    let code = e.target.code.value.toUpperCase()
 
-    //query DB for game
-    let gameRef = database.ref(`/rooms/${code}`)
-    await gameRef.once(
-      'value',
-      gameSnap => {
-        if (gameSnap.val()) {
-          //if game/slug exists
-          gameExists = true
-          if (gameSnap.child('gameStatus').val() === 'waiting') {
-            gameWaiting = true
-          }
-        }
-      },
-      errorObject => {
-        console.log('The read failed:', errorObject.code)
-      }
+    if (!e.target.code.value) {
+      alert('please enter a code')
+      return
+    }
+    if (!e.target.playerName.value) {
+      alert('please enter a name')
+      return
+    }
+    const code = e.target.code.value.toUpperCase()
+    this.props.joinGameThunk(
+      //add player
+      code,
+      this.props.user.uid,
+      e.target.playerName.value
     )
-    //query DB for players in game
-    if (gameExists && gameWaiting) {
-      //if the game exists, check if full
-      let playersRef = database.ref(`/rooms/${code}/players`)
-      await playersRef.once(
-        'value',
-        playerSnap => {
-          if (playerSnap.val()) {
-            //if more than 0 players
-            let playerKeys = Object.keys(playerSnap.val())
-            if (playerKeys.length >= MAX_PLAYERS) {
-              //check length; if full...
-              gameFull = true //...set gameFull to true
-            }
-          }
-        },
-        errorObject => {
-          console.log('The read failed:', errorObject.code)
-        }
-      )
-    }
-
-    if (gameExists) {
-      //if game exists
-      if (gameFull) {
-        //if full
-        alert('Error: game room is full') //return error message
-      } else if (!gameWaiting) {
-        alert('Error: Game cannot be joined')
-      } else {
-        //otherwise
-        this.props.joinGameThunk(
-          //add player
-          e.target.code.value,
-          this.props.user.uid,
-          e.target.playerName.value
-        )
-      }
-    } else {
-      //if game doesn't exist
-      alert('Error: invalid game code') //return error message
-    }
   }
 
   render() {

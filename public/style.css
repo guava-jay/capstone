@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  background-color: #ffd1aa;
 }
 
 a {
@@ -9,10 +10,25 @@ a {
 label {
   display: block;
 }
-
+input {
+  font-size: 30pt;
+  padding: 0.5em;
+  width: 4em;
+}
+button {
+  font-size: 30pt;
+}
 nav a {
   display: inline-block;
+  font-size: 30pt;
   margin: 1em;
+  padding: 1em;
+  border: 1px solid #000000;
+  background-color: #d49a6a;
+}
+a,
+a:hover {
+  color: #000000;
 }
 
 form div {
