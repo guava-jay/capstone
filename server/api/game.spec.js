@@ -1,7 +1,7 @@
 const {expect} = require('chai')
 const request = require('supertest')
 const app = require('../index')
-const database = require('../db/index')
+//const database = require('../db/index')
 
 describe('game api routes', () => {
   describe('GET api/game', () => {
@@ -21,13 +21,13 @@ describe('game api routes', () => {
       let slug = res.body
       console.log(slug)
       describe('/api/game/join', () => {
-        it('can add users with a valid code', async () => {
-          await request(app)
-            .post('/api/game/join')
-            .send({slug: slug, uid: 'uid', displayName: 'displayName'})
-            .expect(201)
-          await database.ref(`/rooms/${slug}`).remove()
-        })
+        // it('can add users with a valid code', async () => {
+        //   await request(app)
+        //     .post('/api/game/join')
+        //     .send({slug: slug, uid: 'uid', displayName: 'displayName'})
+        //     .expect(201)
+        //   await database.ref(`/rooms/${slug}`).remove()
+        // })
         it('errors on users with an invalid code', async () => {
           await request(app)
             .post('/api/game/join')
