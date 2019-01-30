@@ -12,7 +12,8 @@ class PlayerView extends React.Component {
       gameName: null,
       currentQuestion: null,
       answerChoices: [],
-      responses: {}
+      responses: {},
+      answeredCurrent: false
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -83,7 +84,11 @@ class PlayerView extends React.Component {
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
           .once('value')
           .then(snapshot => snapshot.val())
-        this.setState({currentQuestion: snapshot.val(), answerChoices})
+        this.setState({
+          currentQuestion: snapshot.val(),
+          answerChoices,
+          answeredCurrent: false
+        })
       }
     })
 
@@ -91,9 +96,25 @@ class PlayerView extends React.Component {
     gameStatusRef.on('value', snapshot => {
       this.setState({gameStatus: snapshot.val()})
     })
+
+    // Listens to changes in player's recorded responses
+    database
+      .ref(`${ROOM}/players/${this.props.user.uid}`)
+      .on('value', snapshot => {
+        const response = snapshot.val()
+
+        if (response.answers) {
+          if (response.answers[this.state.currentQuestion]) {
+            this.setState({answeredCurrent: true})
+          }
+        }
+      })
   }
 
   render() {
+    // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
+    const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
+
     return (
       <div>
         {this.state.gameStatus === 'waiting' ? (
@@ -120,7 +141,7 @@ class PlayerView extends React.Component {
                 ))}
                 <br />
                 <button
-                  // disabled={this.state.disableSubmit}
+                  disabled={this.state.answeredCurrent || NoSelectedCurrent}
                   onClick={this.submitChoice}
                 >
                   Submit choice
