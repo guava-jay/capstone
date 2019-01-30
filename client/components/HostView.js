@@ -13,6 +13,7 @@ class HostView extends React.Component {
       ready: false,
       playing: false
     }
+    this.startGame = this.startGame.bind(this)
   }
 
   startGame() {
@@ -57,7 +58,7 @@ class HostView extends React.Component {
         </ul>
         <button
           type="button"
-          onClick={this.props.startGame(this.props.slug)}
+          onClick={this.startGame}
           disabled={!this.state.ready}
         >
           Start Game
