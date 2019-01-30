@@ -48,6 +48,22 @@ export const joinGameThunk = (slug, uid, displayName) => {
   }
 }
 
+export const setResponseThunk = (slug, uid, answer) => {
+  console.log('hit outer thunk')
+  return async dispatch => {
+    console.log('hit inner thunk')
+    try {
+      await axios.put('/api/quiz/answer', {
+        slug,
+        uid,
+        answer
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
 //REDUCER
 export default function(state = defaultUser, action) {
   switch (action.type) {

@@ -112,6 +112,7 @@ router.put(`/changequestion`, async (req, res, next) => {
 //route for player submitting their answer to /quiz/answer
 //expects the request body to contain player uid, slug and answer
 router.put('/answer', async (req, res, next) => {
+  console.log('hit API')
   const slug = req.body.slug.toUpperCase()
   try {
     //check that it's all valid
@@ -121,16 +122,23 @@ router.put('/answer', async (req, res, next) => {
       //if the room is invalid we're done
       if (!snapshot.val()) next(`Could not find room ${slug}`)
       //if the user is invalid we're done
-      if (!snapshot.child(req.body.uid))
+      if (!snapshot.child(`players/${req.body.uid}`))
         next(`Could not find user ${req.body.uid}`)
       //get the question ID for the room
       currentQuestion = snapshot.child(CURRENT_QUESTION).val()
     })
-    //now add their response
+
+    // database.ref('testPostman').set('working')
+
+    // now add their response
     await database
       .ref(`rooms/${slug}/players/${req.body.uid}/`)
       .child('answers')
       .child(currentQuestion)
+      .set(req.body.answer)
+
+    await database
+      .ref(`rooms/${slug}/active_game/current_answers/${req.body.uid}`)
       .set(req.body.answer)
 
     res.send('done')
