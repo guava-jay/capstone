@@ -18,6 +18,7 @@ class HostPlaying extends React.Component {
     this.updateQuestion = this.updateQuestion.bind(this)
   }
   componentDidMount() {
+    this.props.getNewQuestion(this.props.game.slug)
     //listening for current question and upating
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`

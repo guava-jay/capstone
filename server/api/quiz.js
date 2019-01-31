@@ -26,10 +26,8 @@ let totalNumberOfQuestions = async () => {
 
 //checks submitted answers and scores them back to player in firebase
 router.put('/score', async (req, res, next) => {
-  console.log(req.body.answers, 'req body answers')
   // console.log(req.body.currentQuestion, 'req body question')
   //grab the answer from db and check it then set play scores back
-  console.log(req.body.slug, 'slug')
   try {
     const answer = database.ref(
       `/game_list/quiz/${req.body.currentQuestion}/answer`
@@ -37,7 +35,9 @@ router.put('/score', async (req, res, next) => {
     let answerValue
     await answer.once('value', snapshot => {
       answerValue = snapshot.val()
+      console.log(answerValue, 'answer val i want the actual answer')
       for (let key in req.body.answers) {
+        // console.log(req.body.answers[key], answerValue, "BLAUBLAUBLAU")
         if (req.body.answers[key] == answerValue) {
           console.log('correct', key)
           let currentScore = database.ref(
@@ -48,8 +48,6 @@ router.put('/score', async (req, res, next) => {
             // console.log(snapshot.val(), 'newScore')
             currentScore.set(newScore)
           })
-        } else {
-          console.log('incorrect', key)
         }
       }
     })
@@ -148,7 +146,7 @@ router.put(`/changequestion`, async (req, res, next) => {
 //route for player submitting their answer to /quiz/answer
 //expects the request body to contain player uid, slug and answer
 router.put('/answer', async (req, res, next) => {
-  console.log('hit API')
+  // console.log('hit API')
   const slug = req.body.slug.toUpperCase()
   try {
     //check that it's all valid
