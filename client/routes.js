@@ -22,22 +22,14 @@ class Routes extends Component {
 
   render() {
     return (
-      <div>
-        <audio
-          controls
-          src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
-        >
-          Your browser does not support the audio element.
-        </audio>
-        <Switch>
-          <Route exact path="/" component={Welcome} />
-          <Route path="/home" component={Welcome} />
-          <Route path="/join" component={Join} />
-          <Route exact path="/newGame" component={CreateGame} />
-          <Route path="/newGame/:slug" component={Room} />
-          <Redirect to="/" />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/" component={Welcome} />
+        <Route path="/home" component={Welcome} />
+        <Route path="/join" component={Join} />
+        <Route exact path="/newGame" component={CreateGame} />
+        <Route path="/newGame/:slug" component={Room} />
+        <Redirect to="/" />
+      </Switch>
     )
   }
 }
