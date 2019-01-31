@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from '../firebase'
 import {setResponseThunk} from '../store/user'
 import {connect} from 'react-redux'
+import {NavLink} from 'react-router-dom'
 const database = firebase.database()
 
 class PlayerView extends React.Component {
@@ -94,15 +95,16 @@ class PlayerView extends React.Component {
 
     // Listens to changes of the gameStatus
     gameStatusRef.on('value', snapshot => {
+      console.log('this.state.gameStatus:', this.state.gameStatus)
       this.setState({gameStatus: snapshot.val()})
     })
 
     // Listens to changes in player's recorded responses
+
     database
       .ref(`${ROOM}/players/${this.props.user.uid}`)
       .on('value', snapshot => {
         const response = snapshot.val()
-
         if (response.answers) {
           if (response.answers[this.state.currentQuestion]) {
             this.setState({answeredCurrent: true})
@@ -114,51 +116,59 @@ class PlayerView extends React.Component {
   render() {
     // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
     const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
+    if (!this.state.gameStatus) {
+      return (
+        <div>
+          <h1>Game has been ended</h1>
+          <NavLink to="/">Play again</NavLink>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          {this.state.gameStatus === 'waiting' ? (
+            <h1>Waiting to start...</h1>
+          ) : (
+            ''
+          )}
 
-    return (
-      <div>
-        {this.state.gameStatus === 'waiting' ? (
-          <h1>Waiting to start...</h1>
-        ) : (
-          ''
-        )}
-
-        {this.state.gameStatus === 'playing' ? (
-          <div>
-            <h1>Choose carefully...</h1>
-            {// Show answer choices
-            this.state.answerChoices ? (
-              <div>
-                {this.state.answerChoices.map((choice, idx) => (
+          {this.state.gameStatus === 'playing' ? (
+            <div>
+              <h1>Choose carefully...</h1>
+              {// Show answer choices
+              this.state.answerChoices ? (
+                <div>
+                  {this.state.answerChoices.map((choice, idx) => (
+                    <button
+                      name={idx}
+                      type="submit"
+                      onClick={this.setChoice}
+                      key={idx}
+                      value={choice}
+                    >
+                      {choice}
+                    </button>
+                  ))}
+                  <br />
                   <button
-                    name={idx}
-                    type="submit"
-                    onClick={this.setChoice}
-                    key={idx}
-                    value={choice}
+                    disabled={this.state.answeredCurrent || NoSelectedCurrent}
+                    onClick={this.submitChoice}
                   >
-                    {choice}
+                    Submit choice
                   </button>
-                ))}
-                <br />
-                <button
-                  disabled={this.state.answeredCurrent || NoSelectedCurrent}
-                  onClick={this.submitChoice}
-                >
-                  Submit choice
-                </button>
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
-        ) : (
-          ''
-        )}
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+          ) : (
+            ''
+          )}
 
-        {this.state.gameStatus === 'finished' ? <h1>Done!</h1> : ''}
-      </div>
-    )
+          {this.state.gameStatus === 'finished' ? <h1>Done!</h1> : ''}
+        </div>
+      )
+    }
   }
 }
 
