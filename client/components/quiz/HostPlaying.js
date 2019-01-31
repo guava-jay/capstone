@@ -1,9 +1,8 @@
 import React from 'react'
-import firebase from '../firebase'
-const database = firebase.database()
 import {connect} from 'react-redux'
 import Highlight from 'react-highlight'
-import {checkAnswersThunk, getNewQuestion} from '../store/game'
+import database from '../../firebase'
+import {checkAnswersThunk, getNewQuestion} from '../../store/game'
 
 class HostPlaying extends React.Component {
   constructor() {

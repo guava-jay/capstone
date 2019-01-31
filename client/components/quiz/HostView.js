@@ -1,9 +1,8 @@
 import React from 'react'
-import firebase from '../firebase'
-const database = firebase.database()
-import HostPlaying from './HostPlaying'
-import {startGameThunk} from '../store/game'
 import {connect} from 'react-redux'
+import database from '../../firebase'
+import {startGameThunk} from '../../store/game'
+import HostPlaying from './HostPlaying'
 import HostFinished from './HostFinished'
 
 class HostView extends React.Component {
@@ -18,7 +17,6 @@ class HostView extends React.Component {
   }
 
   startGame() {
-    // this.setState({playing: true})
     this.props.startGameThunk(this.props.slug)
   }
 

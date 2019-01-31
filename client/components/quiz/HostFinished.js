@@ -1,6 +1,5 @@
 import React from 'react'
-import firebase from '../firebase'
-const database = firebase.database()
+import database from '../../firebase'
 
 export default class HostFinished extends React.Component {
   constructor(props) {

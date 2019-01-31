@@ -1,8 +1,8 @@
 import axios from 'axios'
 import history from '../history'
-import firebase from '../firebase'
+import firebase from 'firebase'
+import database from '../firebase'
 import {CREATE_GAME} from './game'
-const database = firebase.database()
 
 //ACTION TYPES
 const SET_PLAYER = 'SET_PLAYER'

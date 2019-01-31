@@ -1,8 +1,7 @@
 import React from 'react'
-import firebase from '../firebase'
-import {setResponseThunk} from '../store/user'
+import database from '../../firebase'
+import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
-const database = firebase.database()
 
 class PlayerView extends React.Component {
   constructor() {
@@ -142,6 +141,7 @@ class PlayerView extends React.Component {
                 ))}
                 <br />
                 <button
+                  type="submit"
                   disabled={this.state.answeredCurrent || NoSelectedCurrent}
                   onClick={this.submitChoice}
                 >

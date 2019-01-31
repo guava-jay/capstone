@@ -2,8 +2,6 @@ import React from 'react'
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {joinGameThunk} from '../store/user'
-import firebase from '../firebase'
-const database = firebase.database()
 // eslint-disable-next-line
 
 const MAX_PLAYERS = 4
