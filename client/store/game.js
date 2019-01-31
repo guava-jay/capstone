@@ -21,8 +21,7 @@ export const createNewGame = uid => async dispatch => {
 }
 
 export const startGameThunk = slug => async dispatch => {
-  console.log('i hit start game thunk ', slug)
-  await axios.put(`/api/game/${slug}`)
+  await axios.put(`/api/game/${slug}`, {status: 'playing'})
 }
 
 export const checkAnswersThunk = (
@@ -39,7 +38,11 @@ export const checkAnswersThunk = (
 }
 
 export const getNewQuestion = slug => async dispatch => {
-  await axios.put(`/api/quiz/changequestion`, {slug})
+  let {data} = await axios.put(`/api/quiz/changequestion`, {slug})
+
+  if (data.remainingQuestions === 0) {
+    await axios.put(`/api/game/${slug}`, {status: 'finished'})
+  }
 }
 
 const initialState = {}

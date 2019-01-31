@@ -15,7 +15,6 @@ let totalNumberOfQuestions = async () => {
   try {
     await database.ref(`game_list/quiz/`).once('value', snapshot => {
       if (!snapshot.val()) console.error('Could not find question list')
-      // console.log(snapshot.numChildren())
       result = snapshot.numChildren()
     })
   } catch (err) {
@@ -26,7 +25,6 @@ let totalNumberOfQuestions = async () => {
 
 //checks submitted answers and scores them back to player in firebase
 router.put('/score', async (req, res, next) => {
-  // console.log(req.body.currentQuestion, 'req body question')
   //grab the answer from db and check it then set play scores back
   try {
     const answer = database.ref(
@@ -35,24 +33,19 @@ router.put('/score', async (req, res, next) => {
     let answerValue
     await answer.once('value', snapshot => {
       answerValue = snapshot.val()
-      console.log(answerValue, 'answer val i want the actual answer')
       for (let key in req.body.answers) {
-        // console.log(req.body.answers[key], answerValue, "BLAUBLAUBLAU")
         if (req.body.answers[key] == answerValue) {
-          console.log('correct', key)
           let currentScore = database.ref(
             `/rooms/${req.body.slug}/players/${key}/currentScore`
           )
           currentScore.once('value', snapshot => {
             let newScore = snapshot.val() + 1
-            // console.log(snapshot.val(), 'newScore')
             currentScore.set(newScore)
           })
         }
       }
     })
     res.json(answerValue)
-    // console.log(answerValue, 'answer Value from quiz')
   } catch (err) {
     next(err)
   }
@@ -146,13 +139,11 @@ router.put(`/changequestion`, async (req, res, next) => {
 //route for player submitting their answer to /quiz/answer
 //expects the request body to contain player uid, slug and answer
 router.put('/answer', async (req, res, next) => {
-  // console.log('hit API')
   const slug = req.body.slug.toUpperCase()
   try {
     //check that it's all valid
     let currentQuestion = 0
     await database.ref(`rooms/${slug}/`).once('value', snapshot => {
-      console.log(snapshot.val())
       //if the room is invalid we're done
       if (!snapshot.val()) next(`Could not find room ${slug}`)
       //if the user is invalid we're done

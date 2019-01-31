@@ -45,12 +45,10 @@ export const joinGameThunk = (slug, uid, displayName) => {
     await gameRef.once(
       'value',
       gameSnap => {
-        console.log('ln 49', gameSnap.val())
         if (gameSnap.val()) {
           //if game/slug exists
           gameExists = true
           if (gameSnap.child('status').val() === 'waiting') {
-            console.log('line 53 setting gamewaiting')
             gameWaiting = true
           }
         }

@@ -37,9 +37,6 @@ export default class HostFinished extends React.Component {
       .ref(`/rooms/${this.props.slug}/players`)
       .once('value')
       .then(snapshot => snapshot.val())
-
-    console.log(answersObj)
-    console.log(this.findHighScore(answersObj))
   }
 
   render() {
@@ -49,7 +46,8 @@ export default class HostFinished extends React.Component {
 
         {this.state.winners.length > 1 ? (
           <h3>
-            There was a tie! Congratulations {this.state.winners.join(' and ')}!
+            There was a tie! Congratulations {this.state.winners.join(' and ')}{' '}
+            You all tied with a score of {this.state.highScore}!
           </h3>
         ) : (
           <h3>

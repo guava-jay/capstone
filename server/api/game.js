@@ -87,7 +87,7 @@ router.post('/join', async (req, res, next) => {
 //toggle game room to playing
 router.put('/:slug', (req, res, next) => {
   try {
-    database.ref(`/rooms/${req.params.slug}/`).update({status: 'playing'})
+    database.ref(`/rooms/${req.params.slug}/`).update({status: req.body.status})
     res.end()
   } catch (err) {
     next(err)

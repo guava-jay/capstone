@@ -22,7 +22,7 @@ class PlayerView extends React.Component {
 
   // Can select between an answer multiple times...
   setChoice(event) {
-    event.preventDefault()
+    // event.preventDefault()
     const currentQuestion = this.state.currentQuestion
     const currentResponse = event.target.value
     const responses = {
@@ -94,6 +94,7 @@ class PlayerView extends React.Component {
 
     // Listens to changes of the gameStatus
     gameStatusRef.on('value', snapshot => {
+      console.log('this.state.gameStatus:', this.state.gameStatus)
       this.setState({gameStatus: snapshot.val()})
     })
 
@@ -135,12 +136,25 @@ class PlayerView extends React.Component {
               <h1>Choose carefully...</h1>
               {// Show answer choices
               this.state.answerChoices ? (
-                <form onSubmit={this.submitChoice} onChange={this.setChoice}>
+                <div>
                   {this.state.answerChoices.map((choice, idx) => (
-                    <React.Fragment key={choice}>
-                      <input type="radio" name="choices" value={choice} />
-                      <label htmlFor="choices">{choice}</label>
-                    </React.Fragment>
+                    <button
+                      name={idx}
+                      type="submit"
+                      onClick={this.setChoice}
+                      key={idx}
+                      value={choice}
+                    >
+                      {choice}
+                    </button>
+                  ))}
+                  <br />
+                  <button
+                    disabled={this.state.answeredCurrent || NoSelectedCurrent}
+                    onClick={this.submitChoice}
+                  >
+                    Submit choice
+                  </button>
                   ))}
                   <br />
                   <button
@@ -150,7 +164,7 @@ class PlayerView extends React.Component {
                   >
                     Submit choice
                   </button>
-                </form>
+                </div>
               ) : (
                 ''
               )}
@@ -163,6 +177,56 @@ class PlayerView extends React.Component {
         </div>
       )
     }
+
+    return (
+      <div>
+        {this.state.gameStatus === 'waiting' ? (
+          <h1>Waiting to start...</h1>
+        ) : (
+          ''
+        )}
+
+        {this.state.gameStatus === 'playing' ? (
+          <div>
+            <h1>Choose carefully...</h1>
+            {// Show answer choices
+            this.state.answerChoices ? (
+              <form onSubmit={this.submitChoice} onChange={this.setChoice}>
+                {this.state.answerChoices.map((choice, idx) => (
+                  <React.Fragment key={choice}>
+                    <input type="radio" name="choices" value={choice} />
+                    <label htmlFor="choices">{choice}</label>
+                  </React.Fragment>
+                  // <button
+                  //   name={idx}
+                  //   type="submit"
+                  //   onClick={this.setChoice}
+                  //   key={idx}
+                  //   value={choice}
+                  // >
+                  //   {choice}
+                  // </button>
+                ))}
+                <br />
+                <button
+                  type="submit"
+                  disabled={this.state.answeredCurrent || NoSelectedCurrent}
+                  onClick={this.submitChoice}
+                >
+                  Submit choice
+                </button>
+              </form>
+            ) : (
+              ''
+            )}
+          </div>
+        ) : (
+          ''
+        )}
+
+        {this.state.gameStatus === 'finished' ? <h1>Done!</h1> : ''}
+      </div>
+    )
   }
 }
 
