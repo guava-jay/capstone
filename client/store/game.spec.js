@@ -25,17 +25,15 @@ describe('Game reducer', () => {
   })
 
   describe('initial state', () => {
-    // it('should return the initial state', () => {
-    //     expect(gameReducer(undefined, {})).to.deep.equal({})
-    // })
-    //   })
-
-    // slug returns 4 letters
-    it('should return 4 letters for slugs', async () => {
-      mockAxios.onPost('/api/game').replyOnce(201, 'SLUG')
-      await store.dispatch(createNewGame('someuid'))
-      const actions = store.getActions()
-      expect(actions[0].slug).to.have.length(4)
+    it('should return the initial state', () => {
+      expect(gameReducer(undefined, {})).to.deep.equal({})
     })
+  })
+  //slug returns 4 letters
+  it('should return 4 letters for slugs', async () => {
+    mockAxios.onPost('/api/game').replyOnce(201, 'SLUG')
+    await store.dispatch(createNewGame('someuid'))
+    const actions = store.getActions()
+    expect(actions[0].slug).to.have.length(4)
   })
 })
