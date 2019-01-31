@@ -43,7 +43,7 @@ router.post('/', async (req, res, next) => {
           host: req.body.uid,
           active_game: {
             game_name: 'quiz',
-            current_question: 0
+            current_question: null
           }
         })
     })
@@ -68,7 +68,8 @@ router.post('/join', async (req, res, next) => {
           .child('players')
           .child(req.body.uid)
           .set({
-            displayName: req.body.displayName
+            displayName: req.body.displayName,
+            currentScore: 0
           })
         res.status(200).end()
       } else {

@@ -4,6 +4,7 @@ import {JOIN_GAME} from './user'
 
 //Action types
 export const CREATE_GAME = 'CREATE_GAME'
+const CHECK_ANSWERS = 'CHECK_ANSWERS'
 
 //Action creators
 const createGame = slug => ({
@@ -22,6 +23,23 @@ export const createNewGame = uid => async dispatch => {
 export const startGameThunk = slug => async dispatch => {
   console.log('i hit start game thunk ', slug)
   await axios.put(`/api/game/${slug}`)
+}
+
+export const checkAnswersThunk = (
+  answers,
+  currentQuestion,
+  slug
+) => async dispatch => {
+  const {data} = await axios.put(`/api/quiz/score`, {
+    answers,
+    currentQuestion,
+    slug
+  })
+  return data
+}
+
+export const getNewQuestion = slug => async dispatch => {
+  await axios.put(`/api/quiz/changequestion`, {slug})
 }
 
 const initialState = {}

@@ -24,7 +24,7 @@ class PlayerView extends React.Component {
   setChoice(event) {
     event.preventDefault()
     const currentQuestion = this.state.currentQuestion
-    const currentResponse = event.target.name
+    const currentResponse = event.target.value
     const responses = {
       ...this.state.responses,
       [currentQuestion]: currentResponse
@@ -135,6 +135,7 @@ class PlayerView extends React.Component {
                     type="submit"
                     onClick={this.setChoice}
                     key={idx}
+                    value={choice}
                   >
                     {choice}
                   </button>
