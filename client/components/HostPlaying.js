@@ -46,6 +46,13 @@ class HostPlaying extends React.Component {
     console.log(this.props, 'props from host playing')
     return (
       <div>
+        <audio
+          autoPlay
+          loop
+          src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
+        >
+          Your browser does not support the audio element.
+        </audio>
         <div>
           <h2>Players</h2>
           <ul>
