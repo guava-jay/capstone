@@ -81,7 +81,11 @@ class HostView extends React.Component {
           ''
         )}
 
-        {this.state.status === 'finished' ? <HostFinished /> : ''}
+        {this.state.status === 'finished' ? (
+          <HostFinished slug={this.props.slug} />
+        ) : (
+          ''
+        )}
       </div>
     )
   }
