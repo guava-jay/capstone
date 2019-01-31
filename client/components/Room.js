@@ -1,9 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import firebase from '../firebase'
-const database = firebase.database()
-import HostView from './HostView'
-import PlayerView from './PlayerView'
+import database from '../firebase'
+import HostView from './quiz/HostView'
+import PlayerView from './quiz/PlayerView'
 
 class Room extends React.Component {
   componentDidMount() {

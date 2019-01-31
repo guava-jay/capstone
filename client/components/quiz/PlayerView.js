@@ -1,9 +1,8 @@
 import React from 'react'
-import firebase from '../firebase'
-import {setResponseThunk} from '../store/user'
+import database from '../../firebase'
+import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
-const database = firebase.database()
 
 class PlayerView extends React.Component {
   constructor() {
@@ -95,7 +94,6 @@ class PlayerView extends React.Component {
 
     // Listens to changes of the gameStatus
     gameStatusRef.on('value', snapshot => {
-      console.log('this.state.gameStatus:', this.state.gameStatus)
       this.setState({gameStatus: snapshot.val()})
     })
 
@@ -137,26 +135,22 @@ class PlayerView extends React.Component {
               <h1>Choose carefully...</h1>
               {// Show answer choices
               this.state.answerChoices ? (
-                <div>
+                <form onSubmit={this.submitChoice} onChange={this.setChoice}>
                   {this.state.answerChoices.map((choice, idx) => (
-                    <button
-                      name={idx}
-                      type="submit"
-                      onClick={this.setChoice}
-                      key={idx}
-                      value={choice}
-                    >
-                      {choice}
-                    </button>
+                    <React.Fragment key={choice}>
+                      <input type="radio" name="choices" value={choice} />
+                      <label htmlFor="choices">{choice}</label>
+                    </React.Fragment>
                   ))}
                   <br />
                   <button
+                    type="submit"
                     disabled={this.state.answeredCurrent || NoSelectedCurrent}
                     onClick={this.submitChoice}
                   >
                     Submit choice
                   </button>
-                </div>
+                </form>
               ) : (
                 ''
               )}

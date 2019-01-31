@@ -1,8 +1,8 @@
 import axios from 'axios'
 import history from '../history'
-import firebase from '../firebase'
+import firebase from 'firebase'
+import database from '../firebase'
 import {CREATE_GAME} from './game'
-const database = firebase.database()
 
 //ACTION TYPES
 const SET_PLAYER = 'SET_PLAYER'
@@ -45,12 +45,10 @@ export const joinGameThunk = (slug, uid, displayName) => {
     await gameRef.once(
       'value',
       gameSnap => {
-        console.log('ln 49', gameSnap.val())
         if (gameSnap.val()) {
           //if game/slug exists
           gameExists = true
           if (gameSnap.child('status').val() === 'waiting') {
-            console.log('line 53 setting gamewaiting')
             gameWaiting = true
           }
         }
