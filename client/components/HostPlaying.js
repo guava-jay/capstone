@@ -16,14 +16,14 @@ class HostPlaying extends React.Component {
     }
     this.updateQuestion = this.updateQuestion.bind(this)
   }
-  componentDidMount() {
+  async componentDidMount() {
     this.props.getNewQuestion(this.props.game.slug)
     //listening for current question and upating
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`
     )
 
-    currentQuestionRef.on('value', async snapshot => {
+    await currentQuestionRef.on('value', async snapshot => {
       if (snapshot.val() >= 0) {
         let question
         let func
@@ -74,8 +74,9 @@ class HostPlaying extends React.Component {
     })
   }
 
-  updateQuestion() {
-    this.props.getNewQuestion(this.props.game.slug)
+  async updateQuestion() {
+    let idk = await this.props.getNewQuestion(this.props.game.slug)
+    console.log(idk, 'idk')
     this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
   }
   render() {

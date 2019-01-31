@@ -39,7 +39,8 @@ export const checkAnswersThunk = (
 }
 
 export const getNewQuestion = slug => async dispatch => {
-  await axios.put(`/api/quiz/changequestion`, {slug})
+  let {data} = await axios.put(`/api/quiz/changequestion`, {slug})
+  return data
 }
 
 const initialState = {}
