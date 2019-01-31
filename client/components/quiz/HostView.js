@@ -69,12 +69,12 @@ class HostView extends React.Component {
           </button>
         </div>
       )
-    }
-    if (this.state.status === 'playing') {
+    } else if (this.state.status === 'playing') {
       return <HostPlaying players={this.state.players} />
-    }
-    if (this.state.status === 'finished') {
+    } else if (this.state.status === 'finished') {
       return <HostFinished slug={this.props.slug} />
+    } else {
+      return null
     }
   }
 }

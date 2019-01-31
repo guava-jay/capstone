@@ -3,6 +3,7 @@ import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
+import Navbar from '../navbar'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -121,47 +122,47 @@ class PlayerView extends React.Component {
           <NavLink to="/">Play again</NavLink>
         </div>
       )
-    } else {
+    } else if (this.state.gameStatus === 'waiting') {
+      return <h1>Waiting to start...</h1>
+    } else if (
+      this.state.gameStatus === 'playing' &&
+      this.state.answerChoices
+    ) {
+      //show answer choices
       return (
         <div>
-          {this.state.gameStatus === 'waiting' ? (
-            <h1>Waiting to start...</h1>
-          ) : (
-            ''
-          )}
-
-          {this.state.gameStatus === 'playing' ? (
-            <div>
-              <h1>Choose carefully...</h1>
-              {// Show answer choices
-              this.state.answerChoices ? (
-                <form onSubmit={this.submitChoice} onChange={this.setChoice}>
-                  {this.state.answerChoices.map((choice, idx) => (
-                    <React.Fragment key={choice}>
-                      <input type="radio" name="choices" value={choice} />
-                      <label htmlFor="choices">{choice}</label>
-                    </React.Fragment>
-                  ))}
-                  <br />
-                  <button
-                    type="submit"
-                    disabled={this.state.answeredCurrent || NoSelectedCurrent}
-                    onClick={this.submitChoice}
-                  >
-                    Submit choice
-                  </button>
-                </form>
-              ) : (
-                ''
-              )}
-            </div>
-          ) : (
-            ''
-          )}
-
-          {this.state.gameStatus === 'finished' ? <h1>Done!</h1> : ''}
+          <h1>Choose carefully...</h1>
+          <form onSubmit={this.submitChoice} onChange={this.setChoice}>
+            {this.state.answerChoices.map((choice, idx) => (
+              <React.Fragment key={choice}>
+                <label>
+                  {choice}
+                  <input type="radio" name="choices" />
+                </label>
+                {/* <input display="inline" type="radio" name="choices" value={choice} />
+                <label display="inline" htmlFor="choices">{choice}</label> */}
+              </React.Fragment>
+            ))}
+            <br />
+            <button
+              type="submit"
+              disabled={this.state.answeredCurrent || NoSelectedCurrent}
+              onClick={this.submitChoice}
+            >
+              Submit choice
+            </button>
+          </form>
         </div>
       )
+    } else if (this.state.gameStatus === 'finished') {
+      return (
+        <div>
+          <h1>Done!</h1>
+          <Navbar />
+        </div>
+      )
+    } else {
+      return null
     }
   }
 }

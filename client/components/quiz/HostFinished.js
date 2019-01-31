@@ -1,5 +1,6 @@
 import React from 'react'
 import database from '../../firebase'
+import Navbar from '../navbar'
 
 export default class HostFinished extends React.Component {
   constructor(props) {
@@ -54,6 +55,7 @@ export default class HostFinished extends React.Component {
             {this.state.winners[0]} wins with {this.state.highScore} points!
           </h3>
         )}
+        <Navbar />
       </div>
     )
   }
