@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from '../firebase'
 import {setResponseThunk} from '../store/user'
 import {connect} from 'react-redux'
+import {NavLink} from 'react-router-dom'
 const database = firebase.database()
 
 class PlayerView extends React.Component {
@@ -94,15 +95,16 @@ class PlayerView extends React.Component {
 
     // Listens to changes of the gameStatus
     gameStatusRef.on('value', snapshot => {
+      console.log('this.state.gameStatus:', this.state.gameStatus)
       this.setState({gameStatus: snapshot.val()})
     })
 
     // Listens to changes in player's recorded responses
+
     database
       .ref(`${ROOM}/players/${this.props.user.uid}`)
       .on('value', snapshot => {
         const response = snapshot.val()
-
         if (response.answers) {
           if (response.answers[this.state.currentQuestion]) {
             this.setState({answeredCurrent: true})
