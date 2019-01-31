@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom'
 import {Navbar} from './'
 
 const Welcome = () => {
+  console.log('welcome')
   return (
     <div align="center">
       <h1>Welcome to Stackbox!</h1>
