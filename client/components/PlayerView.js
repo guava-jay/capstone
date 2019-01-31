@@ -22,7 +22,7 @@ class PlayerView extends React.Component {
 
   // Can select between an answer multiple times...
   setChoice(event) {
-    event.preventDefault()
+    // event.preventDefault()
     const currentQuestion = this.state.currentQuestion
     const currentResponse = event.target.value
     const responses = {
@@ -128,26 +128,31 @@ class PlayerView extends React.Component {
             <h1>Choose carefully...</h1>
             {// Show answer choices
             this.state.answerChoices ? (
-              <div>
+              <form onSubmit={this.submitChoice} onChange={this.setChoice}>
                 {this.state.answerChoices.map((choice, idx) => (
-                  <button
-                    name={idx}
-                    type="submit"
-                    onClick={this.setChoice}
-                    key={idx}
-                    value={choice}
-                  >
-                    {choice}
-                  </button>
+                  <React.Fragment key={choice}>
+                    <input type="radio" name="choices" value={choice} />
+                    <label htmlFor="choices">{choice}</label>
+                  </React.Fragment>
+                  // <button
+                  //   name={idx}
+                  //   type="submit"
+                  //   onClick={this.setChoice}
+                  //   key={idx}
+                  //   value={choice}
+                  // >
+                  //   {choice}
+                  // </button>
                 ))}
                 <br />
                 <button
+                  type="submit"
                   disabled={this.state.answeredCurrent || NoSelectedCurrent}
                   onClick={this.submitChoice}
                 >
                   Submit choice
                 </button>
-              </div>
+              </form>
             ) : (
               ''
             )}

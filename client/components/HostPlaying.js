@@ -31,8 +31,14 @@ class HostPlaying extends React.Component {
           .ref(`game_list/quiz/${snapshot.val()}`)
           .once('value')
           .then(snapshot => {
-            question = snapshot.val().question
-            func = snapshot.val().function || null
+            if (snapshot.val().question !== null) {
+              question = snapshot.val().question || null
+            }
+            if (snapshot.val().function !== null) {
+              func = snapshot.val().function || null
+            }
+            console.log(question, 'question')
+            console.log(func, 'func')
           })
         this.setState({
           currentQuestion: snapshot.val(),

@@ -35,7 +35,7 @@ router.put('/score', async (req, res, next) => {
     let answerValue
     await answer.once('value', snapshot => {
       answerValue = snapshot.val()
-      console.log(answerValue, 'answer val i want the actual answer')
+      // console.log(answerValue, 'answer val i want the actual answer')
       for (let key in req.body.answers) {
         // console.log(req.body.answers[key], answerValue, "BLAUBLAUBLAU")
         if (req.body.answers[key] == answerValue) {

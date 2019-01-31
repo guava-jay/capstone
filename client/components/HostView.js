@@ -21,10 +21,10 @@ class HostView extends React.Component {
     this.props.startGameThunk(this.props.slug)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //players
     let playersRef = database.ref(`/rooms/${this.props.slug}/players`)
-    playersRef.on(
+    await playersRef.on(
       'value',
       snapshot => {
         let playerArr = []
