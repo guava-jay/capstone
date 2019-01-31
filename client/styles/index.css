@@ -1,3 +1,65 @@
+@import './homepage.css';
+@import url('https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800');
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Dosis', 'sans-serif';
+}
+
+:root {
+  --primary: #cda36c;
+  --dark: #a27845;
+  --brown: #4f382e;
+  --gray: #cac9d0;
+  --white: #fff;
+  --indigo: #110d3a;
+  --highlight: #f46542;
+  --darkgray: #1e2023;
+  --teal: #60bca3;
+}
+
 body {
-  background-color: red;
+  font-family: sans-serif;
+  background: var(--teal);
+}
+
+a {
+  text-decoration: none;
+}
+
+label {
+  display: block;
+}
+input {
+  font-size: 30pt;
+  padding: 0.5em;
+  width: 4em;
+}
+button {
+  font-size: 30pt;
+}
+nav a {
+  display: inline-block;
+  font-size: 30pt;
+  margin: 1em;
+  padding: 1em;
+  border: 1px solid #000000;
+}
+a,
+a:hover {
+  color: #000000;
+}
+
+form div {
+  margin: 1em;
+  display: inline-block;
+}
+
+button:disabled {
+  background-color: lightgrey;
+}
+
+button:disabled {
+  background-color: lightgrey;
 }
