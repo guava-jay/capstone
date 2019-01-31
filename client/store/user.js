@@ -2,10 +2,13 @@ import axios from 'axios'
 import history from '../history'
 import firebase from '../firebase'
 import {CREATE_GAME} from './game'
+const database = firebase.database()
 
 //ACTION TYPES
 const SET_PLAYER = 'SET_PLAYER'
 export const JOIN_GAME = 'JOIN_GAME'
+
+const MAX_PLAYERS = 4
 
 //INITIAL STATE
 const defaultUser = {}
@@ -33,6 +36,66 @@ export const setPlayerThunk = () => {
 // Join thunk
 export const joinGameThunk = (slug, uid, displayName) => {
   return async dispatch => {
+    let gameExists = false
+    let gameFull = false
+    let gameWaiting = false
+
+    //query DB for game
+    let gameRef = database.ref(`/rooms/${slug}`)
+    await gameRef.once(
+      'value',
+      gameSnap => {
+        console.log('ln 49', gameSnap.val())
+        if (gameSnap.val()) {
+          //if game/slug exists
+          gameExists = true
+          if (gameSnap.child('status').val() === 'waiting') {
+            console.log('line 53 setting gamewaiting')
+            gameWaiting = true
+          }
+        }
+      },
+      errorObject => {
+        console.log('The read failed:', errorObject.code)
+      }
+    )
+    //query DB for players in game
+    if (gameExists && gameWaiting) {
+      //if the game exists, check if full
+      let playersRef = database.ref(`/rooms/${slug}/players`)
+      await playersRef.once(
+        'value',
+        playerSnap => {
+          if (playerSnap.val()) {
+            //if more than 0 players
+            let playerKeys = Object.keys(playerSnap.val())
+            if (playerKeys.length >= MAX_PLAYERS) {
+              //check length; if full...
+              gameFull = true //...set gameFull to true
+            }
+          }
+        },
+        errorObject => {
+          console.log('The read failed:', errorObject.code)
+        }
+      )
+    }
+
+    if (gameExists) {
+      //if game exists
+      if (gameFull) {
+        //if full
+        alert('Error: game room is full') //return error message
+      } else if (!gameWaiting) {
+        alert('Error: Game room is not open to new players')
+      } else {
+        //otherwise
+      }
+    } else {
+      //if game doesn't exist
+      alert('Error: invalid game code') //return error message
+    }
+
     slug = slug.toUpperCase()
     try {
       await axios.post('/api/game/join', {
