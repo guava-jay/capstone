@@ -26,6 +26,7 @@ router.get('/', (req, res, next) => {
 //create a game room and set this device as host
 router.post('/', async (req, res, next) => {
   try {
+    // move this into generateUniqueSlug
     let slug = generateSlug()
     const ref = database.ref(`rooms/`)
     await ref.once('value').then(function(snapshot) {
@@ -34,6 +35,7 @@ router.post('/', async (req, res, next) => {
         slug = generateSlug()
         alreadyThere = snapshot.hasChild(slug)
       }
+      // ----
 
       database
         .ref(`rooms/`)
