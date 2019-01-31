@@ -11,7 +11,6 @@ class HostPlaying extends React.Component {
     this.state = {
       currentQuestion: null,
       question: {},
-      answers: {},
       count: 0,
       currentQuestionAnswer: null
     }
@@ -63,7 +62,7 @@ class HostPlaying extends React.Component {
           this.props.game.slug
         )
         this.setState({currentQuestionAnswer: getAnswer})
-        setTimeout(this.updateQuestion, 3000)
+        setTimeout(this.updateQuestion, 2000)
         //set timer to call next question
       }
     })
@@ -74,7 +73,6 @@ class HostPlaying extends React.Component {
     this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
   }
   render() {
-    console.log(this.state, 'state')
     return (
       <div>
         <div>
