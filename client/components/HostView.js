@@ -4,6 +4,7 @@ const database = firebase.database()
 import HostPlaying from './HostPlaying'
 import {startGameThunk} from '../store/game'
 import {connect} from 'react-redux'
+import HostFinished from './HostFinished'
 
 class HostView extends React.Component {
   constructor(props) {
@@ -11,19 +12,25 @@ class HostView extends React.Component {
     this.state = {
       players: [],
       ready: false,
-      playing: false
+      status: null
     }
     this.startGame = this.startGame.bind(this)
   }
 
   startGame() {
-    this.setState({playing: true})
+    // this.setState({playing: true})
     this.props.startGameThunk(this.props.slug)
   }
 
   componentDidMount() {
     //players
-    let playersRef = database.ref(`/rooms/${this.props.slug}/players`)
+    const playersRef = database.ref(`/rooms/${this.props.slug}/players`)
+    const statusRef = database.ref(`/rooms/${this.props.slug}/status`)
+
+    statusRef.on('value', snapshot => {
+      if (snapshot.val()) this.setState({status: snapshot.val()})
+    })
+
     playersRef.on(
       'value',
       snapshot => {
@@ -45,24 +52,36 @@ class HostView extends React.Component {
   }
 
   render() {
-    return this.state.playing ? (
-      <HostPlaying players={this.state.players} />
-    ) : (
+    return (
       <div>
-        <h1>code: {this.props.slug}</h1>
-        <ul>
-          {this.state.players.map((player, i) => {
-            let pid = Object.keys(player)[0]
-            return <li key={i + ''}> {player[pid].displayName}</li>
-          })}
-        </ul>
-        <button
-          type="button"
-          onClick={this.startGame}
-          disabled={!this.state.ready}
-        >
-          Start Game
-        </button>
+        {this.state.status === 'waiting' ? (
+          <div>
+            <h1>code: {this.props.slug}</h1>
+            <ul>
+              {this.state.players.map((player, i) => {
+                let pid = Object.keys(player)[0]
+                return <li key={i + ''}> {player[pid].displayName}</li>
+              })}
+            </ul>
+            <button
+              type="button"
+              onClick={this.startGame}
+              disabled={!this.state.ready}
+            >
+              Start Game
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
+
+        {this.state.status === 'playing' ? (
+          <HostPlaying players={this.state.players} />
+        ) : (
+          ''
+        )}
+
+        {this.state.status === 'finished' ? <HostFinished /> : ''}
       </div>
     )
   }
