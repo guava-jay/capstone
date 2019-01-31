@@ -47,7 +47,8 @@ class HostPlaying extends React.Component {
     return (
       <div>
         <audio
-          controls
+          autoPlay
+          loop
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
         >
           Your browser does not support the audio element.
