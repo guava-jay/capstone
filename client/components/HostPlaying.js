@@ -15,6 +15,7 @@ class HostPlaying extends React.Component {
       count: 0,
       currentQuestionAnswer: null
     }
+    this.updateQuestion = this.updateQuestion.bind(this)
   }
   componentDidMount() {
     //listening for current question and upating
@@ -24,18 +25,18 @@ class HostPlaying extends React.Component {
 
     currentQuestionRef.on('value', async snapshot => {
       if (snapshot.val() >= 0) {
-        let prompt
+        let question
         let func
         await database
           .ref(`game_list/quiz/${snapshot.val()}`)
           .once('value')
           .then(snapshot => {
-            prompt = snapshot.val().prompt
+            question = snapshot.val().question
             func = snapshot.val().function || null
           })
         this.setState({
           currentQuestion: snapshot.val(),
-          question: {prompt, func}
+          question: {question, func}
         })
       }
     })
@@ -48,7 +49,6 @@ class HostPlaying extends React.Component {
 
     answerRef.on('value', async snapshot => {
       if (snapshot.val()) {
-        console.log('yes')
         this.setState(prevState => {
           return {
             count: prevState.count + 1
@@ -62,10 +62,15 @@ class HostPlaying extends React.Component {
           this.props.game.slug
         )
         this.setState({currentQuestionAnswer: getAnswer})
-        setTimeout(this.props.getNewQuestion(), 3000)
+        setTimeout(this.updateQuestion, 3000)
         //set timer to call next question
       }
     })
+  }
+
+  updateQuestion() {
+    this.props.getNewQuestion(this.props.game.slug)
+    this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
   }
   render() {
     console.log(this.state, 'state')
@@ -84,8 +89,8 @@ class HostPlaying extends React.Component {
             })}
           </ul>
         </div>
-        {this.state.question.prompt ? (
-          <h1>{this.state.question.prompt}</h1>
+        {this.state.question.question ? (
+          <h1>{this.state.question.question}</h1>
         ) : null}
         {this.state.question.func ? (
           <Highlight language="javascript">
@@ -112,7 +117,7 @@ const mapDispatch = dispatch => {
   return {
     checkAnswersThunk: (answers, currentQuestion, slug) =>
       dispatch(checkAnswersThunk(answers, currentQuestion, slug)),
-    getNewQuestion: () => dispatch(getNewQuestion())
+    getNewQuestion: slug => dispatch(getNewQuestion(slug))
   }
 }
 
