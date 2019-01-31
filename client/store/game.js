@@ -30,8 +30,16 @@ export const checkAnswersThunk = (
   currentQuestion,
   slug
 ) => async dispatch => {
-  console.log('i hit check answers')
-  await axios.put(`/api/quiz/score`, {answers, currentQuestion, slug})
+  const {data} = await axios.put(`/api/quiz/score`, {
+    answers,
+    currentQuestion,
+    slug
+  })
+  return data
+}
+
+export const getNewQuestion = () => async dispatch => {
+  await axios.put(`/api/quiz/changequestion`)
 }
 
 const initialState = {}

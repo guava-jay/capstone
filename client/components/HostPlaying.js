@@ -3,7 +3,7 @@ import firebase from '../firebase'
 const database = firebase.database()
 import {connect} from 'react-redux'
 import Highlight from 'react-highlight'
-import {checkAnswersThunk} from '../store/game'
+import {checkAnswersThunk, getNewQuestion} from '../store/game'
 
 class HostPlaying extends React.Component {
   constructor() {
@@ -12,7 +12,8 @@ class HostPlaying extends React.Component {
       currentQuestion: null,
       question: {},
       answers: {},
-      count: 0
+      count: 0,
+      currentQuestionAnswer: null
     }
   }
   componentDidMount() {
@@ -45,7 +46,7 @@ class HostPlaying extends React.Component {
       `rooms/${this.props.game.slug}/active_game/current_answers`
     )
 
-    answerRef.on('value', snapshot => {
+    answerRef.on('value', async snapshot => {
       if (snapshot.val()) {
         console.log('yes')
         this.setState(prevState => {
@@ -53,20 +54,21 @@ class HostPlaying extends React.Component {
             count: prevState.count + 1
           }
         })
-        console.log(this.state.count, 'count from host playing')
       }
       if (this.state.count === this.props.players.length) {
-        this.props.checkAnswersThunk(
+        let getAnswer = await this.props.checkAnswersThunk(
           snapshot.val(),
           this.state.currentQuestion,
           this.props.game.slug
         )
-        //checking answers and updating scores here
-        //need to reset the current answers in state and wait for next question
+        this.setState({currentQuestionAnswer: getAnswer})
+        setTimeout(this.props.getNewQuestion(), 3000)
+        //set timer to call next question
       }
     })
   }
   render() {
+    console.log(this.state, 'state')
     return (
       <div>
         <div>
@@ -74,7 +76,11 @@ class HostPlaying extends React.Component {
           <ul>
             {this.props.players.map(x => {
               let key = Object.keys(x)
-              return <li key={key}>{x[key].displayName}</li>
+              return (
+                <li key={key}>
+                  {x[key].displayName} : {x[key].currentScore}
+                </li>
+              )
             })}
           </ul>
         </div>
@@ -85,6 +91,11 @@ class HostPlaying extends React.Component {
           <Highlight language="javascript">
             {this.state.question.func}
           </Highlight>
+        ) : null}
+
+        {/* show answer */}
+        {this.state.currentQuestionAnswer !== null ? (
+          <h3>Answer : {this.state.currentQuestionAnswer}</h3>
         ) : null}
       </div>
     )
@@ -100,7 +111,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     checkAnswersThunk: (answers, currentQuestion, slug) =>
-      dispatch(checkAnswersThunk(answers, currentQuestion, slug))
+      dispatch(checkAnswersThunk(answers, currentQuestion, slug)),
+    getNewQuestion: () => dispatch(getNewQuestion())
   }
 }
 

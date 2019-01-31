@@ -53,6 +53,8 @@ router.put('/score', async (req, res, next) => {
         }
       }
     })
+    res.json(answerValue)
+    // console.log(answerValue, 'answer Value from quiz')
   } catch (err) {
     next(err)
   }
