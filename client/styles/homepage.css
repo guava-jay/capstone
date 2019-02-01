@@ -1,0 +1,23 @@
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome img {
+  max-height: 600px;
+}
+
+.links * {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.box {
+  position: relative;
+}
+
+.box img {
+  position: absolute;
+}
