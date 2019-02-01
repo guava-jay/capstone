@@ -50,42 +50,32 @@ class HostView extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.state.status === 'waiting' ? (
-          <div>
-            <h1>code: {this.props.slug}</h1>
-            <ul>
-              {this.state.players.map((player, i) => {
-                let pid = Object.keys(player)[0]
-                return <li key={i + ''}> {player[pid].displayName}</li>
-              })}
-            </ul>
-            <button
-              type="button"
-              onClick={this.startGame}
-              disabled={!this.state.ready}
-            >
-              Start Game
-            </button>
-          </div>
-        ) : (
-          ''
-        )}
-
-        {this.state.status === 'playing' ? (
-          <HostPlaying players={this.state.players} />
-        ) : (
-          ''
-        )}
-
-        {this.state.status === 'finished' ? (
-          <HostFinished slug={this.props.slug} />
-        ) : (
-          ''
-        )}
-      </div>
-    )
+    if (this.state.status === 'waiting') {
+      return (
+        <div>
+          <h1>code: {this.props.slug}</h1>
+          <ul>
+            {this.state.players.map((player, i) => {
+              let pid = Object.keys(player)[0]
+              return <li key={i + ''}> {player[pid].displayName}</li>
+            })}
+          </ul>
+          <button
+            type="button"
+            onClick={this.startGame}
+            disabled={!this.state.ready}
+          >
+            Start Game
+          </button>
+        </div>
+      )
+    } else if (this.state.status === 'playing') {
+      return <HostPlaying players={this.state.players} />
+    } else if (this.state.status === 'finished') {
+      return <HostFinished slug={this.props.slug} />
+    } else {
+      return null
+    }
   }
 }
 
