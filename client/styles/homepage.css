@@ -12,11 +12,16 @@
   display: flex;
   flex-direction: column;
   padding-top: 3em;
+  position: relative;
 }
 
 .links a {
   padding: 1.5em;
   font-size: 2em;
+}
+
+.links a:hover {
+  filter: brightness(150%);
 }
 
 .links a:nth-child(1) {
@@ -36,7 +41,10 @@
   position: absolute;
   width: 200px;
   height: auto;
-  bottom: 50px;
+  bottom: -181px;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 /* .box img {
@@ -51,7 +59,7 @@
 }
 
 .welcome {
-  padding: 0 0.5em;
+  padding: 0 0.7em;
 }
 
 .welcome-title {
@@ -61,6 +69,22 @@
 #welcome-title-container {
   padding-top: 3em;
 }
+
+/* extra querie for text stuff*/
+@media only screen and (min-width: 594px) {
+}
+
 /* tablet  and up*/
 @media only screen and (min-width: 768px) {
+  .welcome {
+    /* display:flex;
+    flex-direction: row-reverse; */
+  }
+
+  .box {
+    bottom: -121px;
+    right: -387px;
+    width: 240px;
+    /* z-index: -1; */
+  }
 }

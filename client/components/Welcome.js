@@ -11,9 +11,6 @@ const Welcome = () => {
       </div>
       <div className="welcome-container">
         <Navbar />
-        <div className="box">
-          <img src="/img/cartoon-box.png" />
-        </div>
       </div>
     </div>
   )
