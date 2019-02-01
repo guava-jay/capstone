@@ -11,7 +11,8 @@ class HostView extends React.Component {
     this.state = {
       players: [],
       ready: false,
-      status: null
+      status: null,
+      selectedGame: ''
     }
     this.startGame = this.startGame.bind(this)
   }
@@ -23,6 +24,13 @@ class HostView extends React.Component {
   async initializeState() {
     const playersRef = database.ref(`/rooms/${this.props.slug}/players`)
     const statusRef = database.ref(`/rooms/${this.props.slug}/status`)
+    const selectGameRef = database.ref(
+      `/rooms/${this.props.slug}/active_game/game_name`
+    )
+
+    await selectGameRef.once('value').then(snapshot => {
+      this.setState({selectedGame: snapshot.val()})
+    })
 
     await statusRef.on('value', snapshot => {
       if (snapshot.val()) this.setState({status: snapshot.val()})
@@ -79,9 +87,15 @@ class HostView extends React.Component {
         </div>
       )
     } else if (this.state.status === 'playing') {
-      return <HostPlaying players={this.state.players} />
+      // CHANGE GAME PLAYING COMPONENTS HERE
+      if (this.state.selectedGame === 'quiz') {
+        return <HostPlaying players={this.state.players} />
+      }
     } else if (this.state.status === 'finished') {
-      return <HostFinished slug={this.props.slug} />
+      // CHANGE GAME ENDING COMpONENT HERE
+      if (this.state.selectedGame === 'quiz') {
+        return <HostFinished slug={this.props.slug} />
+      }
     } else {
       return null
     }

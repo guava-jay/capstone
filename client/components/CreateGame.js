@@ -8,26 +8,59 @@ class CreateGame extends Component {
   constructor() {
     super()
     this.state = {
-      allGames: []
+      allGames: [],
+      selectedGame: ''
     }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   async componentDidMount() {
     const gameRef = firebase.ref(`/game_list`)
-    const getGames = await gameRef.once('value').then(snapshot => {
-      console.log(snapshot.key(), 'snapshot key')
+    let test
+    await gameRef.once('value').then(snapshot => {
+      test = Object.keys(snapshot.val())
+    })
+    this.setState({allGames: test})
+  }
+
+  handleChange(e) {
+    this.setState({
+      selectedGame: e.target.value
     })
   }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    if (this.state.selectedGame === '') {
+      alert('please select a game')
+    } else {
+      this.props.createNewGame(this.props.user.uid, this.state.selectedGame)
+    }
+  }
   render() {
+    console.log(this.state.allGames, 'all games state')
     return (
       <div>
         <Link to="./home">Back to home</Link>
         <div align="center">
-          <button
-            type="button"
-            onClick={() => this.props.createNewGame(this.props.user.uid)}
-          >
-            Create game room
-          </button>
+          <form onSubmit={this.handleSubmit}>
+            {this.state.allGames.length ? (
+              <React.Fragment>
+                <p>Select a game :</p>
+                <select onChange={this.handleChange}>
+                  <option value="" />
+                  {this.state.allGames.map(x => {
+                    return (
+                      <option key={x} value={x}>
+                        {x}
+                      </option>
+                    )
+                  })}
+                </select>
+              </React.Fragment>
+            ) : null}
+            <button type="submit">Create game room</button>
+          </form>
         </div>
       </div>
     )
@@ -40,7 +73,7 @@ const mapState = state => {
   }
 }
 const mapDispatch = dispatch => ({
-  createNewGame: uid => dispatch(createNewGame(uid))
+  createNewGame: (uid, game) => dispatch(createNewGame(uid, game))
 })
 
 export default withRouter(connect(mapState, mapDispatch)(CreateGame))

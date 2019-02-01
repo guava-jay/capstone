@@ -14,8 +14,8 @@ const createGame = slug => ({
 //and then join game the role will be player
 
 //thunk creators
-export const createNewGame = uid => async dispatch => {
-  const {data: slug} = await axios.post('/api/game', {uid})
+export const createNewGame = (uid, game) => async dispatch => {
+  const {data: slug} = await axios.post('/api/game', {uid, game})
   history.push(`/newGame/${slug}`)
   dispatch(createGame(slug))
 }
