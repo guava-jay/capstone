@@ -42,7 +42,58 @@ export default class HostFinished extends React.Component {
     this.findHighScore(answersObj)
   }
 
+  async getAnswerData() {
+    const playerAnswers = await database
+      .ref(`rooms/${this.props.slug}/players`)
+      .once('value')
+      .then(snapshot => snapshot.val())
+
+    const players = Object.keys(playerAnswers)
+    let dataObj = {}
+
+    players.forEach(uid => {
+      const indivAnswers = Object.keys(playerAnswers[uid].answers)
+      const displayName = playerAnswers[uid].displayName
+
+      indivAnswers.forEach(questionId => {
+        // check if answer was correct
+        database
+          .ref(`game_list/quiz/${questionId}/answer`)
+          .once('value')
+          .then(snapshot => {
+            let points
+            if (snapshot.val() === playerAnswers[uid].answers[questionId]) {
+              points = 1
+            } else {
+              points = 0
+            }
+
+            if (!dataObj[questionId]) dataObj[questionId] = {}
+
+            dataObj[questionId][displayName] = points
+          })
+      })
+    })
+
+    return dataObj
+    // const data = [{name: '1', eve: 4000, guest: 2400}]
+  }
+
+  formatData(obj) {
+    const dataArr = Object.keys(obj).map(key => ({
+      name: key,
+      ...obj[key]
+    }))
+
+    return dataArr
+  }
+
   render() {
+    const dataObj = this.getAnswerData()
+    const data = this.formatData(dataObj)
+    console.log(dataObj)
+    console.log(data)
+
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
     const hasTie = this.state.winners.length > 1
