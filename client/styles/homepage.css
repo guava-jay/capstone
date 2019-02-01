@@ -45,6 +45,7 @@
   left: 0;
   right: 0;
   margin: auto;
+  opacity: 0.3;
 }
 
 /* .box img {
@@ -82,9 +83,9 @@
   }
 
   .box {
-    bottom: -121px;
-    right: -387px;
-    width: 240px;
-    /* z-index: -1; */
+    bottom: -145px;
+    right: -442px;
+    width: 350px;
+    z-index: -1;
   }
 }
