@@ -1,0 +1,87 @@
+@import './homepage.css';
+@import url('https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800');
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --darkBlue: #1a535c;
+  --yellow: #ffe66d;
+  --pink: #ff6b6b;
+  --blue: #4ecdc4;
+  --white: #fff;
+  --darkPink: #5d2727;
+  --darkGray: #202021;
+}
+
+body {
+  font-family: 'Dosis', 'sans-serif';
+  color: #202021;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  font-weight: 500;
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
+
+.yellowFont {
+  color: var(--yellow);
+}
+
+.pinkFont {
+  color: var(--pink);
+}
+
+.darkPinkFont {
+  color: var(--darkPink);
+}
+
+.darkBlueFont {
+  color: var(--darkBlue);
+}
+
+a {
+  text-decoration: none;
+}
+
+label {
+  display: block;
+}
+input {
+  font-size: 30pt;
+  padding: 0.5em;
+  width: 4em;
+}
+button {
+  font-size: 30pt;
+}
+
+a,
+a:hover {
+  color: #000000;
+}
+
+form div {
+  margin: 1em;
+  display: inline-block;
+}
+
+button:disabled {
+  background-color: lightgrey;
+}
+
+button:disabled {
+  background-color: lightgrey;
+}
+
+/* tablet  and up*/
+@media only screen and (min-width: 768px) {
+}
