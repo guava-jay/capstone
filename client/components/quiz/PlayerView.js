@@ -22,7 +22,6 @@ class PlayerView extends React.Component {
 
   // Can select between an answer multiple times...
   setChoice(event) {
-    event.preventDefault()
     const currentQuestion = this.state.currentQuestion
     const currentResponse = event.target.value
     const responses = {
