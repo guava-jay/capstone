@@ -76,6 +76,7 @@ class HostPlaying extends React.Component {
     this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
   }
   render() {
+    console.log(this.state.currentQuestionAnswer, 'answer current')
     return (
       <div>
         <audio

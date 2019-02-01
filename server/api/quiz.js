@@ -33,6 +33,7 @@ router.put('/score', async (req, res, next) => {
     let answerValue
     await answer.once('value', snapshot => {
       answerValue = snapshot.val()
+      console.log(req.body.answers, 'answers from score')
       for (let key in req.body.answers) {
         if (req.body.answers[key] == answerValue) {
           let currentScore = database.ref(
