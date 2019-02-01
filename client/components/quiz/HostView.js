@@ -20,8 +20,7 @@ class HostView extends React.Component {
     this.props.startGameThunk(this.props.slug)
   }
 
-  async componentDidMount() {
-    //players
+  async initializeState() {
     const playersRef = database.ref(`/rooms/${this.props.slug}/players`)
     const statusRef = database.ref(`/rooms/${this.props.slug}/status`)
 
@@ -49,7 +48,19 @@ class HostView extends React.Component {
     )
   }
 
+  componentDidMount() {
+    this.initializeState()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.slug !== prevProps.slug) {
+      this.initializeState()
+    }
+  }
+
   render() {
+    console.log(this.state)
+    console.log(this.props.slug)
     if (this.state.status === 'waiting') {
       return (
         <div>

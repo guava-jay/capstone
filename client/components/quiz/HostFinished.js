@@ -43,7 +43,6 @@ export default class HostFinished extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
     const hasTie = this.state.winners.length > 1
