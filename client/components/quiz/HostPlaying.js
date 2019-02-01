@@ -12,9 +12,11 @@ class HostPlaying extends React.Component {
       currentQuestion: null,
       question: {},
       count: 0,
-      currentQuestionAnswer: null
+      currentQuestionAnswer: null,
+      muted: false
     }
     this.updateQuestion = this.updateQuestion.bind(this)
+    this.endGame = this.endGame.bind(this)
   }
   async componentDidMount() {
     this.props.getNewQuestion(this.props.game.slug)
@@ -84,17 +86,21 @@ class HostPlaying extends React.Component {
       this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
     }
   }
+
+  async endGame() {
+    await this.props.endGameThunk(this.props.game.slug)
+  }
+
   render() {
-    console.log(this.state.questionCount, 'question count')
     return (
       <div>
         <audio
+          id="audio"
+          muted={this.state.muted}
           autoPlay
           loop
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
-        >
-          Your browser does not support the audio element.
-        </audio>
+        />
         <div>
           <h2>Players</h2>
           <ul>
@@ -123,6 +129,29 @@ class HostPlaying extends React.Component {
         {this.state.currentQuestionAnswer !== null ? (
           <h3>Answer : {this.state.currentQuestionAnswer}</h3>
         ) : null}
+
+        <button type="submit" onClick={this.endGame}>
+          End game
+        </button>
+        {this.state.muted ? (
+          <button
+            type="button"
+            onClick={() => {
+              this.setState({muted: false})
+            }}
+          >
+            Unmute
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              this.setState({muted: true})
+            }}
+          >
+            Mute
+          </button>
+        )}
       </div>
     )
   }

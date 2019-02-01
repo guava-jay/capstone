@@ -44,7 +44,7 @@ router.post('/', async (req, res, next) => {
           status: 'waiting',
           host: req.body.uid,
           active_game: {
-            game_name: 'quiz',
+            game_name: req.body.game,
             current_question: null
           }
         })
@@ -80,6 +80,22 @@ router.post('/join', async (req, res, next) => {
         next()
       }
     })
+  } catch (err) {
+    console.error(err)
+    next()
+  }
+})
+
+router.put('/remove', async (req, res, next) => {
+  console.log('in backend delete', req.body)
+  const slug = req.body.slug.toUpperCase()
+  try {
+    console.log(slug)
+    console.log(`rooms/${slug}/players/${req.body.uid}`)
+    const ref = database.ref(`rooms/${slug}/players/${req.body.uid}`)
+
+    await ref.remove()
+    res.sendStatus(204)
   } catch (err) {
     console.error(err)
     next()

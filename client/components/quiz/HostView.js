@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import database from '../../firebase'
 import {startGameThunk} from '../../store/game'
+import {deletePlayerThunk} from '../../store/user'
 import HostPlaying from './HostPlaying'
 import HostFinished from './HostFinished'
 
@@ -11,19 +12,33 @@ class HostView extends React.Component {
     this.state = {
       players: [],
       ready: false,
-      status: null
+      status: null,
+      selectedGame: ''
     }
     this.startGame = this.startGame.bind(this)
+    this.deletePlayer = this.deletePlayer.bind(this)
   }
 
   startGame() {
+    console.log('start game')
     this.props.startGameThunk(this.props.slug)
   }
 
-  async componentDidMount() {
-    //players
+  deletePlayer(pid) {
+    console.log('clicked! pid =', pid)
+    this.props.deletePlayerThunk(this.props.slug, pid)
+  }
+
+  async initializeState() {
     const playersRef = database.ref(`/rooms/${this.props.slug}/players`)
     const statusRef = database.ref(`/rooms/${this.props.slug}/status`)
+    const selectGameRef = database.ref(
+      `/rooms/${this.props.slug}/active_game/game_name`
+    )
+
+    await selectGameRef.once('value').then(snapshot => {
+      this.setState({selectedGame: snapshot.val()})
+    })
 
     await statusRef.on('value', snapshot => {
       if (snapshot.val()) this.setState({status: snapshot.val()})
@@ -49,6 +64,16 @@ class HostView extends React.Component {
     )
   }
 
+  componentDidMount() {
+    this.initializeState()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.slug !== prevProps.slug) {
+      this.initializeState()
+    }
+  }
+
   render() {
     if (this.state.status === 'waiting') {
       return (
@@ -57,7 +82,22 @@ class HostView extends React.Component {
           <ul>
             {this.state.players.map((player, i) => {
               let pid = Object.keys(player)[0]
-              return <li key={i + ''}> {player[pid].displayName}</li>
+              return (
+                <div key={i + ''}>
+                  <li>
+                    <button
+                      id={i + ''}
+                      type="button"
+                      onClick={e => {
+                        this.deletePlayer(pid)
+                      }}
+                    >
+                      x
+                    </button>
+                    {player[pid].displayName}
+                  </li>
+                </div>
+              )
             })}
           </ul>
           <button
@@ -70,9 +110,15 @@ class HostView extends React.Component {
         </div>
       )
     } else if (this.state.status === 'playing') {
-      return <HostPlaying players={this.state.players} />
+      // CHANGE GAME PLAYING COMPONENTS HERE
+      if (this.state.selectedGame === 'quiz') {
+        return <HostPlaying players={this.state.players} />
+      }
     } else if (this.state.status === 'finished') {
-      return <HostFinished slug={this.props.slug} />
+      // CHANGE GAME ENDING COMpONENT HERE
+      if (this.state.selectedGame === 'quiz') {
+        return <HostFinished slug={this.props.slug} />
+      }
     } else {
       return null
     }
@@ -81,7 +127,8 @@ class HostView extends React.Component {
 
 const mapDispatch = dispatch => {
   return {
-    startGameThunk: slug => dispatch(startGameThunk(slug))
+    startGameThunk: slug => dispatch(startGameThunk(slug)),
+    deletePlayerThunk: (slug, uid) => dispatch(deletePlayerThunk(slug, uid))
   }
 }
 
