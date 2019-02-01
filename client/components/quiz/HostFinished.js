@@ -49,9 +49,7 @@ export default class HostFinished extends React.Component {
       .then(snapshot => snapshot.val())
 
     const players = Object.keys(playerAnswers)
-    const numQuestions = Object.keys(playerAnswers[players[0]].answers).length
-    const dataObj = {}
-    let dataArr
+    let dataObj = {}
 
     players.forEach(uid => {
       const indivAnswers = Object.keys(playerAnswers[uid].answers)
@@ -77,18 +75,25 @@ export default class HostFinished extends React.Component {
       })
     })
 
-    dataArr = Object.keys(dataObj).map(key => ({
-      // name: key,
-      // ...dataObj[key]
-    }))
-
-    console.log(dataObj)
-
+    return dataObj
     // const data = [{name: '1', eve: 4000, guest: 2400}]
   }
 
+  formatData(obj) {
+    const dataArr = Object.keys(obj).map(key => ({
+      name: key,
+      ...obj[key]
+    }))
+
+    return dataArr
+  }
+
   render() {
-    this.getAnswerData()
+    const dataObj = this.getAnswerData()
+    const data = this.formatData(dataObj)
+    console.log(dataObj)
+    console.log(data)
+
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
     const hasTie = this.state.winners.length > 1

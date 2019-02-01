@@ -72,7 +72,7 @@ class HostView extends React.Component {
         <div>
           <h1>code: {this.props.slug}</h1>
           <ul>
-            {this.state.players.map(player => {
+            {this.state.players.map((player, i) => {
               let pid = Object.keys(player)[0]
               return (
                 <div key={i + ''}>
