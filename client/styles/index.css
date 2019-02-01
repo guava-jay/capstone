@@ -21,6 +21,11 @@ body {
   color: #202021;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 p {
   font-weight: 500;
   font-size: 1.5em;
@@ -33,6 +38,14 @@ p {
 
 .pinkFont {
   color: var(--pink);
+}
+
+.darkPinkFont {
+  color: var(--darkPink);
+}
+
+.darkBlueFont {
+  color: var(--darkBlue);
 }
 
 a {
@@ -50,13 +63,7 @@ input {
 button {
   font-size: 30pt;
 }
-nav a {
-  display: inline-block;
-  font-size: 30pt;
-  margin: 1em;
-  padding: 1em;
-  border: 1px solid #000000;
-}
+
 a,
 a:hover {
   color: #000000;
