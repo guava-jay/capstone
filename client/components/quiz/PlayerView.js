@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
 import Navbar from '../navbar'
 
-import {PieChart} from 'recharts'
+import {PieChart, Pie, Cell, Label} from 'recharts'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -16,7 +16,8 @@ class PlayerView extends React.Component {
       currentQuestion: null,
       answerChoices: [],
       responses: {},
-      answeredCurrent: false
+      answeredCurrent: false,
+      currentScore: 0
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -99,6 +100,12 @@ class PlayerView extends React.Component {
       this.setState({gameStatus: snapshot.val()})
     })
 
+    database
+      .ref(`${ROOM}/players/${this.props.user.uid}/currentScore`)
+      .on('value', snapshot => {
+        this.setState({currentScore: snapshot.val()})
+      })
+
     // Listens to changes in player's recorded responses
 
     database
@@ -114,6 +121,14 @@ class PlayerView extends React.Component {
   }
 
   render() {
+    const numCorrect = this.state.currentScore
+    const numIncorrect = Object.keys(this.state.responses).length - numCorrect
+
+    const answerData = [
+      {name: 'Correct', value: numCorrect},
+      {name: 'Incorrect', value: numIncorrect}
+    ]
+
     // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
     const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
     if (this.state.gameStatus === 'waiting') {
@@ -132,15 +147,6 @@ class PlayerView extends React.Component {
                 <input type="radio" name="choices" value={choice} />
                 <label htmlFor="choices">{choice}</label>
               </React.Fragment>
-              // <button
-              //   name={idx}
-              //   type="submit"
-              //   onClick={this.setChoice}
-              //   key={idx}
-              //   value={choice}
-              // >
-              //   {choice}
-              // </button>
             ))}
             <br />
             <button
@@ -159,14 +165,20 @@ class PlayerView extends React.Component {
           <h1>Done!</h1>
           <PieChart width={400} height={300}>
             <Pie
-              data={data01}
+              data={answerData}
               dataKey="value"
               nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius={50}
+              innerRadius={80}
+              outerRadius={100}
+              paddingAngle={5}
               fill="#8884d8"
-            />
+            >
+              <Cell fill="#00C49F" />
+              <Cell fill="#ff3860" />
+              <Label position="center">{`${numCorrect} Correct`}</Label>
+            </Pie>
           </PieChart>
 
           <Navbar />
