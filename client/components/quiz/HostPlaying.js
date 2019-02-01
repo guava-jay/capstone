@@ -12,7 +12,8 @@ class HostPlaying extends React.Component {
       currentQuestion: null,
       question: {},
       count: 0,
-      currentQuestionAnswer: null
+      currentQuestionAnswer: null,
+      muted: false
     }
     this.updateQuestion = this.updateQuestion.bind(this)
   }
@@ -89,12 +90,12 @@ class HostPlaying extends React.Component {
     return (
       <div>
         <audio
+          id="audio"
+          muted={this.state.muted}
           autoPlay
           loop
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
-        >
-          Your browser does not support the audio element.
-        </audio>
+        />
         <div>
           <h2>Players</h2>
           <ul>
@@ -123,6 +124,25 @@ class HostPlaying extends React.Component {
         {this.state.currentQuestionAnswer !== null ? (
           <h3>Answer : {this.state.currentQuestionAnswer}</h3>
         ) : null}
+        {this.state.muted ? (
+          <button
+            type="button"
+            onClick={() => {
+              this.setState({muted: false})
+            }}
+          >
+            Unmute
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              this.setState({muted: true})
+            }}
+          >
+            Mute
+          </button>
+        )}
       </div>
     )
   }
