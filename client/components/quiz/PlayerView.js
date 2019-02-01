@@ -11,7 +11,7 @@ class PlayerView extends React.Component {
   constructor() {
     super()
     this.state = {
-      gameStatus: '',
+      gameStatus: 'waiting',
       gameName: null,
       currentQuestion: null,
       answerChoices: [],

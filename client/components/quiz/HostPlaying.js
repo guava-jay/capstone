@@ -15,6 +15,7 @@ class HostPlaying extends React.Component {
       currentQuestionAnswer: null
     }
     this.updateQuestion = this.updateQuestion.bind(this)
+    this.endGame = this.endGame.bind(this)
   }
   async componentDidMount() {
     this.props.getNewQuestion(this.props.game.slug)
@@ -84,8 +85,12 @@ class HostPlaying extends React.Component {
       this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
     }
   }
+
+  async endGame() {
+    await this.props.endGameThunk(this.props.game.slug)
+  }
+
   render() {
-    console.log(this.state.questionCount, 'question count')
     return (
       <div>
         <audio
@@ -118,6 +123,10 @@ class HostPlaying extends React.Component {
             {this.state.question.func}
           </Highlight>
         ) : null}
+
+        <button type="submit" onClick={this.endGame}>
+          End game
+        </button>
 
         {/* show answer */}
         {this.state.currentQuestionAnswer !== null ? (
