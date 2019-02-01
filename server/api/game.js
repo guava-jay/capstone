@@ -86,16 +86,16 @@ router.post('/join', async (req, res, next) => {
   }
 })
 
-router.delete(`/join`, async (req, res, next) => {
-  console.log('in backend delete /join', req.params.uid)
+router.put('/remove', async (req, res, next) => {
+  console.log('in backend delete', req.body)
+  const slug = req.body.slug.toUpperCase()
   try {
-    const slug = req.body.slug.toUpperCase()
     console.log(slug)
-    const ref = database.ref(`rooms/${slug}`)
-    await ref.once('value').then(() => {
-      ref.child(req.params.uid).removeValue()
-      res.sendStatus(204)
-    })
+    console.log(`rooms/${slug}/players/${req.body.uid}`)
+    const ref = database.ref(`rooms/${slug}/players/${req.body.uid}`)
+
+    await ref.remove()
+    res.sendStatus(204)
   } catch (err) {
     console.error(err)
     next()

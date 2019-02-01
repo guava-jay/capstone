@@ -25,8 +25,8 @@ class HostView extends React.Component {
 
   deletePlayer(pid, i) {
     //also remove from state
-    const newPlayerArr = this.state.players.slice
-    this.setState({players: newPlayerArr})
+    // const newPlayerArr = this.state.players.slice(0, i) + this.state.players.slice(i + 1);
+    // this.setState({ players: newPlayerArr })
     console.log('clicked! pid =', pid)
     this.props.deletePlayerThunk(this.props.slug, pid)
   }
@@ -75,7 +75,7 @@ class HostView extends React.Component {
                       id={i + ''}
                       type="button"
                       onClick={e => {
-                        this.deletePlayer(pid)
+                        this.deletePlayer(pid, i)
                       }}
                     >
                       x
