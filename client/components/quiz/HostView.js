@@ -23,16 +23,12 @@ class HostView extends React.Component {
     this.props.startGameThunk(this.props.slug)
   }
 
-  deletePlayer(pid, i) {
-    //also remove from state
-    // const newPlayerArr = this.state.players.slice(0, i) + this.state.players.slice(i + 1);
-    // this.setState({ players: newPlayerArr })
+  deletePlayer(pid) {
     console.log('clicked! pid =', pid)
     this.props.deletePlayerThunk(this.props.slug, pid)
   }
 
-  async componentDidMount() {
-    //players
+  async initializeState() {
     const playersRef = database.ref(`/rooms/${this.props.slug}/players`)
     const statusRef = database.ref(`/rooms/${this.props.slug}/status`)
 
@@ -60,13 +56,23 @@ class HostView extends React.Component {
     )
   }
 
+  componentDidMount() {
+    this.initializeState()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.slug !== prevProps.slug) {
+      this.initializeState()
+    }
+  }
+
   render() {
     if (this.state.status === 'waiting') {
       return (
         <div>
           <h1>code: {this.props.slug}</h1>
           <ul>
-            {this.state.players.map((player, i) => {
+            {this.state.players.map(player => {
               let pid = Object.keys(player)[0]
               return (
                 <div key={i + ''}>
