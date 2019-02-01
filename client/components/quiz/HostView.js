@@ -28,16 +28,16 @@ class HostView extends React.Component {
     this.props.deletePlayerThunk(this.props.slug, context.id)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //players
     const playersRef = database.ref(`/rooms/${this.props.slug}/players`)
     const statusRef = database.ref(`/rooms/${this.props.slug}/status`)
 
-    statusRef.on('value', snapshot => {
+    await statusRef.on('value', snapshot => {
       if (snapshot.val()) this.setState({status: snapshot.val()})
     })
 
-    playersRef.on(
+    await playersRef.on(
       'value',
       snapshot => {
         let playerArr = []

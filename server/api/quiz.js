@@ -33,6 +33,7 @@ router.put('/score', async (req, res, next) => {
     let answerValue
     await answer.once('value', snapshot => {
       answerValue = snapshot.val()
+      console.log(req.body.answers, 'answers from score')
       for (let key in req.body.answers) {
         if (req.body.answers[key] == answerValue) {
           let currentScore = database.ref(
@@ -118,7 +119,7 @@ router.put(`/changequestion`, async (req, res, next) => {
       unansweredQuestions[
         Math.floor(Math.random() * unansweredQuestions.length)
       ]
-
+    console.log(newQuestionId, 'new question id')
     //set the new question id to equal the randomly chosen question
     await database.ref(`/rooms/${slug}/${CURRENT_QUESTION}/`).set(newQuestionId)
 
