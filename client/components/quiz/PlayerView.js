@@ -114,14 +114,7 @@ class PlayerView extends React.Component {
   render() {
     // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
     const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
-    if (!this.state.gameStatus) {
-      return (
-        <div>
-          <h1>Game has been ended</h1>
-          <NavLink to="/">Play again</NavLink>
-        </div>
-      )
-    } else if (this.state.gameStatus === 'waiting') {
+    if (this.state.gameStatus === 'waiting') {
       return <h1>Waiting to start...</h1>
     } else if (
       this.state.gameStatus === 'playing' &&
@@ -158,6 +151,14 @@ class PlayerView extends React.Component {
         <div>
           <h1>Done!</h1>
           <Navbar />
+        </div>
+      )
+      // Change this to "is_active_game"
+    } else if (!this.state.gameStatus) {
+      return (
+        <div>
+          <h1>Game has been ended</h1>
+          <NavLink to="/">Play again</NavLink>
         </div>
       )
     } else {
