@@ -2,12 +2,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Highlight from 'react-highlight'
 import database from '../../firebase'
-import {checkAnswersThunk, getNewQuestion} from '../../store/game'
+import {checkAnswersThunk, getNewQuestion, endGameThunk} from '../../store/game'
 
 class HostPlaying extends React.Component {
   constructor() {
     super()
     this.state = {
+      questionCount: 0,
       currentQuestion: null,
       question: {},
       count: 0,
@@ -37,9 +38,12 @@ class HostPlaying extends React.Component {
               func = snapshot.val().function || null
             }
           })
-        this.setState({
-          currentQuestion: snapshot.val(),
-          question: {question, func}
+        this.setState(prevState => {
+          return {
+            questionCount: prevState.questionCount + 1,
+            currentQuestion: snapshot.val(),
+            question: {question, func}
+          }
         })
       }
     })
@@ -72,11 +76,16 @@ class HostPlaying extends React.Component {
   }
 
   async updateQuestion() {
-    let idk = await this.props.getNewQuestion(this.props.game.slug)
-    this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
+    //stops the game at 10 questions
+    if (this.state.questionCount === 10) {
+      await this.props.endGameThunk(this.props.game.slug)
+    } else {
+      let idk = await this.props.getNewQuestion(this.props.game.slug)
+      this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
+    }
   }
   render() {
-    console.log(this.state.currentQuestionAnswer, 'answer current')
+    console.log(this.state.questionCount, 'question count')
     return (
       <div>
         <audio
@@ -127,7 +136,8 @@ const mapDispatch = dispatch => {
   return {
     checkAnswersThunk: (answers, currentQuestion, slug) =>
       dispatch(checkAnswersThunk(answers, currentQuestion, slug)),
-    getNewQuestion: slug => dispatch(getNewQuestion(slug))
+    getNewQuestion: slug => dispatch(getNewQuestion(slug)),
+    endGameThunk: slug => dispatch(endGameThunk(slug))
   }
 }
 
