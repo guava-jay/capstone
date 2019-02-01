@@ -48,8 +48,10 @@ router.post('/', async (req, res, next) => {
             current_question: null
           }
         })
+        .then(() => {
+          res.status(201).json(slug)
+        })
     })
-    res.status(201).json(slug)
   } catch (err) {
     console.error(err)
     res.status(500).send('Error creating new game')
