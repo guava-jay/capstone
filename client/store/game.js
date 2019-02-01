@@ -21,7 +21,6 @@ export const createNewGame = uid => async dispatch => {
 }
 
 export const endGameThunk = slug => async dispatch => {
-  console.log('hit end game thunk', slug)
   await axios.put(`/api/game/${slug}`, {status: 'finished'})
 }
 

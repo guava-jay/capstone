@@ -124,14 +124,14 @@ class HostPlaying extends React.Component {
           </Highlight>
         ) : null}
 
-        <button type="submit" onClick={this.endGame}>
-          End game
-        </button>
-
         {/* show answer */}
         {this.state.currentQuestionAnswer !== null ? (
           <h3>Answer : {this.state.currentQuestionAnswer}</h3>
         ) : null}
+
+        <button type="submit" onClick={this.endGame}>
+          End game
+        </button>
       </div>
     )
   }
