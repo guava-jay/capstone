@@ -7,6 +7,7 @@ import {CREATE_GAME} from './game'
 //ACTION TYPES
 const SET_PLAYER = 'SET_PLAYER'
 export const JOIN_GAME = 'JOIN_GAME'
+const DELETE_PLAYER = 'DELETE_PLAYER'
 
 const MAX_PLAYERS = 4
 
@@ -16,6 +17,7 @@ const defaultUser = {}
 //ACTION CREATORS
 const setPlayer = playeruid => ({type: SET_PLAYER, playeruid})
 const joinGame = (slug, role) => ({type: JOIN_GAME, slug, role})
+//const deletePlayer = playeruid => ({ type: DELETE_PLAYER.playeruid })
 
 //THUNK CREATORS
 // Login thunk
@@ -103,6 +105,17 @@ export const joinGameThunk = (slug, uid, displayName) => {
       })
       history.push(`/newGame/${slug}`)
       dispatch(joinGame(slug, 'player'))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const deletePlayerThunk = (slug, uid) => {
+  console.log('In deletePlayerThunk')
+  return async dispatch => {
+    try {
+      await axios.delete('/join', {slug, uid})
     } catch (error) {
       console.error(error)
     }

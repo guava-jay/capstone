@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import database from '../../firebase'
 import {startGameThunk} from '../../store/game'
+import {deletePlayerThunk} from '../../store/user'
 import HostPlaying from './HostPlaying'
 import HostFinished from './HostFinished'
 
@@ -14,10 +15,17 @@ class HostView extends React.Component {
       status: null
     }
     this.startGame = this.startGame.bind(this)
+    this.deletePlayer = this.deletePlayer.bind(this)
   }
 
   startGame() {
     this.props.startGameThunk(this.props.slug)
+  }
+
+  deletePlayer(context) {
+    //also remove from state
+    console.log('clicked! uid =', context.id)
+    this.props.deletePlayerThunk(this.props.slug, context.id)
   }
 
   componentDidMount() {
@@ -57,7 +65,20 @@ class HostView extends React.Component {
           <ul>
             {this.state.players.map((player, i) => {
               let pid = Object.keys(player)[0]
-              return <li key={i + ''}> {player[pid].displayName}</li>
+              return (
+                <div key={i + ''}>
+                  <li>
+                    <button
+                      id={i + ''}
+                      type="button"
+                      onClick={this.deletePlayer(this)}
+                    >
+                      x
+                    </button>
+                    {player[pid].displayName}
+                  </li>
+                </div>
+              )
             })}
           </ul>
           <button
@@ -81,7 +102,8 @@ class HostView extends React.Component {
 
 const mapDispatch = dispatch => {
   return {
-    startGameThunk: slug => dispatch(startGameThunk(slug))
+    startGameThunk: slug => dispatch(startGameThunk(slug)),
+    deletePlayerThunk: (slug, uid) => dispatch(deletePlayerThunk(slug, uid))
   }
 }
 

@@ -84,6 +84,22 @@ router.post('/join', async (req, res, next) => {
   }
 })
 
+router.delete(`/join`, async (req, res, next) => {
+  console.log('in backend delete /join')
+  try {
+    const slug = req.body.slug.toUpperCase()
+    console.log(slug)
+    const ref = database.ref(`rooms/${slug}`)
+    await ref.once('value').then(() => {
+      ref.child(req.params.uid).removeValue()
+      res.sendStatus(204)
+    })
+  } catch (err) {
+    console.error(err)
+    next()
+  }
+})
+
 //toggle game room to playing
 router.put('/:slug', (req, res, next) => {
   try {
