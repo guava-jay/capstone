@@ -2,8 +2,21 @@ import React, {Component} from 'react'
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {createNewGame} from '../store/game'
+import firebase from '../firebase'
 
 class CreateGame extends Component {
+  constructor() {
+    super()
+    this.state = {
+      allGames: []
+    }
+  }
+  async componentDidMount() {
+    const gameRef = firebase.ref(`/game_list`)
+    const getGames = await gameRef.once('value').then(snapshot => {
+      console.log(snapshot.key(), 'snapshot key')
+    })
+  }
   render() {
     return (
       <div>
