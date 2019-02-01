@@ -21,3 +21,25 @@
 .box img {
   position: absolute;
 }
+
+#header {
+  text-align: center;
+  background: var(--darkBlue);
+  font-size: 2.3em;
+  padding: 0.5em;
+}
+
+.welcome {
+  padding: 0 0.5em;
+}
+
+.welcome-title {
+  font-size: 3em;
+}
+
+#welcome-title-container {
+  padding-top: 3em;
+}
+/* tablet  and up*/
+@media only screen and (min-width: 768px) {
+}
