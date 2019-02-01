@@ -81,7 +81,7 @@ class HostView extends React.Component {
                       id={i + ''}
                       type="button"
                       onClick={e => {
-                        this.deletePlayer(pid, i)
+                        this.deletePlayer(pid)
                       }}
                     >
                       x
