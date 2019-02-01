@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
 import Navbar from '../navbar'
 
+import {PieChart} from 'recharts'
+
 class PlayerView extends React.Component {
   constructor() {
     super()
@@ -150,6 +152,18 @@ class PlayerView extends React.Component {
       return (
         <div>
           <h1>Done!</h1>
+          <PieChart width={400} height={300}>
+            <Pie
+              data={data01}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={50}
+              fill="#8884d8"
+            />
+          </PieChart>
+
           <Navbar />
         </div>
       )
