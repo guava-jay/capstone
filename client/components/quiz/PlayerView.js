@@ -47,7 +47,7 @@ class PlayerView extends React.Component {
     this.props.setResponseThunk(slug, uid, answer)
   }
 
-  async componentDidMount() {
+  async initializeState() {
     const ROOM = `/rooms/${this.props.slug}`
     const ACTIVE_GAME = ROOM + '/active_game'
 
@@ -120,6 +120,16 @@ class PlayerView extends React.Component {
       })
   }
 
+  componentDidMount() {
+    this.initializeState()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.slug !== prevProps.slug) {
+      this.initializeState()
+    }
+  }
+
   render() {
     const numCorrect = this.state.currentScore
     const numIncorrect = Object.keys(this.state.responses).length - numCorrect
@@ -172,7 +182,7 @@ class PlayerView extends React.Component {
               cy="50%"
               innerRadius={80}
               outerRadius={100}
-              paddingAngle={5}
+              paddingAngle={0}
               fill="#8884d8"
             >
               <Cell fill="#00C49F" />

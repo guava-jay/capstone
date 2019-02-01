@@ -59,8 +59,6 @@ class HostView extends React.Component {
   }
 
   render() {
-    console.log(this.state)
-    console.log(this.props.slug)
     if (this.state.status === 'waiting') {
       return (
         <div>
