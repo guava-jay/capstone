@@ -34,6 +34,7 @@ export const checkAnswersThunk = (
     currentQuestion,
     slug
   })
+  //this returns the answer
   return data
 }
 
