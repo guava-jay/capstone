@@ -129,13 +129,18 @@ class PlayerView extends React.Component {
           <form onSubmit={this.submitChoice} onChange={this.setChoice}>
             {this.state.answerChoices.map((choice, idx) => (
               <React.Fragment key={choice}>
-                <label>
-                  {choice}
-                  <input type="radio" name="choices" />
-                </label>
-                {/* <input display="inline" type="radio" name="choices" value={choice} />
-                <label display="inline" htmlFor="choices">{choice}</label> */}
+                <input type="radio" name="choices" value={choice} />
+                <label htmlFor="choices">{choice}</label>
               </React.Fragment>
+              // <button
+              //   name={idx}
+              //   type="submit"
+              //   onClick={this.setChoice}
+              //   key={idx}
+              //   value={choice}
+              // >
+              //   {choice}
+              // </button>
             ))}
             <br />
             <button
