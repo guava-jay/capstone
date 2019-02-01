@@ -19,13 +19,16 @@ class HostView extends React.Component {
   }
 
   startGame() {
+    console.log('start game')
     this.props.startGameThunk(this.props.slug)
   }
 
-  deletePlayer(context) {
+  deletePlayer(pid, i) {
     //also remove from state
-    console.log('clicked! uid =', context.id)
-    this.props.deletePlayerThunk(this.props.slug, context.id)
+    const newPlayerArr = this.state.players.slice
+    this.setState({players: newPlayerArr})
+    console.log('clicked! pid =', pid)
+    this.props.deletePlayerThunk(this.props.slug, pid)
   }
 
   async componentDidMount() {
@@ -71,7 +74,9 @@ class HostView extends React.Component {
                     <button
                       id={i + ''}
                       type="button"
-                      onClick={this.deletePlayer(this)}
+                      onClick={e => {
+                        this.deletePlayer(pid)
+                      }}
                     >
                       x
                     </button>

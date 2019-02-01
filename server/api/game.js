@@ -87,7 +87,7 @@ router.post('/join', async (req, res, next) => {
 })
 
 router.delete(`/join`, async (req, res, next) => {
-  console.log('in backend delete /join')
+  console.log('in backend delete /join', req.params.uid)
   try {
     const slug = req.body.slug.toUpperCase()
     console.log(slug)
