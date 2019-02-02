@@ -45,6 +45,7 @@ class PlayerView extends React.Component {
     const currentQuestion = this.state.currentQuestion
     const answer = this.state.responses[currentQuestion]
     this.props.setResponseThunk(slug, uid, answer)
+    this.setState({answeredCurrent: true})
   }
 
   async initializeState() {
@@ -108,16 +109,16 @@ class PlayerView extends React.Component {
 
     // Listens to changes in player's recorded responses
 
-    database
-      .ref(`${ROOM}/players/${this.props.user.uid}`)
-      .on('value', snapshot => {
-        const response = snapshot.val()
-        if (response.answers) {
-          if (response.answers[this.state.currentQuestion]) {
-            this.setState({answeredCurrent: true})
-          }
-        }
-      })
+    // database
+    //   .ref(`${ROOM}/players/${this.props.user.uid}`)
+    //   .on('value', snapshot => {
+    //     const response = snapshot.val()
+    //     if (response.answers) {
+    //       if (response.answers[this.state.currentQuestion]) {
+    //         this.setState({answeredCurrent: true})
+    //       }
+    //     }
+    //   })
   }
 
   componentDidMount() {
@@ -149,25 +150,31 @@ class PlayerView extends React.Component {
     ) {
       //show answer choices
       return (
-        <div>
-          <h1>Choose carefully...</h1>
-          <form onSubmit={this.submitChoice} onChange={this.setChoice}>
-            {this.state.answerChoices.map((choice, idx) => (
-              <React.Fragment key={choice}>
-                <input type="radio" name="choices" value={choice} />
-                <label htmlFor="choices">{choice}</label>
-              </React.Fragment>
-            ))}
-            <br />
-            <button
-              type="submit"
-              disabled={this.state.answeredCurrent || NoSelectedCurrent}
-              onClick={this.submitChoice}
-            >
-              Submit choice
-            </button>
-          </form>
-        </div>
+        <React.Fragment>
+          {this.state.answeredCurrent ? (
+            <h1>submitted!</h1>
+          ) : (
+            <div>
+              <h1>Choose carefully...</h1>
+              <form onSubmit={this.submitChoice} onChange={this.setChoice}>
+                {this.state.answerChoices.map((choice, idx) => (
+                  <React.Fragment key={choice}>
+                    <input type="radio" name="choices" value={choice} />
+                    <label htmlFor="choices">{choice}</label>
+                  </React.Fragment>
+                ))}
+                <br />
+                <button
+                  type="submit"
+                  disabled={NoSelectedCurrent}
+                  onClick={this.submitChoice}
+                >
+                  Submit choice
+                </button>
+              </form>
+            </div>
+          )}
+        </React.Fragment>
       )
     } else if (this.state.gameStatus === 'finished') {
       return (
