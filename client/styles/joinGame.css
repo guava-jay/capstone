@@ -1,0 +1,41 @@
+#join-container {
+  padding: 1.5em 3em;
+  height: calc(100vh - 84px);
+}
+
+#join-container h1 {
+  text-align: center;
+}
+
+#join-form {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#join-form input {
+  margin-top: 0.5em;
+}
+
+#logo-holder {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  #join-container {
+    padding: 1.5em 5em;
+    max-width: 600px;
+    margin: auto;
+  }
+
+  #logo-holder {
+    display: block;
+    position: absolute;
+    bottom: 16px;
+    right: 23px;
+    width: 150px;
+    height: auto;
+    opacity: 0.3;
+  }
+}

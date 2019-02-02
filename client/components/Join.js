@@ -36,17 +36,20 @@ class Join extends React.Component {
 
   render() {
     return (
-      <div>
-        <Link to="./home">Back to home</Link>
-        <form align="center" onSubmit={this.handleSubmit}>
-          <label htmlFor="code">Enter your Game Room Code</label>
+      <div id="join-container">
+        <h1>Join a Game</h1>
+        <form id="join-form" onSubmit={this.handleSubmit}>
+          <label htmlFor="code">Game Room Code :</label>
           <input name="code" placeholder="####" />
-          <label htmlFor="playerName">Create your player name</label>
-          <input name="playerName" />
-          <p>
-            <button type="submit">Join</button>
-          </p>
+          <label htmlFor="playerName">Player Name :</label>
+          <input name="playerName" placeholder="Stackbox" />
+          <button title="join game" className="button6" type="submit">
+            Join
+          </button>
         </form>
+        <div id="logo-holder">
+          <img src="./img/cartoon-box.png" />
+        </div>
       </div>
     )
   }
