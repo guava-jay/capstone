@@ -93,7 +93,7 @@ button {
 
 ul {
   list-style-type: none;
-  margin-left: -6em;
+  padding: 0;
 }
 
 a,
