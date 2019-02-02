@@ -37,7 +37,7 @@ class Join extends React.Component {
   render() {
     return (
       <div id="join-container">
-        {/* <Link to="./home">Back to home</Link> */}
+        <h1>Join a Game</h1>
         <form id="join-form" align="center" onSubmit={this.handleSubmit}>
           <label htmlFor="code">Game Room Code :</label>
           <input name="code" placeholder="####" />
@@ -47,6 +47,9 @@ class Join extends React.Component {
             Join
           </button>
         </form>
+        <div id="logo-holder">
+          <img src="./img/cartoon-box.png" />
+        </div>
       </div>
     )
   }
