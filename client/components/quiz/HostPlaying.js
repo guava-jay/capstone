@@ -11,6 +11,7 @@ class HostPlaying extends React.Component {
       questionCount: 0,
       currentQuestion: null,
       question: {},
+      choices: [],
       count: 0,
       currentQuestionAnswer: null,
       muted: false
@@ -29,6 +30,7 @@ class HostPlaying extends React.Component {
       if (snapshot.val() >= 0) {
         let question
         let func
+        let choices
         await database
           .ref(`game_list/quiz/${snapshot.val()}`)
           .once('value')
@@ -39,12 +41,16 @@ class HostPlaying extends React.Component {
             if (snapshot.val().function !== null) {
               func = snapshot.val().function || null
             }
+            if (snapshot.val().choices !== null) {
+              choices = snapshot.val().choices || null
+            }
           })
         this.setState(prevState => {
           return {
             questionCount: prevState.questionCount + 1,
             currentQuestion: snapshot.val(),
-            question: {question, func}
+            question: {question, func},
+            choices: choices
           }
         })
       }
@@ -124,7 +130,10 @@ class HostPlaying extends React.Component {
             {this.state.question.func}
           </Highlight>
         ) : null}
-
+        {/* show choices */}
+        {this.state.choices.length && (
+          <ul>{this.state.choices.map(x => <li key={x}>{x}</li>)}</ul>
+        )}
         {/* show answer */}
         {this.state.currentQuestionAnswer !== null ? (
           <h3>Answer : {this.state.currentQuestionAnswer}</h3>
