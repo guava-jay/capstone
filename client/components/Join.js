@@ -39,10 +39,10 @@ class Join extends React.Component {
       <div>
         <Link to="./home">Back to home</Link>
         <form align="center" onSubmit={this.handleSubmit}>
-          <label htmlFor="playerName">Create your player name</label>
-          <input name="playerName" />
           <label htmlFor="code">Enter your Game Room Code</label>
           <input name="code" placeholder="####" />
+          <label htmlFor="playerName">Create your player name</label>
+          <input name="playerName" />
           <p>
             <button type="submit">Join</button>
           </p>

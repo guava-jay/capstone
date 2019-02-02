@@ -81,7 +81,7 @@ class PlayerView extends React.Component {
     })
 
     // Listens to changes of the currentQuestion
-    currentQuestionRef.on('value', async snapshot => {
+    await currentQuestionRef.on('value', async snapshot => {
       if (snapshot.val() >= 0) {
         const answerChoices = await database
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
