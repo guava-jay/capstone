@@ -1,6 +1,7 @@
 @import './homepage.css';
 @import './joinGame.css';
 @import './createGame.css';
+@import './hostView.css';
 @import url('https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800');
 
 * {
@@ -79,11 +80,19 @@ input {
   font-size: 19pt;
   padding: 0.3em;
   width: 100%;
-  text-transform: uppercase;
   text-align: center;
 }
+
+input[name='code'] {
+  text-transform: uppercase;
+}
+
 button {
   font-family: 'Dosis', 'sans-serif';
+}
+
+ul {
+  list-style-type: none;
 }
 
 a,
@@ -126,15 +135,25 @@ input::placeholder {
   position: relative;
 }
 
-.button6:active {
+.button6:active:enabled {
   top: 0.1em;
 }
 
-.button6:hover {
+.button6:hover:enabled {
   filter: brightness(150%);
   cursor: pointer;
 }
 
+.icon-move {
+  position: relative;
+  top: 0px;
+  right: 3px;
+}
+
+.fa-times:hover {
+  color: var(--pink);
+  cursor: pointer;
+}
 /* @media all and (max-width:30em) {
    .button6{
       display: block;

@@ -38,7 +38,7 @@ class Join extends React.Component {
     return (
       <div id="join-container">
         <h1>Join a Game</h1>
-        <form id="join-form" align="center" onSubmit={this.handleSubmit}>
+        <form id="join-form" onSubmit={this.handleSubmit}>
           <label htmlFor="code">Game Room Code :</label>
           <input name="code" placeholder="####" />
           <label htmlFor="playerName">Player Name :</label>

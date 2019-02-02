@@ -1,5 +1,6 @@
 #join-container {
   padding: 1.5em 3em;
+  height: calc(100vh - 84px);
 }
 
 #join-container h1 {
@@ -8,6 +9,9 @@
 
 #join-form {
   margin-top: 1em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 #join-form input {

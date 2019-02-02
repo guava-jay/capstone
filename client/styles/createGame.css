@@ -2,6 +2,7 @@
   text-align: center;
   padding: 1.5em 3em;
   padding-bottom: 3em;
+  height: calc(100vh - 84px);
 }
 
 #list-games-container {
