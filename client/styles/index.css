@@ -1,4 +1,5 @@
 @import './homepage.css';
+@import './joinGame.css';
 @import url('https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800');
 
 * {
@@ -19,11 +20,22 @@
 body {
   font-family: 'Dosis', 'sans-serif';
   color: #202021;
+  min-height: 100vh;
 }
 
 img {
   max-width: 100%;
   height: auto;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Dosis', 'sans-serif';
 }
 
 p {
@@ -54,14 +66,17 @@ a {
 
 label {
   display: block;
+  font-size: 2em;
 }
 input {
-  font-size: 30pt;
-  padding: 0.5em;
-  width: 4em;
+  font-size: 19pt;
+  padding: 0.3em;
+  width: 100%;
+  text-transform: uppercase;
+  text-align: center;
 }
 button {
-  font-size: 30pt;
+  font-family: 'Dosis', 'sans-serif';
 }
 
 a,
@@ -82,6 +97,42 @@ button:disabled {
   background-color: lightgrey;
 }
 
+input::placeholder {
+  opacity: 0.4;
+}
+
+.button6 {
+  margin-top: 1em;
+  font-size: 17pt;
+  display: inline-block;
+  padding: 0.5em 2em;
+  border-radius: 0.15em;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: var(--darkBlue);
+  box-shadow: inset 0 -0.6em 0 -0.35em rgba(0, 0, 0, 0.17);
+  text-align: center;
+  position: relative;
+}
+
+.button6:active {
+  top: 0.1em;
+}
+
+.button6:hover {
+  filter: brightness(150%);
+  cursor: pointer;
+}
+
+/* @media all and (max-width:30em) {
+   .button6{
+      display: block;
+      margin: 0.4em auto;
+   }
+} */
 /* tablet  and up*/
 @media only screen and (min-width: 768px) {
 }

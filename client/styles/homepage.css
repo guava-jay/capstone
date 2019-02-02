@@ -61,6 +61,7 @@
 
 .welcome {
   padding: 0 0.7em;
+  min-height: 110vh;
 }
 
 .welcome-title {
@@ -78,14 +79,13 @@
 /* tablet  and up*/
 @media only screen and (min-width: 768px) {
   .welcome {
-    /* display:flex;
-    flex-direction: row-reverse; */
+    min-height: 100vh;
   }
 
   .box {
-    bottom: -145px;
+    bottom: -136px;
     right: -442px;
-    width: 350px;
+    width: 299px;
     z-index: -1;
   }
 }
