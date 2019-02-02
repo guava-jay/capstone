@@ -104,6 +104,9 @@ class CreateGame extends Component {
             Create game room
           </button>
         </form>
+        <div id="logo-holder">
+          <img src="./img/cartoon-box.png" />
+        </div>
       </div>
     )
   }
