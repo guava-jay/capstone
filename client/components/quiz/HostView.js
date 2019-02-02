@@ -78,7 +78,7 @@ class HostView extends React.Component {
     if (this.state.status === 'waiting') {
       return (
         <div id="host-view-container">
-          <h1>code : {this.props.slug}</h1>
+          <h1>CODE : {this.props.slug}</h1>
           <div id="list-player-host-container">
             <h2>Players</h2>
             <ul>
@@ -87,15 +87,6 @@ class HostView extends React.Component {
                 return (
                   <div key={i + ''}>
                     <li>
-                      {/* <button
-                        id={i + ''}
-                        type="button"
-                        onClick={e => {
-                          this.deletePlayer(pid)
-                        }}
-                      >
-                        x
-                    </button> */}
                       <p>
                         <i
                           onClick={e => {
