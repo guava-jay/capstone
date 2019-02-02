@@ -1,0 +1,51 @@
+#create-game-container {
+  text-align: center;
+  padding: 1.5em 3em;
+  padding-bottom: 3em;
+}
+
+#list-games-container {
+  padding: 1em 0;
+  padding-bottom: 0;
+  width: 100%;
+}
+.list-games {
+  margin: 0.5em 0;
+  width: 100%;
+  padding: 2em 1em;
+  background: green;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.list-games:nth-child(5n-4) {
+  background: var(--darkBlue);
+}
+
+.list-games:nth-child(5n-3) {
+  background: var(--blue);
+}
+
+.list-games:nth-child(5n-2) {
+  background: var(--pink);
+}
+
+.list-games:nth-child(5n-1) {
+  background: var(--yellow);
+}
+
+.list-games:nth-child(5n) {
+  background: var(--gray);
+}
+
+.list-games:hover {
+  cursor: pointer;
+  filter: brightness(110%);
+}
+
+#selectedGame {
+  color: white;
+}
+
+@media only screen and (min-width: 768px) {
+}

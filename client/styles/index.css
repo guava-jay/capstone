@@ -1,5 +1,6 @@
 @import './homepage.css';
 @import './joinGame.css';
+@import './createGame.css';
 @import url('https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800');
 
 * {
@@ -15,12 +16,14 @@
   --white: #fff;
   --darkPink: #5d2727;
   --darkGray: #202021;
+  --gray: #c4c4c4;
 }
 
 body {
   font-family: 'Dosis', 'sans-serif';
   color: #202021;
   min-height: 100vh;
+  letter-spacing: 1px;
 }
 
 img {
@@ -88,10 +91,10 @@ a:hover {
   color: #000000;
 }
 
-form div {
+/* form div {
   margin: 1em;
   display: inline-block;
-}
+} */
 
 button:disabled {
   background-color: lightgrey;

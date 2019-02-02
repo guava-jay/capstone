@@ -24,8 +24,9 @@ class CreateGame extends Component {
   }
 
   handleChange(e) {
+    console.log(e, 'handle changel')
     this.setState({
-      selectedGame: e.target.value
+      selectedGame: e
     })
   }
 
@@ -38,30 +39,71 @@ class CreateGame extends Component {
     }
   }
   render() {
-    console.log(this.state.allGames, 'all games state')
     return (
-      <div>
-        <Link to="./home">Back to home</Link>
-        <div align="center">
-          <form onSubmit={this.handleSubmit}>
-            {this.state.allGames.length ? (
-              <React.Fragment>
-                <p>Select a game :</p>
-                <select onChange={this.handleChange}>
-                  <option value="" />
-                  {this.state.allGames.map(x => {
-                    return (
-                      <option key={x} value={x}>
-                        {x}
-                      </option>
-                    )
-                  })}
-                </select>
-              </React.Fragment>
-            ) : null}
-            <button type="submit">Create game room</button>
-          </form>
-        </div>
+      <div id="create-game-container">
+        <h1>Create a Game</h1>
+        <form onSubmit={this.handleSubmit}>
+          {this.state.allGames.length ? (
+            <React.Fragment>
+              <p>Select a game :</p>
+              <div id="list-games-container">
+                {this.state.allGames.map(x => {
+                  return (
+                    <div
+                      id={this.state.selectedGame === x ? 'selectedGame' : ''}
+                      onClick={() => this.handleChange(x)}
+                      className="list-games"
+                      key={x}
+                    >
+                      <h3>{x}</h3>
+                    </div>
+                  )
+                })}
+                {/* PLACEHOLD TESTS */}
+                <div
+                  id={
+                    this.state.selectedGame === 'test 1' ? 'selectedGame' : ''
+                  }
+                  onClick={() => this.handleChange('test 1')}
+                  className="list-games"
+                >
+                  <h3>test 1</h3>
+                </div>
+                <div
+                  id={
+                    this.state.selectedGame === 'test 2' ? 'selectedGame' : ''
+                  }
+                  onClick={() => this.handleChange('test 2')}
+                  className="list-games"
+                >
+                  <h3>test 2</h3>
+                </div>
+                <div
+                  id={
+                    this.state.selectedGame === 'test 3' ? 'selectedGame' : ''
+                  }
+                  onClick={() => this.handleChange('test 3')}
+                  className="list-games"
+                >
+                  <h3>test 3</h3>
+                </div>
+                <div
+                  id={
+                    this.state.selectedGame === 'test 4' ? 'selectedGame' : ''
+                  }
+                  onClick={() => this.handleChange('test 4')}
+                  className="list-games"
+                >
+                  <h3>test 4</h3>
+                </div>
+                {/* PLACEHOLD TESTS */}
+              </div>
+            </React.Fragment>
+          ) : null}
+          <button title="create game" className="button6" type="submit">
+            Create game room
+          </button>
+        </form>
       </div>
     )
   }
