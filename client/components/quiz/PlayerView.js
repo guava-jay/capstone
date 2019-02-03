@@ -52,6 +52,11 @@ class PlayerView extends React.Component {
     const ROOM = `/rooms/${this.props.slug}`
     const ACTIVE_GAME = ROOM + '/active_game'
 
+    // Get reference to player array: used to watch changes
+    const playerRef = await database.ref(
+      `${ROOM}/players/${this.props.user.uid}`
+    )
+
     // Get reference to current question: used to watch for changes
     const currentQuestionRef = database.ref(`${ACTIVE_GAME}/current_question`)
 
@@ -79,6 +84,13 @@ class PlayerView extends React.Component {
       gameName,
       gameStatus,
       currentQuestion
+    })
+
+    // Listens for changes in players; if this particular player is missing, render no-longer-playing screen
+    await playerRef.on('value', snapshot => {
+      if (!snapshot.val()) {
+        this.setState({gameStatus: 'non-participant'})
+      }
     })
 
     // Listens to changes of the currentQuestion
@@ -199,6 +211,13 @@ class PlayerView extends React.Component {
           </PieChart>
 
           <Navbar />
+        </div>
+      )
+    } else if (this.state.gameStatus === 'non-participant') {
+      return (
+        <div>
+          <h1>You are no longer playing this game</h1>
+          <NavLink to="/">Play again</NavLink>
         </div>
       )
       // Change this to "is_active_game"
