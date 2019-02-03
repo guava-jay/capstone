@@ -19,3 +19,44 @@
   align-items: center;
   width: 100%;
 }
+
+#host-playing-container {
+  padding: 1em 3em;
+}
+
+#host-playing-container h1 {
+  /* padding-bottom:.5em; */
+}
+
+#list-players-host-playing ul {
+  display: flex;
+  flex-direction: column;
+}
+
+#list-players-host-playing ul li {
+  display: inline-block;
+  padding: 0.5em;
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+#list-choice-host {
+  padding: 0.5em 0;
+}
+
+#list-choice-host ul li {
+  font-size: 1.4em;
+  padding: 0.3em 0;
+  text-align: center;
+}
+
+#host-play-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    background: skyblue;
+  }
+}
