@@ -1,6 +1,7 @@
 #join-container {
   padding: 1.5em 3em;
-  height: calc(100vh - 84px);
+  padding-bottom: 3em;
+  min-height: calc(100vh - 84px);
 }
 
 #join-container h1 {

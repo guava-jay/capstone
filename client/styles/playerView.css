@@ -38,9 +38,24 @@
   text-align: center;
 }
 
+#show-answer-host {
+  text-align: center;
+  font-size: 2em;
+}
+
 @media only screen and (min-width: 768px) {
   #player-choice-container form {
     max-width: 500px;
     margin: auto;
+  }
+
+  .host-q-display {
+    max-width: 70%;
+    margin: auto;
+    text-align: center;
+  }
+
+  #show-answer-host {
+    padding: 1em 0;
   }
 }
