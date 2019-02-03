@@ -57,7 +57,7 @@
   background: var(--darkBlue);
   font-size: 2.3em;
   padding: 0.5em;
-  max-height: 84px;
+  min-height: 84px;
 }
 
 .welcome {
