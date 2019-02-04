@@ -35,15 +35,11 @@ class HostPlaying extends React.Component {
         await database
           .ref(`game_list/quiz/${snapshot.val()}`)
           .once('value')
-          .then(snapshot => {
-            if (snapshot.val().question !== null) {
-              question = snapshot.val().question || null
-            }
-            if (snapshot.val().function !== null) {
-              func = snapshot.val().function || null
-            }
-            if (snapshot.val().choices !== null) {
-              choices = snapshot.val().choices || null
+          .then(snapshots => {
+            if (snapshots.val()) {
+              question = snapshots.val().question || null
+              func = snapshots.val().function || null
+              choices = snapshots.val().choices || null
             }
           })
         this.setState(prevState => {
@@ -63,7 +59,7 @@ class HostPlaying extends React.Component {
       `rooms/${this.props.game.slug}/active_game/current_answers`
     )
 
-    answerRef.on('value', async snapshot => {
+    await answerRef.on('value', async snapshot => {
       if (snapshot.val()) {
         this.setState(prevState => {
           return {
@@ -84,13 +80,25 @@ class HostPlaying extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    const currentQuestionRef = database.ref(
+      `rooms/${this.props.game.slug}/active_game/current_question`
+    )
+    const answerRef = database.ref(
+      `rooms/${this.props.game.slug}/active_game/current_answers`
+    )
+
+    answerRef.off()
+    currentQuestionRef.off()
+  }
+
   async updateQuestion() {
     //stops the game at 10 questions
     if (this.state.questionCount === 10) {
       await this.props.endGameThunk(this.props.game.slug)
     } else {
       let idk = await this.props.getNewQuestion(this.props.game.slug)
-      this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
+      this.setState({count: 0, currentQuestionAnswer: null})
     }
   }
 
