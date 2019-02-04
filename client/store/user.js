@@ -112,7 +112,6 @@ export const joinGameThunk = (slug, uid, displayName) => {
 }
 
 export const deletePlayerThunk = (slug, uid) => {
-  console.log('In deletePlayerThunk, uid=', uid)
   return async dispatch => {
     try {
       await axios.put('/api/game/remove', {slug, uid})

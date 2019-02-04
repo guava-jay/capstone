@@ -52,6 +52,11 @@ class PlayerView extends React.Component {
     const ROOM = `/rooms/${this.props.slug}`
     const ACTIVE_GAME = ROOM + '/active_game'
 
+    // Get reference to player array: used to watch changes
+    const playerRef = await database.ref(
+      `${ROOM}/players/${this.props.user.uid}`
+    )
+
     // Get reference to current question: used to watch for changes
     const currentQuestionRef = database.ref(`${ACTIVE_GAME}/current_question`)
 
@@ -81,6 +86,13 @@ class PlayerView extends React.Component {
       currentQuestion
     })
 
+    // Listens for changes in players; if this particular player is missing, render no-longer-playing screen
+    await playerRef.on('value', snapshot => {
+      if (!snapshot.val()) {
+        this.setState({gameStatus: 'non-participant'})
+      }
+    })
+
     // Listens to changes of the currentQuestion
     await currentQuestionRef.on('value', async snapshot => {
       if (snapshot.val() >= 0) {
@@ -106,19 +118,6 @@ class PlayerView extends React.Component {
       .on('value', snapshot => {
         this.setState({currentScore: snapshot.val()})
       })
-
-    // Listens to changes in player's recorded responses
-
-    // database
-    //   .ref(`${ROOM}/players/${this.props.user.uid}`)
-    //   .on('value', snapshot => {
-    //     const response = snapshot.val()
-    //     if (response.answers) {
-    //       if (response.answers[this.state.currentQuestion]) {
-    //         this.setState({answeredCurrent: true})
-    //       }
-    //     }
-    //   })
   }
 
   componentDidMount() {
@@ -157,7 +156,7 @@ class PlayerView extends React.Component {
             <div id="player-choice-container">
               <h2>Choose carefully...</h2>
               <form onSubmit={this.submitChoice} onChange={this.setChoice}>
-                {this.state.answerChoices.map((choice, idx) => (
+                {this.state.answerChoices.map(choice => (
                   <label key={choice}>
                     <input type="radio" name="choices" value={choice} />
                     <p>{choice}</p>
@@ -201,6 +200,13 @@ class PlayerView extends React.Component {
           </PieChart>
 
           <Navbar />
+        </div>
+      )
+    } else if (this.state.gameStatus === 'non-participant') {
+      return (
+        <div>
+          <h1>You are no longer playing this game</h1>
+          <NavLink to="/">Play again</NavLink>
         </div>
       )
       // Change this to "is_active_game"

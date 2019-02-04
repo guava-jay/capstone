@@ -87,11 +87,8 @@ router.post('/join', async (req, res, next) => {
 })
 
 router.put('/remove', async (req, res, next) => {
-  console.log('in backend delete', req.body)
   const slug = req.body.slug.toUpperCase()
   try {
-    console.log(slug)
-    console.log(`rooms/${slug}/players/${req.body.uid}`)
     const ref = database.ref(`rooms/${slug}/players/${req.body.uid}`)
 
     await ref.remove()

@@ -118,7 +118,6 @@ router.put(`/changequestion`, async (req, res, next) => {
       unansweredQuestions[
         Math.floor(Math.random() * unansweredQuestions.length)
       ]
-    console.log(newQuestionId, 'new question id')
     //set the new question id to equal the randomly chosen question
     await database.ref(`/rooms/${slug}/${CURRENT_QUESTION}/`).set(newQuestionId)
 
