@@ -4,6 +4,7 @@ import database from '../firebase'
 import HostView from './quiz/HostView'
 import PlayerView from './quiz/PlayerView'
 import Welcome from './Welcome'
+import {resetThunk} from '../store/game'
 
 class Room extends React.Component {
   componentDidMount() {
@@ -16,6 +17,11 @@ class Room extends React.Component {
           this.props.history.push('/')
         }
       })
+  }
+
+  componentWillUnmount() {
+    console.log('i unmounted this shit')
+    this.props.resetThunk()
   }
 
   render() {
@@ -55,4 +61,10 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(Room)
+const mapDispatch = dispatch => {
+  return {
+    resetThunk: () => dispatch(resetThunk())
+  }
+}
+
+export default connect(mapState, mapDispatch)(Room)
