@@ -2,7 +2,7 @@ import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
-import {NavLink} from 'react-router-dom'
+import {NavLink, Redirect} from 'react-router-dom'
 import Navbar from '../navbar'
 
 import {PieChart, Pie, Cell, Label} from 'recharts'
@@ -203,12 +203,7 @@ class PlayerView extends React.Component {
         </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
-      return (
-        <div>
-          <h1>You are no longer playing this game</h1>
-          <NavLink to="/">Play again</NavLink>
-        </div>
-      )
+      return <Redirect to="/" />
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
       return (
