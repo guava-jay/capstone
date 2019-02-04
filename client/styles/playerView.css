@@ -43,6 +43,15 @@
   font-size: 2em;
 }
 
+#removed-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5em;
+  justify-content: space-around;
+  height: 15em;
+}
+
 @media only screen and (min-width: 768px) {
   #player-choice-container form {
     max-width: 500px;

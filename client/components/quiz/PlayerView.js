@@ -209,7 +209,7 @@ class PlayerView extends React.Component {
       if (this.state.redirectHome) return <Redirect to="/" />
       else
         return (
-          <div>
+          <div id="removed-player">
             <h1>You have been removed from this game.</h1>
             <p>Hold tight, we will redirect you to the homepage shortly.</p>
           </div>
