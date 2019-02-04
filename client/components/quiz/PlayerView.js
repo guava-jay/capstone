@@ -8,6 +8,7 @@ import {Redirect} from 'react-router-dom'
 import PlayerDisconnected from './PlayerDisconnected'
 import PlayerRemoved from './PlayerRemoved'
 import PlayerFinised from './PlayerFinished'
+import PlayerChoices from './PlayerChoices'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -161,29 +162,12 @@ class PlayerView extends React.Component {
           {this.state.answeredCurrent ? (
             <h1 id="player-submit">Submitted!</h1>
           ) : (
-            <div id="player-choice-container">
-              <h2>Choose carefully...</h2>
-              <form onSubmit={this.submitChoice} onChange={this.setChoice}>
-                {this.state.answerChoices.map(choice => (
-                  <label key={choice}>
-                    <input type="radio" name="choices" value={choice} />
-                    <p className={choice.length > 15 ? 'smallChoice' : ''}>
-                      {choice}
-                    </p>
-                  </label>
-                ))}
-                <br />
-                <button
-                  title="submit answer"
-                  className="button6"
-                  type="submit"
-                  disabled={NoSelectedCurrent}
-                  onClick={this.submitChoice}
-                >
-                  Submit choice
-                </button>
-              </form>
-            </div>
+            <PlayerChoices
+              submitChoice={this.submitChoice}
+              setChoice={this.setChoice}
+              answerChoices={this.state.answerChoices}
+              NoSelectedCurrent={NoSelectedCurrent}
+            />
           )}
         </React.Fragment>
       )
