@@ -65,6 +65,10 @@ class HostPlaying extends React.Component {
 
     answerRef.on('value', async snapshot => {
       if (snapshot.val()) {
+        document.getElementById('audio').pause()
+        setTimeout(() => {
+          document.getElementById('audio').play()
+        }, 2000)
         this.setState(prevState => {
           return {
             count: prevState.count + 1
