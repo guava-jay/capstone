@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import database from '../firebase'
 import HostView from './quiz/HostView'
 import PlayerView from './quiz/PlayerView'
+import Welcome from './Welcome'
 
 class Room extends React.Component {
   componentDidMount() {
@@ -18,6 +19,10 @@ class Room extends React.Component {
   }
 
   render() {
+    // const playerRef = await database.ref(
+    //   `${ROOM}/players/${this.props.user.uid}`
+    // )
+
     //checking for user disconnect
     if (this.props.user.role === 'host') {
       database
@@ -38,7 +43,8 @@ class Room extends React.Component {
       return <PlayerView slug={this.props.game.slug} />
     }
 
-    return <h1 id="loading">Loading...</h1>
+    // return <h1 id="loading">Loading...</h1>
+    return <Welcome />
   }
 }
 

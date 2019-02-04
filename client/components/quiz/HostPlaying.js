@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
 import Highlight from 'react-highlight'
@@ -110,16 +111,20 @@ class HostPlaying extends React.Component {
         <div id="host-playing-players-container">
           <h2>Players</h2>
           <div id="list-players-host-playing">
-            <ul>
-              {this.props.players.map(x => {
-                let key = Object.keys(x)
-                return (
-                  <li key={key}>
-                    {x[key].displayName} : {x[key].currentScore}
-                  </li>
-                )
-              })}
-            </ul>
+            {!this.props.players.length ? (
+              <div>All players have left the game</div>
+            ) : (
+              <ul>
+                {this.props.players.map(x => {
+                  let key = Object.keys(x)
+                  return (
+                    <li key={key}>
+                      {x[key].displayName} : {x[key].currentScore}
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </div>
         </div>
         {this.state.questionCount === 9 && <h2>One more question!</h2>}
