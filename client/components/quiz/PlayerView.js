@@ -142,7 +142,7 @@ class PlayerView extends React.Component {
     // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
     const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
     if (this.state.gameStatus === 'waiting') {
-      return <h1>Waiting to start...</h1>
+      return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (
       this.state.gameStatus === 'playing' &&
       this.state.answerChoices
@@ -151,28 +151,21 @@ class PlayerView extends React.Component {
       return (
         <React.Fragment>
           {this.state.answeredCurrent ? (
-            <h1>submitted!</h1>
+            <h1 id="player-submit">submitted!</h1>
           ) : (
-            <div>
-              <h1>Choose carefully...</h1>
+            <div id="player-choice-container">
+              <h2>Choose carefully...</h2>
               <form onSubmit={this.submitChoice} onChange={this.setChoice}>
                 {this.state.answerChoices.map(choice => (
-                  <React.Fragment key={choice}>
-                    <div className="answer-choices">
-                      <input
-                        type="radio"
-                        name="choices"
-                        className="radio"
-                        value={choice}
-                      />
-                      <label htmlFor="choices" className="radio-label">
-                        {choice}
-                      </label>
-                    </div>
-                  </React.Fragment>
+                  <label key={choice}>
+                    <input type="radio" name="choices" value={choice} />
+                    <p>{choice}</p>
+                  </label>
                 ))}
                 <br />
                 <button
+                  title="submit answer"
+                  className="button6"
                   type="submit"
                   disabled={NoSelectedCurrent}
                   onClick={this.submitChoice}
@@ -187,7 +180,7 @@ class PlayerView extends React.Component {
     } else if (this.state.gameStatus === 'finished') {
       return (
         <div>
-          <h1>Done!</h1>
+          <h1 className="center">Results</h1>
           <PieChart width={400} height={300}>
             <Pie
               data={answerData}

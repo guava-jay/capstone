@@ -19,3 +19,61 @@
   align-items: center;
   width: 100%;
 }
+
+#host-playing-container {
+  padding: 1em 3em;
+  padding-bottom: 3em;
+  min-height: calc(100vh - 84px);
+}
+
+#host-playing-container h1 {
+  /* padding-bottom:.5em; */
+}
+
+#list-players-host-playing ul {
+  display: flex;
+  flex-direction: column;
+}
+
+#list-players-host-playing ul li {
+  display: inline-block;
+  padding: 0.5em;
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+#list-choice-host {
+  padding: 0.5em 0;
+}
+
+#list-choice-host ul li {
+  font-size: 1.4em;
+  padding: 0.7em 0;
+  text-align: center;
+}
+
+#host-play-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+#question-host-container {
+  padding: 1em 0;
+}
+
+@media only screen and (min-width: 768px) {
+  #question-host-container {
+    max-width: 700px;
+    margin: auto;
+    padding: 1em 3em;
+  }
+
+  #list-players-host-playing ul {
+    flex-direction: row;
+  }
+
+  #list-choice-host ul hr {
+    width: 75%;
+    margin: auto;
+  }
+}

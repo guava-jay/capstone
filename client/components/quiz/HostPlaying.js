@@ -77,7 +77,7 @@ class HostPlaying extends React.Component {
           this.props.game.slug
         )
         this.setState({currentQuestionAnswer: getAnswer})
-        setTimeout(this.updateQuestion, 2000)
+        setTimeout(this.updateQuestion, 3000)
         //set timer to call next question
       }
     })
@@ -99,7 +99,7 @@ class HostPlaying extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="host-playing-container">
         <audio
           id="audio"
           muted={this.state.muted}
@@ -107,66 +107,84 @@ class HostPlaying extends React.Component {
           loop
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
         />
-        <div>
+        <div id="host-playing-players-container">
           <h2>Players</h2>
-          <ul>
-            {this.props.players.map(x => {
-              let key = Object.keys(x)
-              return (
-                <li key={key}>
-                  {x[key].displayName} : {x[key].currentScore}
-                </li>
-              )
-            })}
-          </ul>
+          <div id="list-players-host-playing">
+            <ul>
+              {this.props.players.map(x => {
+                let key = Object.keys(x)
+                return (
+                  <li key={key}>
+                    {x[key].displayName} : {x[key].currentScore}
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
         </div>
         {this.state.questionCount === 9 && <h2>One more question!</h2>}
         {this.state.questionCount === 10 && <h2>Last one!</h2>}
         {this.state.question.question ? (
-          <h1>{this.state.question.question}</h1>
+          <h1 className="host-q-display">{this.state.question.question}</h1>
         ) : null}
-        {this.state.question.func ? (
-          <Highlight language="javascript">
-            {this.state.question.func}
-          </Highlight>
-        ) : null}
-        {/* show choices */}
-        {this.state.choices.length && (
-          <ul>
-            {this.state.choices.map(x => (
-              <li className="answer-choices" key={x}>
-                {x}
-              </li>
-            ))}
-          </ul>
-        )}
-        {/* show answer */}
-        {this.state.currentQuestionAnswer !== null ? (
-          <h3>Answer : {this.state.currentQuestionAnswer}</h3>
-        ) : null}
-
-        <button type="submit" onClick={this.endGame}>
-          End game
-        </button>
-        {this.state.muted ? (
-          <button
-            type="button"
-            onClick={() => {
-              this.setState({muted: false})
-            }}
-          >
-            Unmute
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => {
-              this.setState({muted: true})
-            }}
-          >
-            Mute
-          </button>
-        )}
+        <div id="question-host-container">
+          {this.state.question.func ? (
+            <Highlight language="javascript">
+              {this.state.question.func}
+            </Highlight>
+          ) : null}
+          {/* show answer or display question */}
+          {this.state.currentQuestionAnswer !== null ? (
+            <p id="show-answer-host">
+              Answer : {this.state.currentQuestionAnswer}
+            </p>
+          ) : (
+            this.state.choices.length && (
+              <div id="list-choice-host">
+                <ul>
+                  {this.state.choices.map(x => (
+                    <React.Fragment key={x}>
+                      <li>{x}</li>
+                      <hr />
+                    </React.Fragment>
+                  ))}
+                </ul>
+              </div>
+            )
+          )}
+          <div id="host-play-buttons">
+            <button
+              title="end game"
+              className="button6 buttonEnd"
+              type="submit"
+              onClick={this.endGame}
+            >
+              End game
+            </button>
+            {this.state.muted ? (
+              <button
+                title="mute"
+                className="button6 buttonMute"
+                type="button"
+                onClick={() => {
+                  this.setState({muted: false})
+                }}
+              >
+                Unmute
+              </button>
+            ) : (
+              <button
+                className="button6 buttonMute"
+                type="button"
+                onClick={() => {
+                  this.setState({muted: true})
+                }}
+              >
+                Mute
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     )
   }

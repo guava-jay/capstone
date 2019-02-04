@@ -1,0 +1,61 @@
+#player-waiting {
+  text-align: center;
+  padding: 1em;
+}
+
+#player-submit {
+  text-align: center;
+  padding: 1em;
+}
+
+#player-choice-container {
+  padding: 1em 1.5em;
+}
+
+#player-choice-container h2 {
+  text-align: center;
+}
+
+#player-choice-container p {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+#player-choice-container form {
+  padding: 2em;
+  padding-top: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#player-choice-container form label {
+  width: 100%;
+  font-size: 1.5em;
+}
+
+.center {
+  text-align: center;
+}
+
+#show-answer-host {
+  text-align: center;
+  font-size: 2em;
+}
+
+@media only screen and (min-width: 768px) {
+  #player-choice-container form {
+    max-width: 500px;
+    margin: auto;
+  }
+
+  .host-q-display {
+    max-width: 70%;
+    margin: auto;
+    text-align: center;
+  }
+
+  #show-answer-host {
+    padding: 1em 0;
+  }
+}
