@@ -121,6 +121,11 @@ export default class HostFinished extends React.Component {
 
     return (
       <div>
+        <audio
+          id="applause"
+          autoPlay
+          src="https://s3.amazonaws.com/stackbox/applause.mp3"
+        />
         <h1>Finished!</h1>
         {endView}
         <Navbar />
