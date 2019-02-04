@@ -34,6 +34,12 @@ class Join extends React.Component {
     )
   }
 
+  componentDidUpdate() {
+    if (this.props.user.errorMsg) {
+      alert(this.props.user.errorMsg)
+    }
+  }
+
   render() {
     return (
       <div id="join-container">
