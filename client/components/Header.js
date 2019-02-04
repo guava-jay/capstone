@@ -1,13 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {endGameThunk} from '../store/game'
+import {deleteGameThunk} from '../store/game'
 import {deletePlayerThunk} from '../store/user'
 
 const Header = props => {
   const deleteCurrentUser = () => {
     if (props.role === 'host') {
-      props.endGameThunk(props.slug)
+      props.deleteGameThunk(props.slug)
     }
     if (props.role === 'player') {
       props.deletePlayerThunk(props.slug, props.uid)
@@ -32,7 +32,7 @@ const mapState = state => {
 }
 const mapDispatch = dispatch => {
   return {
-    endGameThunk: slug => dispatch(endGameThunk(slug)),
+    deleteGameThunk: slug => dispatch(deleteGameThunk(slug)),
     deletePlayerThunk: (slug, uid) => dispatch(deletePlayerThunk(slug, uid))
   }
 }
