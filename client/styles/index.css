@@ -124,6 +124,10 @@ input::placeholder {
   opacity: 0.4;
 }
 
+.cursor-hover:hover {
+  cursor: pointer;
+}
+
 .button6 {
   border: none;
   margin-top: 1em;
