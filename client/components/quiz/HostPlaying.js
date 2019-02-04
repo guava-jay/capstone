@@ -65,12 +65,6 @@ class HostPlaying extends React.Component {
 
     answerRef.on('value', async snapshot => {
       if (snapshot.val()) {
-        console.log(document.getElementById('ding'))
-        //document.getElementById('audio').pause()
-        document.getElementById('ding').play()
-        //setTimeout(() => {
-        //document.getElementById('audio').play()
-        //}, 300)
         this.setState(prevState => {
           return {
             count: prevState.count + 1
@@ -83,6 +77,7 @@ class HostPlaying extends React.Component {
           this.state.currentQuestion,
           this.props.game.slug
         )
+        document.getElementById('ding').play()
         this.setState({currentQuestionAnswer: getAnswer})
         setTimeout(this.updateQuestion, 3000)
         //set timer to call next question
