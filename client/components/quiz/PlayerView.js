@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {PieChart, Pie, Cell, Label} from 'recharts'
 import PlayerDisconnected from './PlayerDisconnected'
+import PlayerRemoved from './PlayerRemoved'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -226,17 +227,7 @@ class PlayerView extends React.Component {
       )
     } else if (this.state.gameStatus === 'non-participant') {
       if (this.state.redirectHome) return <Redirect to="/" />
-      else
-        return (
-          <div id="removed-player">
-            <div className="removed-item">
-              <h1>You have been removed from this game.</h1>
-            </div>
-            <div className="removed-item">
-              <p>Hold tight, we will redirect you to the homepage shortly.</p>
-            </div>
-          </div>
-        )
+      else return <PlayerRemoved />
 
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
