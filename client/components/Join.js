@@ -18,11 +18,11 @@ class Join extends React.Component {
     e.preventDefault()
 
     if (!e.target.code.value) {
-      alert('please enter a code')
+      alert('Please enter a code.')
       return
     }
     if (!e.target.playerName.value) {
-      alert('please enter a name')
+      alert('Please enter a name.')
       return
     }
     const code = e.target.code.value.toUpperCase()

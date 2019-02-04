@@ -42,6 +42,8 @@ class Room extends React.Component {
 
       return <PlayerView slug={this.props.game.slug} />
     }
+
+    // return <h1 id="loading">Loading...</h1>
     return <Welcome />
   }
 }
