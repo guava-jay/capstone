@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
@@ -17,7 +18,8 @@ class PlayerView extends React.Component {
       answerChoices: [],
       responses: {},
       answeredCurrent: false,
-      currentScore: 0
+      currentScore: 0,
+      redirectHome: false
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -90,6 +92,7 @@ class PlayerView extends React.Component {
     await playerRef.on('value', snapshot => {
       if (!snapshot.val()) {
         this.setState({gameStatus: 'non-participant'})
+        setTimeout(() => this.setState({redirectHome: true}), 5000)
       }
     })
 
@@ -151,7 +154,7 @@ class PlayerView extends React.Component {
       return (
         <React.Fragment>
           {this.state.answeredCurrent ? (
-            <h1 id="player-submit">submitted!</h1>
+            <h1 id="player-submit">Submitted!</h1>
           ) : (
             <div id="player-choice-container">
               <h2>Choose carefully...</h2>
@@ -203,7 +206,15 @@ class PlayerView extends React.Component {
         </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
-      return <Redirect to="/" />
+      if (this.state.redirectHome) return <Redirect to="/" />
+      else
+        return (
+          <div>
+            <h1>You have been removed from this game.</h1>
+            <p>Hold tight, we will redirect you to the homepage shortly.</p>
+          </div>
+        )
+
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
       return (
