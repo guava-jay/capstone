@@ -9,7 +9,7 @@
 }
 
 #player-choice-container {
-  padding: 1em 1.5em;
+  padding: 1.5em;
 }
 
 #player-choice-container h2 {
@@ -43,6 +43,41 @@
   font-size: 2em;
 }
 
+#removed-player {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 3em;
+}
+.removed-item {
+  padding: 1em 0 1em 0;
+}
+
+#player-finished {
+  padding: 1.5em;
+}
+
+#recharts-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1.5em;
+  padding-bottom: 1em;
+}
+
+#player-disconnected {
+  text-align: center;
+  padding: 5em;
+}
+
+#player-disconnected .finished-button-container {
+  padding-top: 2em;
+}
+
+.smallChoice {
+  font-size: 1em;
+}
+
 @media only screen and (min-width: 768px) {
   #player-choice-container form {
     max-width: 500px;
@@ -57,5 +92,18 @@
 
   #show-answer-host {
     padding: 1em 0;
+  }
+
+  #recharts-container {
+    height: 300px;
+    padding-bottom: 1.5em;
+  }
+
+  #player-finished {
+    padding: 3em;
+  }
+
+  #player-disconnected .finished-button-container {
+    padding-top: 5em;
   }
 }

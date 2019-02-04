@@ -3,8 +3,7 @@ import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
-import {NavLink, Redirect} from 'react-router-dom'
-import Navbar from '../navbar'
+import {Link, Redirect} from 'react-router-dom'
 import {PieChart, Pie, Cell, Label} from 'recharts'
 
 class PlayerView extends React.Component {
@@ -17,7 +16,8 @@ class PlayerView extends React.Component {
       answerChoices: [],
       responses: {},
       answeredCurrent: false,
-      currentScore: 0
+      currentScore: 0,
+      redirectHome: false
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -90,6 +90,7 @@ class PlayerView extends React.Component {
     await playerRef.on('value', snapshot => {
       if (!snapshot.val()) {
         this.setState({gameStatus: 'non-participant'})
+        setTimeout(() => this.setState({redirectHome: true}), 5000)
       }
     })
 
@@ -155,7 +156,7 @@ class PlayerView extends React.Component {
       return (
         <React.Fragment>
           {this.state.answeredCurrent ? (
-            <h1 id="player-submit">submitted!</h1>
+            <h1 id="player-submit">Submitted!</h1>
           ) : (
             <div id="player-choice-container">
               <h2>Choose carefully...</h2>
@@ -163,7 +164,9 @@ class PlayerView extends React.Component {
                 {this.state.answerChoices.map(choice => (
                   <label key={choice}>
                     <input type="radio" name="choices" value={choice} />
-                    <p>{choice}</p>
+                    <p className={choice.length > 15 ? 'smallChoice' : ''}>
+                      {choice}
+                    </p>
                   </label>
                 ))}
                 <br />
@@ -183,37 +186,76 @@ class PlayerView extends React.Component {
       )
     } else if (this.state.gameStatus === 'finished') {
       return (
-        <div>
+        <div id="player-finished">
           <h1 className="center">Results</h1>
-          <PieChart width={400} height={300}>
-            <Pie
-              data={answerData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={80}
-              outerRadius={100}
-              paddingAngle={0}
-              fill="#8884d8"
-            >
-              <Cell fill="#00C49F" />
-              <Cell fill="#ff3860" />
-              <Label position="center">{`${numCorrect} Correct`}</Label>
-            </Pie>
-          </PieChart>
+          <div id="recharts-container">
+            <PieChart width={200} height={200}>
+              <Pie
+                data={answerData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={80}
+                outerRadius={100}
+                paddingAngle={0}
+                fill="#8884d8"
+              >
+                <Cell fill="#00C49F" />
+                <Cell fill="#ff3860" />
+                <Label position="center">{`${numCorrect} Correct`}</Label>
+              </Pie>
+            </PieChart>
+          </div>
+          <div className="finished-button-container">
+            <Link to="/">
+              <button className="button6 buttonHome" type="button">
+                <h4>Back to home</h4>
+              </button>
+            </Link>
 
-          <Navbar />
+            <Link to="/join">
+              <button className="button6 buttonJoin" type="button">
+                <h4>Join New Game</h4>
+              </button>
+            </Link>
+          </div>
         </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
-      return <Redirect to="/" />
+      if (this.state.redirectHome) return <Redirect to="/" />
+      else
+        return (
+          <div id="removed-player">
+            <div className="removed-item">
+              <h1>You have been removed from this game.</h1>
+            </div>
+            <div className="removed-item">
+              <p>Hold tight, we will redirect you to the homepage shortly.</p>
+            </div>
+          </div>
+        )
+
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
       return (
-        <div>
-          <h1>Game has been ended</h1>
-          <NavLink to="/">Play again</NavLink>
+        <div id="player-disconnected">
+          <div>
+            <h1>The host has disconnected.</h1>
+          </div>
+          <div className="finished-button-container">
+            <Link to="/">
+              <button className="button6 buttonHome" type="button">
+                <h4>Back to home</h4>
+              </button>
+            </Link>
+
+            <Link to="/join">
+              <button className="button6 buttonJoin" type="button">
+                <h4>Join New Game</h4>
+              </button>
+            </Link>
+          </div>
         </div>
       )
     } else {
