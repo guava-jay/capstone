@@ -7,7 +7,8 @@ import {CREATE_GAME} from './game'
 //ACTION TYPES
 const SET_PLAYER = 'SET_PLAYER'
 export const JOIN_GAME = 'JOIN_GAME'
-const DELETE_PLAYER = 'DELETE_PLAYER'
+// const DELETE_PLAYER = 'DELETE_PLAYER'
+const ERROR_OUT = 'ERROR_OUT'
 
 const MAX_PLAYERS = 4
 
@@ -17,6 +18,7 @@ const defaultUser = {}
 //ACTION CREATORS
 const setPlayer = playeruid => ({type: SET_PLAYER, playeruid})
 const joinGame = (slug, role) => ({type: JOIN_GAME, slug, role})
+const errorOut = errorMsg => ({type: ERROR_OUT, errorMsg})
 //const deletePlayer = playeruid => ({ type: DELETE_PLAYER.playeruid })
 
 //THUNK CREATORS
@@ -85,15 +87,18 @@ export const joinGameThunk = (slug, uid, displayName) => {
       //if game exists
       if (gameFull) {
         //if full
-        alert('Error: game room is full') //return error message
+        dispatch(errorOut('Error: game is full'))
+        return
       } else if (!gameWaiting) {
-        alert('Error: Game room is not open to new players')
-      } else {
-        //otherwise
+        dispatch(errorOut('Error: Game is not awaiting new players'))
+        return
       }
     } else {
       //if game doesn't exist
-      alert('Error: invalid game code') //return error message
+      dispatch(
+        errorOut('Error: Game not found. Please check your entered code.')
+      ) //return error message
+      return
     }
 
     slug = slug.toUpperCase()
@@ -144,6 +149,8 @@ export default function(state = defaultUser, action) {
       return {...state, role: 'host'}
     case SET_PLAYER:
       return {...state, uid: action.playeruid}
+    case ERROR_OUT:
+      return {...state, errorMsg: action.errorMsg}
     default:
       return state
   }
