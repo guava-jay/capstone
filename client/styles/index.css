@@ -158,6 +158,22 @@ input::placeholder {
   /* padding:0.3em 2em; */
 }
 
+.buttonContainer .links {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonContainer .links a {
+  max-width: 350px;
+  flex-basis: 100%;
+  margin: 0px 10px 0px 10px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .button6:active:enabled {
   top: 0.1em;
 }

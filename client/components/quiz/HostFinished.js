@@ -1,6 +1,6 @@
 import React from 'react'
 import database from '../../firebase'
-import Navbar from '../navbar'
+import JoinCreateButtons from '../JoinCreateButtons'
 
 export default class HostFinished extends React.Component {
   constructor(props) {
@@ -123,7 +123,7 @@ export default class HostFinished extends React.Component {
       <div>
         <h1>Finished!</h1>
         {endView}
-        <Navbar />
+        <JoinCreateButtons />
       </div>
     )
   }

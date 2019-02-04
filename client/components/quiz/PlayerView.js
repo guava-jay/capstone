@@ -4,9 +4,9 @@ import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
-import Navbar from '../navbar'
 
 import {PieChart, Pie, Cell, Label} from 'recharts'
+import JoinCreateButtons from '../JoinCreateButtons'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -202,7 +202,7 @@ class PlayerView extends React.Component {
             </Pie>
           </PieChart>
 
-          <Navbar />
+          <JoinCreateButtons />
         </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
