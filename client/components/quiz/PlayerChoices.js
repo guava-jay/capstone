@@ -7,7 +7,7 @@ const PlayerChoices = props => (
       {props.answerChoices.map(choice => (
         <label key={choice}>
           <input type="radio" name="choices" value={choice} />
-          <p className={choice.length > 15 ? 'smallChoice' : ''}>{choice}</p>
+          <p>{choice}</p>
         </label>
       ))}
       <br />

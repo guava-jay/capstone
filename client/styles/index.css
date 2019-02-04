@@ -13,6 +13,7 @@
 :root {
   --darkBlue: #1a535c;
   --yellow: #ffe66d;
+  --darkYellow: #5d5428;
   --pink: #ff6b6b;
   --blue: #4ecdc4;
   --white: #fff;
@@ -160,8 +161,8 @@ input::placeholder {
 }
 
 .buttonHome {
-  background-color: lightgray;
-  color: var(--darkGray);
+  background-color: var(--yellow);
+  color: var(--darkYellow);
 }
 
 .buttonJoin {
