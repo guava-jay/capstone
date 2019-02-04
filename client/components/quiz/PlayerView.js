@@ -4,7 +4,6 @@ import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
 import Navbar from '../navbar'
-
 import {PieChart, Pie, Cell, Label} from 'recharts'
 
 class PlayerView extends React.Component {
@@ -91,6 +90,7 @@ class PlayerView extends React.Component {
       if (!snapshot.val()) {
         this.setState({gameStatus: 'non-participant'})
       }
+      console.log(this.state.gameStatus)
     })
 
     // Listens to changes of the currentQuestion
@@ -121,16 +121,22 @@ class PlayerView extends React.Component {
   }
 
   componentDidMount() {
+    console.log('mounted')
     this.initializeState()
   }
 
   componentDidUpdate(prevProps) {
+    console.log('updated')
     if (this.props.slug !== prevProps.slug) {
       this.initializeState()
     }
   }
 
   render() {
+    console.log(this.props.user.uid)
+    if (!this.props.user.uid) {
+      return <Welcome />
+    }
     const numCorrect = this.state.currentScore
     const numIncorrect = Object.keys(this.state.responses).length - numCorrect
 
@@ -141,6 +147,7 @@ class PlayerView extends React.Component {
 
     // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
     const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
+
     if (this.state.gameStatus === 'waiting') {
       return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (
