@@ -20,12 +20,10 @@ class HostView extends React.Component {
   }
 
   startGame() {
-    console.log('start game')
     this.props.startGameThunk(this.props.slug)
   }
 
   deletePlayer(pid) {
-    console.log('clicked! pid =', pid)
     this.props.deletePlayerThunk(this.props.slug, pid)
   }
 
@@ -119,7 +117,7 @@ class HostView extends React.Component {
         return <HostPlaying players={this.state.players} />
       }
     } else if (this.state.status === 'finished') {
-      // CHANGE GAME ENDING COMpONENT HERE
+      // CHANGE GAME ENDING COMPONENT HERE
       if (this.state.selectedGame === 'quiz') {
         return <HostFinished slug={this.props.slug} />
       }

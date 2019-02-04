@@ -24,7 +24,6 @@ class CreateGame extends Component {
   }
 
   handleChange(e) {
-    console.log(e, 'handle changel')
     this.setState({
       selectedGame: e
     })

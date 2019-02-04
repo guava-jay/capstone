@@ -118,19 +118,6 @@ class PlayerView extends React.Component {
       .on('value', snapshot => {
         this.setState({currentScore: snapshot.val()})
       })
-
-    // Listens to changes in player's recorded responses
-
-    // database
-    //   .ref(`${ROOM}/players/${this.props.user.uid}`)
-    //   .on('value', snapshot => {
-    //     const response = snapshot.val()
-    //     if (response.answers) {
-    //       if (response.answers[this.state.currentQuestion]) {
-    //         this.setState({answeredCurrent: true})
-    //       }
-    //     }
-    //   })
   }
 
   componentDidMount() {
@@ -169,10 +156,19 @@ class PlayerView extends React.Component {
             <div>
               <h1>Choose carefully...</h1>
               <form onSubmit={this.submitChoice} onChange={this.setChoice}>
-                {this.state.answerChoices.map((choice, idx) => (
+                {this.state.answerChoices.map(choice => (
                   <React.Fragment key={choice}>
-                    <input type="radio" name="choices" value={choice} />
-                    <label htmlFor="choices">{choice}</label>
+                    <div className="answer-choices">
+                      <input
+                        type="radio"
+                        name="choices"
+                        className="radio"
+                        value={choice}
+                      />
+                      <label htmlFor="choices" className="radio-label">
+                        {choice}
+                      </label>
+                    </div>
                   </React.Fragment>
                 ))}
                 <br />

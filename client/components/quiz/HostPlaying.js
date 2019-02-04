@@ -132,7 +132,13 @@ class HostPlaying extends React.Component {
         ) : null}
         {/* show choices */}
         {this.state.choices.length && (
-          <ul>{this.state.choices.map(x => <li key={x}>{x}</li>)}</ul>
+          <ul>
+            {this.state.choices.map(x => (
+              <li className="answer-choices" key={x}>
+                {x}
+              </li>
+            ))}
+          </ul>
         )}
         {/* show answer */}
         {this.state.currentQuestionAnswer !== null ? (

@@ -4,8 +4,7 @@ import {Link} from 'react-router-dom'
 import {endGameThunk} from '../store/game'
 
 const Header = props => {
-  console.log(props.role)
-  const deleteCurrentGame = slug => {
+  const deleteCurrentGame = () => {
     if (props.role === 'host') {
       props.endGameThunk(props.slug)
     }
@@ -21,7 +20,6 @@ const Header = props => {
 }
 
 const mapState = state => {
-  console.log('slug')
   return {
     slug: state.game.slug,
     role: state.user.role

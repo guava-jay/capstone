@@ -79,7 +79,7 @@ label {
 input {
   font-size: 19pt;
   padding: 0.3em;
-  width: 100%;
+  /* width: 100%; */
   text-align: center;
 }
 
