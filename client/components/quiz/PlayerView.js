@@ -3,7 +3,7 @@ import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
-import {Link, NavLink, Redirect} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {PieChart, Pie, Cell, Label} from 'recharts'
 
 class PlayerView extends React.Component {
@@ -229,8 +229,12 @@ class PlayerView extends React.Component {
       else
         return (
           <div id="removed-player">
-            <h1>You have been removed from this game.</h1>
-            <p>Hold tight, we will redirect you to the homepage shortly.</p>
+            <div className="removed-item">
+              <h1>You have been removed from this game.</h1>
+            </div>
+            <div className="removed-item">
+              <p>Hold tight, we will redirect you to the homepage shortly.</p>
+            </div>
           </div>
         )
 

@@ -46,10 +46,11 @@
 #removed-player {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 5em;
-  justify-content: space-around;
-  height: 15em;
+  text-align: center;
+  padding: 2em;
+}
+.removed-item {
+  padding: 1em 0 1em 0;
 }
 
 #player-finished {
