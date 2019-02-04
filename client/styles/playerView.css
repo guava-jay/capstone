@@ -9,7 +9,7 @@
 }
 
 #player-choice-container {
-  padding: 1em 1.5em;
+  padding: 1.5em;
 }
 
 #player-choice-container h2 {
@@ -93,6 +93,10 @@
   #recharts-container {
     height: 300px;
     padding-bottom: 1.5em;
+  }
+
+  #player-finished {
+    padding: 3em;
   }
 
   #player-disconnected .finished-button-container {

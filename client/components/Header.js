@@ -16,7 +16,7 @@ const Header = props => {
   return (
     <h1 id="header">
       <Link to="/" title="home" onClick={deleteCurrentUser}>
-        <span className="yellowFont">Stackbox {'\u00A0'}</span>
+        <span className="yellowFont">Stackbox{'\u00A0'}</span>
         <span className="pinkFont">Games</span>
       </Link>
     </h1>

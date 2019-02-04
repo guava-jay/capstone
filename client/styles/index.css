@@ -170,7 +170,7 @@ input::placeholder {
 }
 
 .button6:hover:enabled {
-  filter: brightness(120%);
+  filter: brightness(115%);
   cursor: pointer;
 }
 
