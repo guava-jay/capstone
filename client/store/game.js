@@ -28,7 +28,6 @@ export const startGameThunk = slug => async dispatch => {
 }
 
 export const deleteGameThunk = slug => async dispatch => {
-  console.log('in deleteGameThunk')
   await axios.put(`/api/game/remove/${slug}`)
 }
 

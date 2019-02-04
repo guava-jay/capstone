@@ -89,10 +89,10 @@ export default class HostFinished extends React.Component {
   }
 
   render() {
-    const dataObj = this.getAnswerData()
-    const data = this.formatData(dataObj)
-    console.log(dataObj)
-    console.log(data)
+    // const dataObj = this.getAnswerData()
+    // const data = this.formatData(dataObj)
+    // console.log(dataObj)
+    // console.log(data)
 
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
@@ -121,6 +121,11 @@ export default class HostFinished extends React.Component {
 
     return (
       <div>
+        <audio
+          id="applause"
+          autoPlay
+          src="https://s3.amazonaws.com/stackbox/applause.mp3"
+        />
         <h1>Finished!</h1>
         {endView}
         <div className="buttonContainer" align="center">

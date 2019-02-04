@@ -92,7 +92,6 @@ class PlayerView extends React.Component {
         this.setState({gameStatus: 'non-participant'})
         setTimeout(() => this.setState({redirectHome: true}), 5000)
       }
-      console.log(this.state.gameStatus)
     })
 
     // Listens to changes of the currentQuestion
@@ -123,19 +122,16 @@ class PlayerView extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mounted')
     this.initializeState()
   }
 
   componentDidUpdate(prevProps) {
-    console.log('updated')
     if (this.props.slug !== prevProps.slug) {
       this.initializeState()
     }
   }
 
   render() {
-    console.log(this.props.user.uid)
     if (!this.props.user.uid) {
       return <Welcome />
     }
