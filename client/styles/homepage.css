@@ -38,7 +38,7 @@
 
 .links a:nth-child(4n-1) {
   background: var(--yellow);
-  color: var(--darkBlue);
+  color: var(--darkYellow);
   margin: 0.5em 0;
 }
 
@@ -67,7 +67,7 @@
 #header {
   text-align: center;
   background: var(--darkBlue);
-  font-size: 3em;
+  font-size: 2.5em;
   padding: 0.5em;
   min-height: 84px;
 }
@@ -91,6 +91,10 @@
 
 /* tablet  and up*/
 @media only screen and (min-width: 768px) {
+  #header {
+    font-size: 3em;
+  }
+
   .welcome {
     min-height: 100vh;
   }
