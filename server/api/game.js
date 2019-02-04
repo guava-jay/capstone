@@ -99,7 +99,6 @@ router.put('/remove', async (req, res, next) => {
 })
 
 router.put('/remove/:slug', async (req, res, next) => {
-  console.log(req.params.slug)
   try {
     const ref = database.ref(`rooms/${req.params.slug}`)
     await ref.remove()
