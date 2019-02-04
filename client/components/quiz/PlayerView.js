@@ -164,7 +164,9 @@ class PlayerView extends React.Component {
                 {this.state.answerChoices.map(choice => (
                   <label key={choice}>
                     <input type="radio" name="choices" value={choice} />
-                    <p>{choice}</p>
+                    <p className={choice.length > 15 ? 'smallChoice' : ''}>
+                      {choice}
+                    </p>
                   </label>
                 ))}
                 <br />
