@@ -4,10 +4,10 @@ import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import Welcome from '../Welcome'
 import {connect} from 'react-redux'
-import {Link, Redirect} from 'react-router-dom'
-import {PieChart, Pie, Cell, Label} from 'recharts'
+import {Redirect} from 'react-router-dom'
 import PlayerDisconnected from './PlayerDisconnected'
 import PlayerRemoved from './PlayerRemoved'
+import PlayerFinised from './PlayerFinished'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -188,47 +188,10 @@ class PlayerView extends React.Component {
         </React.Fragment>
       )
     } else if (this.state.gameStatus === 'finished') {
-      return (
-        <div id="player-finished">
-          <h1 className="center">Results</h1>
-          <div id="recharts-container">
-            <PieChart width={200} height={200}>
-              <Pie
-                data={answerData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius={80}
-                outerRadius={100}
-                paddingAngle={0}
-                fill="#8884d8"
-              >
-                <Cell fill="#00C49F" />
-                <Cell fill="#ff3860" />
-                <Label position="center">{`${numCorrect} Correct`}</Label>
-              </Pie>
-            </PieChart>
-          </div>
-          <div className="finished-button-container">
-            <Link to="/">
-              <button className="button6 buttonHome" type="button">
-                <h4>Back to home</h4>
-              </button>
-            </Link>
-
-            <Link to="/join">
-              <button className="button6 buttonJoin" type="button">
-                <h4>Join New Game</h4>
-              </button>
-            </Link>
-          </div>
-        </div>
-      )
+      return <PlayerFinised answerData={answerData} numCorrect={numCorrect} />
     } else if (this.state.gameStatus === 'non-participant') {
       if (this.state.redirectHome) return <Redirect to="/" />
       else return <PlayerRemoved />
-
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
       return <PlayerDisconnected />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PlayerDisconnected = () => (
+const PlayerRemoved = () => (
   <div id="removed-player">
     <div className="removed-item">
       <h1>You have been removed from this game.</h1>
@@ -11,4 +11,4 @@ const PlayerDisconnected = () => (
   </div>
 )
 
-export default PlayerDisconnected
+export default PlayerRemoved
