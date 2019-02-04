@@ -20,7 +20,7 @@ class HostPlaying extends React.Component {
     this.endGame = this.endGame.bind(this)
   }
   async componentDidMount() {
-    this.props.getNewQuestion(this.props.game.slug)
+    await this.props.getNewQuestion(this.props.game.slug)
     //listening for current question and upating
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`
