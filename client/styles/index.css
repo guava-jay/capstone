@@ -78,8 +78,9 @@ a {
 }
 
 label {
-  display: block;
+  display: flex;
   font-size: 2em;
+  align-items: center;
 }
 input {
   font-size: 19pt;
@@ -114,10 +115,6 @@ a:hover {
   margin: 1em;
   display: inline-block;
 } */
-
-button:disabled {
-  background-color: lightgrey;
-}
 
 button:disabled {
   background-color: lightgrey;
@@ -158,20 +155,14 @@ input::placeholder {
   /* padding:0.3em 2em; */
 }
 
-.buttonContainer .links {
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+.buttonHome {
+  background-color: lightgray;
+  color: var(--darkGray);
 }
 
-.buttonContainer .links a {
-  max-width: 350px;
-  flex-basis: 100%;
-  margin: 0px 10px 0px 10px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.buttonJoin {
+  background-color: var(--blue);
+  color: var(--darkBlue);
 }
 
 .button6:active:enabled {
@@ -193,6 +184,17 @@ input::placeholder {
   color: var(--pink);
   cursor: pointer;
 }
+
+.finished-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.finished-button-container .button6 {
+  width: 250px;
+}
+
 /* @media all and (max-width:30em) {
    .button6{
       display: block;

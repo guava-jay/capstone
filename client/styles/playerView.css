@@ -52,6 +52,17 @@
   height: 15em;
 }
 
+#player-finished {
+  padding: 1.5em;
+}
+
+#recharts-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 1.5em;
+  padding-bottom: 1em;
+}
+
 @media only screen and (min-width: 768px) {
   #player-choice-container form {
     max-width: 500px;

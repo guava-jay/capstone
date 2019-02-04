@@ -1,6 +1,6 @@
 import React from 'react'
 import database from '../../firebase'
-import JoinCreateButtons from '../JoinCreateButtons'
+import {Link} from 'react-router-dom'
 
 export default class HostFinished extends React.Component {
   constructor(props) {
@@ -123,7 +123,16 @@ export default class HostFinished extends React.Component {
       <div>
         <h1>Finished!</h1>
         {endView}
-        <JoinCreateButtons />
+        <div className="buttonContainer" align="center">
+          <nav className="links">
+            <Link to="/">
+              <h4>Back to home</h4>
+            </Link>
+            <Link to="/newGame">
+              <h4>Replay this game</h4>
+            </Link>
+          </nav>
+        </div>
       </div>
     )
   }

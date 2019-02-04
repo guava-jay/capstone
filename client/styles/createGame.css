@@ -45,6 +45,9 @@
 
 #selectedGame {
   color: white;
+  border-width: 5px;
+  border-style: dashed;
+  border-color: #f7fff7;
 }
 
 @media only screen and (min-width: 768px) {
