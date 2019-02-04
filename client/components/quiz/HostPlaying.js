@@ -65,10 +65,12 @@ class HostPlaying extends React.Component {
 
     answerRef.on('value', async snapshot => {
       if (snapshot.val()) {
-        document.getElementById('audio').pause()
-        setTimeout(() => {
-          document.getElementById('audio').play()
-        }, 2000)
+        console.log(document.getElementById('ding'))
+        //document.getElementById('audio').pause()
+        document.getElementById('ding').play()
+        //setTimeout(() => {
+        //document.getElementById('audio').play()
+        //}, 300)
         this.setState(prevState => {
           return {
             count: prevState.count + 1
@@ -112,6 +114,7 @@ class HostPlaying extends React.Component {
           loop
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
         />
+        <audio id="ding" src="https://s3.amazonaws.com/stackbox/ding.mp3" />
         <div id="host-playing-players-container">
           <h2>Players</h2>
           <div id="list-players-host-playing">

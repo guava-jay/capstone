@@ -89,10 +89,10 @@ export default class HostFinished extends React.Component {
   }
 
   render() {
-    const dataObj = this.getAnswerData()
-    const data = this.formatData(dataObj)
-    console.log(dataObj)
-    console.log(data)
+    // const dataObj = this.getAnswerData()
+    // const data = this.formatData(dataObj)
+    // console.log(dataObj)
+    // console.log(data)
 
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
