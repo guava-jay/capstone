@@ -59,8 +59,18 @@
 #recharts-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding-top: 1.5em;
   padding-bottom: 1em;
+}
+
+#player-disconnected {
+  text-align: center;
+  padding: 5em;
+}
+
+#player-disconnected .finished-button-container {
+  padding-top: 2em;
 }
 
 @media only screen and (min-width: 768px) {
@@ -77,5 +87,14 @@
 
   #show-answer-host {
     padding: 1em 0;
+  }
+
+  #recharts-container {
+    height: 300px;
+    padding-bottom: 1.5em;
+  }
+
+  #player-disconnected .finished-button-container {
+    padding-top: 5em;
   }
 }

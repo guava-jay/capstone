@@ -170,7 +170,7 @@ input::placeholder {
 }
 
 .button6:hover:enabled {
-  filter: brightness(150%);
+  filter: brightness(120%);
   cursor: pointer;
 }
 
@@ -205,5 +205,15 @@ input::placeholder {
 @media only screen and (min-width: 768px) {
   .button6 {
     padding: 0.7em 3em;
+  }
+
+  .finished-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .finished-button-container .button6 {
+    margin: 0 0.5em 0 0.5em;
   }
 }
