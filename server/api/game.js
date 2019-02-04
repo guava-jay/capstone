@@ -6,9 +6,9 @@ module.exports = router
 //slug generator
 let generateSlug = () => {
   let arr = []
-  let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  let chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'
   for (let i = 0; i < 4; i++) {
-    const index = Math.floor(36 * Math.random())
+    const index = Math.floor(chars.length * Math.random())
     arr.push(chars[index])
   }
   return arr.join('')
