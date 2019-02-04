@@ -2,9 +2,11 @@
 import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
+import Welcome from '../Welcome'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {PieChart, Pie, Cell, Label} from 'recharts'
+import PlayerDisconnected from './PlayerDisconnected'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -238,26 +240,7 @@ class PlayerView extends React.Component {
 
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
-      return (
-        <div id="player-disconnected">
-          <div>
-            <h1>The host has disconnected.</h1>
-          </div>
-          <div className="finished-button-container">
-            <Link to="/">
-              <button className="button6 buttonHome" type="button">
-                <h4>Back to home</h4>
-              </button>
-            </Link>
-
-            <Link to="/join">
-              <button className="button6 buttonJoin" type="button">
-                <h4>Join New Game</h4>
-              </button>
-            </Link>
-          </div>
-        </div>
-      )
+      return <PlayerDisconnected />
     } else {
       return null
     }
