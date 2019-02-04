@@ -73,6 +73,7 @@ class HostPlaying extends React.Component {
           this.state.currentQuestion,
           this.props.game.slug
         )
+        document.getElementById('ding').play()
         this.setState({currentQuestionAnswer: getAnswer})
         setTimeout(this.updateQuestion, 3000)
         //set timer to call next question
@@ -116,6 +117,7 @@ class HostPlaying extends React.Component {
           loop
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
         />
+        <audio id="ding" src="https://s3.amazonaws.com/stackbox/ding.mp3" />
         <div id="host-playing-players-container">
           <h2>Players</h2>
           <div id="list-players-host-playing">
