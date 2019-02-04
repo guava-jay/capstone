@@ -44,7 +44,7 @@
 
 .links a:nth-child(4n) {
   background: var(--gray);
-  color: var(--darkBlue);
+  color: var(--darkGray);
   margin: 0.5em 0;
 }
 

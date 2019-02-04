@@ -14,7 +14,7 @@ const Navbar = () => (
         <h4>How To Play</h4>
       </Link>
       <Link to="/about" title="create new game">
-        <h4>about</h4>
+        <h4>About</h4>
       </Link>
       <div className="box">
         <img src="/img/cartoon-box.png" />
