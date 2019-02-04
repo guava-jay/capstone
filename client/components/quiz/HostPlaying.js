@@ -93,12 +93,12 @@ class HostPlaying extends React.Component {
     currentQuestionRef.off()
   }
 
-  async updateQuestion() {
+  updateQuestion() {
     //stops the game at 10 questions
     if (this.state.questionCount === 10) {
-      await this.props.endGameThunk(this.props.game.slug)
+      this.props.endGameThunk(this.props.game.slug)
     } else {
-      let idk = await this.props.getNewQuestion(this.props.game.slug)
+      let idk = this.props.getNewQuestion(this.props.game.slug)
       this.setState({count: 0, currentQuestionAnswer: null})
     }
   }
