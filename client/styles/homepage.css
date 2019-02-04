@@ -36,6 +36,18 @@
   margin: 0.5em 0;
 }
 
+.links a:nth-child(3) {
+  background: var(--yellow);
+  color: var(--darkBlue);
+  margin: 0.5em 0;
+}
+
+.links a:nth-child(4) {
+  background: var(--gray);
+  color: var(--darkBlue);
+  margin: 0.5em 0;
+}
+
 .box {
   /* position: relative; */
   position: absolute;
