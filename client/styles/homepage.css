@@ -24,25 +24,25 @@
   filter: brightness(150%);
 }
 
-.links a:nth-child(1) {
+.links a:nth-child(4n-3) {
   background: var(--pink);
   margin: 0.5em 0;
   color: var(--darkPink);
 }
 
-.links a:nth-child(2) {
+.links a:nth-child(4n-2) {
   background: var(--blue);
   color: var(--darkBlue);
   margin: 0.5em 0;
 }
 
-.links a:nth-child(3) {
+.links a:nth-child(4n-1) {
   background: var(--yellow);
   color: var(--darkBlue);
   margin: 0.5em 0;
 }
 
-.links a:nth-child(4) {
+.links a:nth-child(4n) {
   background: var(--gray);
   color: var(--darkBlue);
   margin: 0.5em 0;
