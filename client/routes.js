@@ -1,7 +1,15 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
-import {Welcome, Join, CreateGame, Room, HowToPlay, About} from './components'
+import {
+  Welcome,
+  Join,
+  CreateGame,
+  Room,
+  HowToPlay,
+  About,
+  Voting
+} from './components'
 import {setPlayerThunk} from './store/user'
 import firebase from 'firebase'
 
