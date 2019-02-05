@@ -82,12 +82,24 @@
 }
 
 .display-static {
-  padding: 1em;
+  padding: 2em;
   text-align: center;
 }
 
+.display-static p {
+  font-size: 1.2em;
+}
+
+.display-static h3 {
+  margin-bottom: 0.5em;
+}
+
+.about-text {
+  padding: 1em 0em;
+}
+
 .how-to-play-step {
-  padding: 1em;
+  padding: 1em 0em;
 }
 
 .instructions {
@@ -95,6 +107,7 @@
   font-size: smaller;
   border: 1px solid;
   padding: 0.1em;
+  display: inline-block;
 }
 
 #welcome-title-container {
@@ -134,10 +147,10 @@
   }
 
   .display-static {
-    padding: 2em;
+    padding: 2em 20em;
   }
 
-  .how-to-play-step {
-    padding: 1em 10em;
+  .display-static p {
+    font-size: 1.5em;
   }
 }
