@@ -36,9 +36,6 @@ router.put('/score', async (req, res, next) => {
     await answer.once('value', snapshot => {
       answerValue = snapshot.val()
 
-      console.log(req.body.answers)
-      console.log(answerValue)
-
       for (let key in req.body.answers) {
         const PLAYER = `/rooms/${req.body.slug}/players/${key}`
 
