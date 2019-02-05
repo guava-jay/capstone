@@ -7,9 +7,10 @@ export const CREATE_GAME = 'CREATE_GAME'
 const CHECK_ANSWERS = 'CHECK_ANSWERS'
 
 //Action creators
-const createGame = slug => ({
+const createGame = (slug, gameName) => ({
   type: CREATE_GAME,
-  slug
+  slug,
+  gameName
 })
 //and then join game the role will be player
 
@@ -17,7 +18,7 @@ const createGame = slug => ({
 export const createNewGame = (uid, game) => async dispatch => {
   const {data: slug} = await axios.post('/api/game', {uid, game})
   history.push(`/newGame/${slug}`)
-  dispatch(createGame(slug))
+  dispatch(createGame(slug, game))
 }
 
 export const endGameThunk = slug => async dispatch => {
@@ -58,7 +59,7 @@ const gameReducer = (state = initialState, action) => {
     case JOIN_GAME:
       return {...state, slug: action.slug}
     case CREATE_GAME:
-      return {...state, slug: action.slug}
+      return {...state, slug: action.slug, gameName: action.gameName}
     default:
       return state
   }
