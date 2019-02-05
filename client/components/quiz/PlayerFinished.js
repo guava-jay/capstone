@@ -2,7 +2,7 @@ import React from 'react'
 import {PieChart, Pie, Cell, Label} from 'recharts'
 import FinishedButtons from './FinishedButtons'
 
-const PlayerFinised = props => {
+const PlayerFinished = props => {
   const noData = !props.answerData[0].value && !props.answerData[1].value
   let graph
 
@@ -43,4 +43,4 @@ const PlayerFinised = props => {
   )
 }
 
-export default PlayerFinised
+export default PlayerFinished

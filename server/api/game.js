@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const router = require('express').Router()
 const database = require('../db/index')
 const firebase = require('firebase-admin')
@@ -106,6 +107,29 @@ router.put('/remove/:slug', async (req, res, next) => {
   } catch (err) {
     console.error(err)
     next()
+  }
+})
+
+//toggle game room to playing
+router.put('/:slug/replay', (req, res, next) => {
+  try {
+    database
+      .ref(`/rooms/${req.params.slug}/active_game/answered_question`)
+      .set({answered_question: []})
+    database
+      .ref(`/rooms/${req.params.slug}/players`)
+      .once('value')
+      .then(snapshot => {
+        snapshot.forEach(childSnap => {
+          const name = childSnap.child('displayName').val()
+          database
+            .ref(`/rooms/${req.params.slug}/players/${childSnap.key}`)
+            .set({currentScore: 0, answers: null, displayName: name})
+        })
+      })
+    res.end()
+  } catch (err) {
+    next(err)
   }
 })
 
