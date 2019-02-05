@@ -105,4 +105,16 @@
     width: 299px;
     z-index: -1;
   }
+
+  .links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 50em;
+  }
+
+  .links a {
+    flex-basis: 45%;
+    text-align: center;
+  }
 }
