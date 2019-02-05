@@ -206,10 +206,6 @@ input::placeholder {
   align-items: center;
 }
 
-.finished-button-container .button6 {
-  width: 250px;
-}
-
 /* @media all and (max-width:30em) {
    .button6{
       display: block;

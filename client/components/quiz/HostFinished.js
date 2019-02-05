@@ -3,14 +3,26 @@ import {connect} from 'react-redux'
 import database from '../../firebase'
 import {startGameThunk, resetGameThunk, deleteGameThunk} from '../../store/game'
 import FinishedButtons from './FinishedButtons'
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend
+} from 'recharts'
 
 class HostFinished extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       highScore: 0,
-      winners: []
+      winners: [],
+      data: [],
+      players: []
     }
+    this.chartColors = ['#4ecdc4', '#ff6b6b', '#ffe66d', '#c4c4c4']
     this.resetGame = this.resetGame.bind(this)
     this.deleteGame = this.deleteGame.bind(this)
   }
@@ -44,6 +56,7 @@ class HostFinished extends React.Component {
       .then(snapshot => snapshot.val())
 
     this.findHighScore(answersObj)
+    this.getAnswerData()
   }
 
   async getAnswerData() {
@@ -53,42 +66,34 @@ class HostFinished extends React.Component {
       .then(snapshot => snapshot.val())
 
     const players = Object.keys(playerAnswers)
-    let dataObj = {}
+    const dataObj = {}
+    const playerNamesArr = []
 
-    players.forEach(uid => {
-      const indivAnswers = Object.keys(playerAnswers[uid].answers)
-      const displayName = playerAnswers[uid].displayName
+    players.forEach(player => {
+      const playerObj = playerAnswers[player]
+      const questions = Object.keys(playerObj.answers)
+      const displayName = playerObj.displayName
 
-      indivAnswers.forEach(questionId => {
-        // check if answer was correct
-        database
-          .ref(`game_list/quiz/${questionId}/answer`)
-          .once('value')
-          .then(snapshot => {
-            let points
-            if (snapshot.val() === playerAnswers[uid].answers[questionId]) {
-              points = 1
-            } else {
-              points = 0
-            }
+      playerNamesArr.push(displayName)
 
-            if (!dataObj[questionId]) dataObj[questionId] = {}
+      questions.forEach(question => {
+        let score
 
-            dataObj[questionId][displayName] = points
-          })
+        if (playerObj.answers[question].correct) score = 1
+        else score = 0
+
+        if (!dataObj[question]) dataObj[question] = {[displayName]: score}
+        else dataObj[question][displayName] = score
       })
     })
 
-    return dataObj
-  }
-
-  formatData(obj) {
-    const dataArr = Object.keys(obj).map(key => ({
-      name: key,
-      ...obj[key]
+    // turn into array
+    const dataArr = Object.keys(dataObj).map((question, i) => ({
+      name: i + 1,
+      ...dataObj[question]
     }))
 
-    return dataArr
+    this.setState({data: dataArr, players: playerNamesArr})
   }
 
   async resetGame() {
@@ -104,7 +109,6 @@ class HostFinished extends React.Component {
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
     const hasTie = this.state.winners.length > 1
-
     const highScore = this.state.highScore
 
     let endView
@@ -136,6 +140,39 @@ class HostFinished extends React.Component {
         />
         <h1 className="center">Finished!</h1>
         {endView}
+        <div id="recharts-container">
+          <BarChart
+            width={600}
+            height={300}
+            data={this.state.data}
+            margin={{top: 20, right: 30, left: 20, bottom: 5}}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="name"
+              label={{value: 'Question', position: 'bottom', dx: -150}}
+            />
+            <YAxis
+              domain={[0, this.state.players.length]}
+              allowDecimals={false}
+              label={{
+                value: 'Num of players answering correctly',
+                angle: -90,
+                position: 'insideBottomLeft'
+              }}
+            />
+            <Tooltip />
+            <Legend />
+            {this.state.players.map((player, i) => (
+              <Bar
+                key={player}
+                dataKey={player}
+                stackId="a"
+                fill={this.chartColors[i]}
+              />
+            ))}
+          </BarChart>
+        </div>
         <FinishedButtons
           secondButton="create"
           resetGame={this.resetGame}

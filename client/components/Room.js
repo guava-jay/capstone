@@ -24,10 +24,6 @@ class Room extends React.Component {
   }
 
   render() {
-    // const playerRef = await database.ref(
-    //   `${ROOM}/players/${this.props.user.uid}`
-    // )
-
     //checking for user disconnect
     if (this.props.user.role === 'host') {
       database
