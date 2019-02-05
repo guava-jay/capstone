@@ -1,6 +1,6 @@
 import React from 'react'
-import {voteForPlayerThunk} from '../../store/game_helpers'
 import {connect} from 'react-redux'
+import axios from 'axios'
 
 //rewriting this to expect the players as a prop
 class Voting extends React.Component {
@@ -18,14 +18,15 @@ class Voting extends React.Component {
     this.setState({currentChoice: event.target.value})
   }
 
-  submitChoice(event) {
+  async submitChoice(event) {
+    console.log(this.state)
     event.preventDefault()
     if (!this.state.submitted) {
-      this.props.voteForPlayerThunk(
-        this.props.slug,
-        this.props.user.uid,
-        this.state.currentChoice
-      )
+      await axios.put('/api/most_likely_to/vote', {
+        slug: this.props.slug,
+        uId: this.props.user.uid,
+        playerId: this.state.currentChoice
+      })
       this.setState({submitted: true})
     }
   }
@@ -54,9 +55,6 @@ class Voting extends React.Component {
               Submit Choice{' '}
             </button>
           )}
-          {this.state.submitted && (
-            <div>You voted for {this.state.currentChoice}</div>
-          )}
         </form>
       </div>
     )
@@ -69,11 +67,4 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = dispatch => {
-  return {
-    voteForPlayerThunk: (slug, uid, playerId) =>
-      dispatch(voteForPlayerThunk(slug, uid, playerId))
-  }
-}
-
-export default connect(mapState, mapDispatch)(Voting)
+export default connect(mapState)(Voting)

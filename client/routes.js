@@ -8,7 +8,7 @@ import {
   Room,
   HowToPlay,
   About,
-  test
+  Voting
 } from './components'
 import {setPlayerThunk} from './store/user'
 import firebase from 'firebase'
@@ -32,7 +32,6 @@ class Routes extends Component {
     return (
       <Switch>
         <Route exact path="/" component={Welcome} />
-        <Route path="/test" component={test} />
         <Route path="/home" component={Welcome} />
         <Route path="/join" component={Join} />
         <Route path="/how-to-play" component={HowToPlay} />

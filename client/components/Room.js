@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import database from '../firebase'
 import HostView from './quiz/HostView'
-import PlayerView from './quiz/PlayerView'
+import PlayerView from './most_likely_to/PlayerView'
 
 class Room extends React.Component {
   componentDidMount() {

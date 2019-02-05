@@ -3,7 +3,6 @@ import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
-import Navbar from '../navbar'
 import {Voting} from '../../components'
 
 class PlayerView extends React.Component {
@@ -11,38 +10,10 @@ class PlayerView extends React.Component {
     super()
     this.state = {
       gameStatus: 'waiting',
-      voting: false,
-      role: '',
       otherPlayers: []
     }
     this.setState = this.setState.bind(this)
-    // this.setChoice = this.setChoice.bind(this)
-    // this.submitChoice = this.submitChoice.bind(this)
   }
-
-  // Can select between an answer multiple times...
-  // setChoice(event) {
-  //   const currentQuestion = this.state.currentQuestion
-  //   const currentResponse = event.target.value
-  //   const responses = {
-  //     ...this.state.responses,
-  //     [currentQuestion]: currentResponse
-  //   }
-  //   this.setState({responses})
-  // }
-
-  // ...But can only submit once per question
-  // submitChoice(event) {
-  //   event.preventDefault()
-
-  //   const slug = this.props.slug
-  //   const uid = this.props.user.uid
-
-  //   const currentQuestion = this.state.currentQuestion
-  //   const answer = this.state.responses[currentQuestion]
-  //   this.props.setResponseThunk(slug, uid, answer)
-  //   this.setState({answeredCurrent: true})
-  // }
 
   async initializeState() {
     const ROOM = `/rooms/${this.props.slug}`
@@ -82,31 +53,10 @@ class PlayerView extends React.Component {
       this.setState({otherPlayers: snapshot.val()})
     })
 
-    // // Listens to changes of the currentQuestion
-    // await currentQuestionRef.on('value', async snapshot => {
-    //   if (snapshot.val() >= 0) {
-    //     const answerChoices = await database
-    //       .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
-    //       .once('value')
-    //       .then(snapshot => snapshot.val())
-    //     this.setState({
-    //       currentQuestion: snapshot.val(),
-    //       answerChoices,
-    //       answeredCurrent: false
-    //     })
-    //   }
-    // })
-
     // Listens to changes of the gameStatus
     gameStatusRef.on('value', snapshot => {
       this.setState({gameStatus: snapshot.val()})
     })
-
-    // database
-    //   .ref(`${ROOM}/players/${this.props.user.uid}/currentScore`)
-    //   .on('value', snapshot => {
-    //     this.setState({currentScore: snapshot.val()})
-    //   })
   }
 
   componentDidMount() {
@@ -120,8 +70,6 @@ class PlayerView extends React.Component {
   }
 
   render() {
-    // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
-    // const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
     if (this.state.gameStatus === 'waiting') {
       return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (this.state.gameStatus === 'playing') {
