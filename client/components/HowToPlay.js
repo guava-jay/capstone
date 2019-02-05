@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 const HowToPlay = props => {
   return (
@@ -20,6 +21,11 @@ const HowToPlay = props => {
         Step 4 - Once all players are in the room, click start game in the room
         screen and enjoy!
       </p>
+      <Link to="/">
+        <button className="button6 buttonHome" type="button">
+          <h4>Back to home</h4>
+        </button>
+      </Link>
       <div id="logo-holder">
         <img src="./img/cartoon-box.png" />
       </div>

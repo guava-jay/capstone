@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 const About = props => {
   return (
@@ -15,6 +16,11 @@ const About = props => {
         Created by Emily McAllister, Eve Mendelevich, Sara Dornblaser, and
         Wingman Lee
       </p>
+      <Link to="/">
+        <button className="button6 buttonHome" type="button">
+          <h4>Back to home</h4>
+        </button>
+      </Link>
       <div id="logo-holder">
         <img src="./img/cartoon-box.png" />
       </div>
