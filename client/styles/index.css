@@ -166,6 +166,11 @@ input::placeholder {
 }
 
 .buttonJoin {
+  background-color: var(--pink);
+  color: var(--darkPink);
+}
+
+.buttonNewGame {
   background-color: var(--blue);
   color: var(--darkBlue);
 }
