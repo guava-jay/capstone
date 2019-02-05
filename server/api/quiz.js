@@ -52,11 +52,11 @@ router.put('/score', async (req, res, next) => {
 
           database
             .ref(`${PLAYER}/answers/${req.body.currentQuestion}/correct`)
-            .set('true')
+            .set(true)
         } else {
           database
             .ref(`${PLAYER}/answers/${req.body.currentQuestion}/correct`)
-            .set('false')
+            .set(false)
         }
       }
     })
