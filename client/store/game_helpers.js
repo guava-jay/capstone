@@ -10,14 +10,13 @@ const getPlayers = players => ({type: GET_PLAYERS, players})
 
 //vote for players just needs an api call no change to state required?
 
-export const getPlayersThunk = slug => {
-  return async dispatch => {
-    //make an array here that we can run through
-    //we need to pick out the player themselves and anyone listed as dead
-    await database.ref(`/rooms/${slug}/players`).once('value', snapshot => {
-      dispatch(getPlayers(snapshot.val()))
-    })
-  }
+export const getPlayersThunk = slug => async dispatch => {
+  console.log('ln 16')
+  //make an array here that we can run through
+  //we need to pick out the player themselves and anyone listed as dead
+  await database.ref(`/rooms/${slug}/players`).once('value', snapshot => {
+    dispatch(getPlayers(snapshot.val()))
+  })
 }
 
 export const voteForPlayerThunk = (slug, uid, player) => {
