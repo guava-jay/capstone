@@ -1,14 +1,17 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import database from '../../firebase'
 import {Link} from 'react-router-dom'
+import {startGameThunk, resetGameThunk} from '../../store/game'
 
-export default class HostFinished extends React.Component {
+class HostFinished extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       highScore: 0,
       winners: []
     }
+    this.resetGame = this.resetGame.bind(this)
   }
 
   findHighScore(obj) {
@@ -76,7 +79,6 @@ export default class HostFinished extends React.Component {
     })
 
     return dataObj
-    // const data = [{name: '1', eve: 4000, guest: 2400}]
   }
 
   formatData(obj) {
@@ -88,12 +90,12 @@ export default class HostFinished extends React.Component {
     return dataArr
   }
 
-  render() {
-    // const dataObj = this.getAnswerData()
-    // const data = this.formatData(dataObj)
-    // console.log(dataObj)
-    // console.log(data)
+  async resetGame() {
+    await this.props.resetGameThunk(this.props.game.slug)
+    await this.props.startGameThunk(this.props.game.slug)
+  }
 
+  render() {
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
     const hasTie = this.state.winners.length > 1
@@ -133,12 +135,26 @@ export default class HostFinished extends React.Component {
             <Link to="/">
               <h4>Back to home</h4>
             </Link>
-            <Link to="/newGame">
+            <div onClick={this.resetGame}>
               <h4>Replay this game</h4>
-            </Link>
+            </div>
           </nav>
         </div>
       </div>
     )
   }
 }
+
+const mapState = state => {
+  return {
+    game: state.game
+  }
+}
+const mapDispatch = dispatch => {
+  return {
+    startGameThunk: slug => dispatch(startGameThunk(slug)),
+    resetGameThunk: slug => dispatch(resetGameThunk(slug))
+  }
+}
+
+export default connect(mapState, mapDispatch)(HostFinished)

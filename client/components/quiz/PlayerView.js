@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import PlayerDisconnected from './PlayerDisconnected'
 import PlayerRemoved from './PlayerRemoved'
-import PlayerFinised from './PlayerFinished'
+import PlayerFinished from './PlayerFinished'
 import PlayerChoices from './PlayerChoices'
 
 class PlayerView extends React.Component {
@@ -172,7 +172,7 @@ class PlayerView extends React.Component {
         </React.Fragment>
       )
     } else if (this.state.gameStatus === 'finished') {
-      return <PlayerFinised answerData={answerData} numCorrect={numCorrect} />
+      return <PlayerFinished answerData={answerData} numCorrect={numCorrect} />
     } else if (this.state.gameStatus === 'non-participant') {
       if (this.state.redirectHome) return <Redirect to="/" />
       else return <PlayerRemoved />
