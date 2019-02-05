@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable complexity */
 const router = require('express').Router()
 const database = require('../db/index')
@@ -26,6 +27,7 @@ let totalNumberOfQuestions = async () => {
 //checks submitted answers and scores them back to player in firebase
 router.put('/score', async (req, res, next) => {
   //grab the answer from db and check it then set play scores back
+
   try {
     const answer = database.ref(
       `/game_list/quiz/${req.body.currentQuestion}/answer`
@@ -33,15 +35,28 @@ router.put('/score', async (req, res, next) => {
     let answerValue
     await answer.once('value', snapshot => {
       answerValue = snapshot.val()
+
+      console.log(req.body.answers)
+      console.log(answerValue)
+
       for (let key in req.body.answers) {
+        const PLAYER = `/rooms/${req.body.slug}/players/${key}`
+
         if (req.body.answers[key] == answerValue) {
-          let currentScore = database.ref(
-            `/rooms/${req.body.slug}/players/${key}/currentScore`
-          )
+          let currentScore = database.ref(`${PLAYER}/currentScore`)
+
           currentScore.once('value', snapshot => {
             let newScore = snapshot.val() + 1
             currentScore.set(newScore)
           })
+
+          database
+            .ref(`${PLAYER}/answers/${req.body.currentQuestion}/correct`)
+            .set('true')
+        } else {
+          database
+            .ref(`${PLAYER}/answers/${req.body.currentQuestion}/correct`)
+            .set('false')
         }
       }
     })
@@ -152,13 +167,12 @@ router.put('/answer', async (req, res, next) => {
       currentQuestion = snapshot.child(CURRENT_QUESTION).val()
     })
 
-    // database.ref('testPostman').set('working')
-
     // now add their response
     await database
       .ref(`rooms/${slug}/players/${req.body.uid}/`)
       .child('answers')
       .child(currentQuestion)
+      .child('choice')
       .set(req.body.answer)
 
     await database

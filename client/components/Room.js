@@ -20,15 +20,10 @@ class Room extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('i unmounted this shit')
     this.props.resetThunk()
   }
 
   render() {
-    // const playerRef = await database.ref(
-    //   `${ROOM}/players/${this.props.user.uid}`
-    // )
-
     //checking for user disconnect
     if (this.props.user.role === 'host') {
       database
