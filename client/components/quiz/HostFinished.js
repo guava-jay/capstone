@@ -40,6 +40,43 @@ export default class HostFinished extends React.Component {
       .then(snapshot => snapshot.val())
 
     this.findHighScore(answersObj)
+    this.getAnswerData()
+  }
+
+  async getAnswerData() {
+    const playerAnswers = await database
+      .ref(`rooms/${this.props.slug}/players`)
+      .once('value')
+      .then(snapshot => snapshot.val())
+
+    const players = Object.keys(playerAnswers)
+    // const data = [{name: '1', eve: 4000, guest: 2400}]
+
+    const dataObj = {}
+
+    players.forEach(player => {
+      const playerObj = playerAnswers[player]
+      const questions = Object.keys(playerObj.answers)
+      const displayName = playerObj.displayName
+
+      console.log('playerObj', playerObj)
+      console.log('questions', questions)
+      console.log('displayName', displayName)
+
+      questions.forEach(question => {
+        let score
+
+        console.log(playerObj.answers[question].correct)
+
+        if (playerObj.answers[question].correct) score = 1
+        else score = 0
+
+        if (!dataObj[question]) dataObj[question] = {[displayName]: score}
+        else dataObj[question][displayName] = score
+      })
+    })
+
+    console.log(dataObj)
   }
 
   // async getAnswerData() {
