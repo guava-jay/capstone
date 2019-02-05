@@ -166,6 +166,11 @@ input::placeholder {
 }
 
 .buttonJoin {
+  background-color: var(--pink);
+  color: var(--darkPink);
+}
+
+.buttonNewGame {
   background-color: var(--blue);
   color: var(--darkBlue);
 }
@@ -177,6 +182,11 @@ input::placeholder {
 .button6:hover:enabled {
   filter: brightness(115%);
   cursor: pointer;
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
 }
 
 .icon-move {

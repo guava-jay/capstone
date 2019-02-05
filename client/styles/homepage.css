@@ -81,6 +81,35 @@
   font-size: 3em;
 }
 
+.display-static {
+  padding: 2em;
+  text-align: center;
+}
+
+.display-static p {
+  font-size: 1.2em;
+}
+
+.display-static h3 {
+  margin-bottom: 0.5em;
+}
+
+.about-text {
+  padding: 1em 0em;
+}
+
+.how-to-play-step {
+  padding: 1em 0em;
+}
+
+.instructions {
+  color: var(--darkBlue);
+  font-size: smaller;
+  border: 1px solid;
+  padding: 0.1em;
+  display: inline-block;
+}
+
 #welcome-title-container {
   padding-top: 3em;
 }
@@ -100,9 +129,28 @@
   }
 
   .box {
-    bottom: -136px;
-    right: -442px;
-    width: 299px;
+    bottom: -160px;
+    width: 200px;
     z-index: -1;
+  }
+
+  .links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 50em;
+  }
+
+  .links a {
+    flex-basis: 45%;
+    text-align: center;
+  }
+
+  .display-static {
+    padding: 2em 20em;
+  }
+
+  .display-static p {
+    font-size: 1.5em;
   }
 }
