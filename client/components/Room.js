@@ -20,7 +20,6 @@ class Room extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('i unmounted this shit')
     this.props.resetThunk()
   }
 
