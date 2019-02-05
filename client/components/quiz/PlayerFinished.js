@@ -1,6 +1,6 @@
 import React from 'react'
 import {PieChart, Pie, Cell, Label} from 'recharts'
-import {Link} from 'react-router-dom'
+import FinishedButtons from './FinishedButtons'
 
 const PlayerFinished = props => {
   const noData = !props.answerData[0].value && !props.answerData[1].value
@@ -38,19 +38,7 @@ const PlayerFinished = props => {
   return (
     <div id="player-finished">
       {graph}
-      <div className="finished-button-container">
-        <Link to="/">
-          <button className="button6 buttonHome" type="button">
-            <h4>Back to home</h4>
-          </button>
-        </Link>
-
-        <Link to="/join">
-          <button className="button6 buttonJoin" type="button">
-            <h4>Join New Game</h4>
-          </button>
-        </Link>
-      </div>
+      <FinishedButtons secondButton="join" />
     </div>
   )
 }
