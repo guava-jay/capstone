@@ -90,7 +90,9 @@ export const joinGameThunk = (slug, uid, displayName) => {
         dispatch(errorOut('Error: game is full'))
         return
       } else if (!gameWaiting) {
-        dispatch(errorOut('Error: Game is not awaiting new players'))
+        dispatch(
+          errorOut('Error: Game is no longer allowing new players to join')
+        )
         return
       }
     } else {

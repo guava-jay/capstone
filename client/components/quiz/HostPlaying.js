@@ -98,7 +98,7 @@ class HostPlaying extends React.Component {
     if (this.state.questionCount === 10) {
       this.props.endGameThunk(this.props.game.slug)
     } else {
-      let idk = this.props.getNewQuestion(this.props.game.slug)
+      this.props.getNewQuestion(this.props.game.slug)
       this.setState({count: 0, currentQuestionAnswer: null})
     }
   }

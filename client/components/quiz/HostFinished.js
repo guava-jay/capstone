@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import database from '../../firebase'
-import {startGameThunk, resetGameThunk} from '../../store/game'
+import {startGameThunk, resetGameThunk, deleteGameThunk} from '../../store/game'
 import FinishedButtons from './FinishedButtons'
 import {
   BarChart,
@@ -24,6 +24,7 @@ class HostFinished extends React.Component {
     }
     this.chartColors = ['#4ecdc4', '#ff6b6b', '#ffe66d', '#c4c4c4']
     this.resetGame = this.resetGame.bind(this)
+    this.deleteGame = this.deleteGame.bind(this)
   }
 
   findHighScore(obj) {
@@ -100,6 +101,10 @@ class HostFinished extends React.Component {
     await this.props.startGameThunk(this.props.game.slug)
   }
 
+  async deleteGame() {
+    await this.props.deleteGameThunk(this.props.game.slug)
+  }
+
   render() {
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
@@ -168,7 +173,11 @@ class HostFinished extends React.Component {
             ))}
           </BarChart>
         </div>
-        <FinishedButtons secondButton="create" resetGame={this.resetGame} />
+        <FinishedButtons
+          secondButton="create"
+          resetGame={this.resetGame}
+          deleteRoom={this.deleteGame}
+        />
       </div>
     )
   }
@@ -182,7 +191,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     startGameThunk: slug => dispatch(startGameThunk(slug)),
-    resetGameThunk: slug => dispatch(resetGameThunk(slug))
+    resetGameThunk: slug => dispatch(resetGameThunk(slug)),
+    deleteGameThunk: slug => dispatch(deleteGameThunk(slug))
   }
 }
 

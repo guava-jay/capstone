@@ -28,7 +28,11 @@ const FinishedButtons = props => {
   return (
     <div className="finished-button-container">
       <Link to="/">
-        <button className="button6 buttonHome" type="button">
+        <button
+          className="button6 buttonHome"
+          type="button"
+          onClick={props.deleteRoom}
+        >
           <h4>Back to home</h4>
         </button>
       </Link>
