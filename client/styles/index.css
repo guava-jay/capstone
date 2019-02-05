@@ -184,6 +184,11 @@ input::placeholder {
   cursor: pointer;
 }
 
+.center-button {
+  display: flex;
+  justify-content: center;
+}
+
 .icon-move {
   position: relative;
   top: 0px;

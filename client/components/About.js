@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 const About = props => {
   return (
-    <div>
+    <div className="display-static">
       <h1>About Stackbox Games</h1>
       <p>
         StackBox is an online multiplayer game that is created with React and

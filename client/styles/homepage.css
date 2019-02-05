@@ -81,6 +81,22 @@
   font-size: 3em;
 }
 
+.display-static {
+  padding: 1em;
+  text-align: center;
+}
+
+.how-to-play-step {
+  padding: 1em;
+}
+
+.instructions {
+  color: var(--darkBlue);
+  font-size: smaller;
+  border: 1px solid;
+  padding: 0.1em;
+}
+
 #welcome-title-container {
   padding-top: 3em;
 }
@@ -115,5 +131,13 @@
   .links a {
     flex-basis: 45%;
     text-align: center;
+  }
+
+  .display-static {
+    padding: 2em;
+  }
+
+  .how-to-play-step {
+    padding: 1em 10em;
   }
 }
