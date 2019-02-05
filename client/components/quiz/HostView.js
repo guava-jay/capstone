@@ -113,14 +113,14 @@ class HostView extends React.Component {
       )
     } else if (this.state.status === 'playing') {
       // CHANGE GAME PLAYING COMPONENTS HERE
-      if (this.state.selectedGame === 'quiz') {
-        return <HostPlaying players={this.state.players} />
-      }
+      // if (this.state.selectedGame === 'quiz') {
+      return <HostPlaying players={this.state.players} />
+      //}
     } else if (this.state.status === 'finished') {
       // CHANGE GAME ENDING COMPONENT HERE
-      if (this.state.selectedGame === 'quiz') {
-        return <HostFinished slug={this.props.slug} />
-      }
+      //if (this.state.selectedGame === 'quiz') {
+      return <HostFinished slug={this.props.slug} />
+      //}
     } else {
       return null
     }
