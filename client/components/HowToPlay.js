@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-const HowToPlay = props => {
+const HowToPlay = () => {
   return (
     <div>
       <h1>How to play</h1>
