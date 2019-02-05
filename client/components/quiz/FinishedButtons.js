@@ -14,8 +14,12 @@ const FinishedButtons = props => {
   } else if (props.secondButton === 'create') {
     secondButton = (
       <Link to="/newGame">
-        <button className="button6 buttonNewGame" type="button">
-          <h4>Create New Game</h4>
+        <button
+          className="button6 buttonNewGame"
+          type="button"
+          onClick={props.resetGame}
+        >
+          <h4>Play Again</h4>
         </button>
       </Link>
     )

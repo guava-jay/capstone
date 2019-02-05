@@ -1,14 +1,17 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import database from '../../firebase'
+import {startGameThunk, resetGameThunk} from '../../store/game'
 import FinishedButtons from './FinishedButtons'
 
-export default class HostFinished extends React.Component {
+class HostFinished extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       highScore: 0,
       winners: []
     }
+    this.resetGame = this.resetGame.bind(this)
   }
 
   findHighScore(obj) {
@@ -77,6 +80,7 @@ export default class HostFinished extends React.Component {
     })
 
     console.log(dataObj)
+    return dataObj
   }
 
   // async getAnswerData() {
@@ -125,12 +129,12 @@ export default class HostFinished extends React.Component {
   //   return dataArr
   // }
 
-  render() {
-    // const dataObj = this.getAnswerData()
-    // const data = this.formatData(dataObj)
-    // console.log(dataObj)
-    // console.log(data)
+  async resetGame() {
+    await this.props.resetGameThunk(this.props.game.slug)
+    await this.props.startGameThunk(this.props.game.slug)
+  }
 
+  render() {
     const hasNoWinners = this.state.winners.length === 0
     const hasOneWinner = this.state.winners.length === 1
     const hasTie = this.state.winners.length > 1
@@ -165,8 +169,22 @@ export default class HostFinished extends React.Component {
         />
         <h1 className="center">Finished!</h1>
         {endView}
-        <FinishedButtons secondButton="create" />
+        <FinishedButtons secondButton="create" resetGame={this.resetGame} />
       </div>
     )
   }
 }
+
+const mapState = state => {
+  return {
+    game: state.game
+  }
+}
+const mapDispatch = dispatch => {
+  return {
+    startGameThunk: slug => dispatch(startGameThunk(slug)),
+    resetGameThunk: slug => dispatch(resetGameThunk(slug))
+  }
+}
+
+export default connect(mapState, mapDispatch)(HostFinished)

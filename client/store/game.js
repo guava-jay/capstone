@@ -38,6 +38,10 @@ export const deleteGameThunk = slug => async dispatch => {
   await axios.put(`/api/game/remove/${slug}`)
 }
 
+export const resetGameThunk = slug => async dispatch => {
+  await axios.put(`/api/game/${slug}/replay`)
+}
+
 export const checkAnswersThunk = (
   answers,
   currentQuestion,
