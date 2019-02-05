@@ -104,29 +104,30 @@ export default class HostFinished extends React.Component {
 
     if (hasOneWinner) {
       endView = (
-        <h3>
-          {this.state.winners[0]} wins with {highScore} points!
-        </h3>
+        <p className="center winner-display">
+          {this.state.winners[0]} wins with {highScore} point
+          {highScore === 1 ? '' : 's'}!
+        </p>
       )
     } else if (hasTie) {
       endView = (
-        <h3>
+        <p className="center winner-display">
           There was a tie! Congratulations {this.state.winners.join(' and ')}!
           You all tied with a score of {highScore}!
-        </h3>
+        </p>
       )
     } else if (hasNoWinners) {
-      endView = <h3>No one won :-(</h3>
+      endView = <p className="center winner-display">No one won :-(</p>
     }
 
     return (
-      <div>
+      <div id="host-finished">
         <audio
           id="applause"
           autoPlay
           src="https://s3.amazonaws.com/stackbox/applause.mp3"
         />
-        <h1>Finished!</h1>
+        <h1 className="center">Finished!</h1>
         {endView}
         <FinishedButtons secondButton="create" />
       </div>
