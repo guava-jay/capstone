@@ -7,7 +7,6 @@ import MLTPlayerView from './most_likely_to/PlayerView'
 import Welcome from './Welcome'
 import {resetThunk} from '../store/game'
 
-
 class Room extends React.Component {
   constructor(props) {
     super(props)

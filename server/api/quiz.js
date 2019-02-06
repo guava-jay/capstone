@@ -102,20 +102,21 @@ router.put(`/changequestion`, async (req, res, next) => {
     })
 
     //check if answeredquestions is null (meaning this function has never been called, so the game is starting)
-    if (!answeredQuestions) answeredQuestions = []
-    else if (answeredQuestions === 'none')
+    if (!answeredQuestions) {
+      answeredQuestions = []
+    } else if (answeredQuestions === 'none') {
       //check if answeredquestions is 'none' (meaning this function has been called ONCE, so the first question has just been answered)
       answeredQuestions = [currentQuestionId]
-    else if (typeof answeredQuestions === 'number')
+    } else if (typeof answeredQuestions === 'number') {
       //if answeredquestions contains only one value convert it into an array (so we can do array fns)
       answeredQuestions = [answeredQuestions]
-    else if (answeredQuestions.length === numQuestions - 1) {
-      //if we have answered all the questions we don't need to do anything else. just return 0 remaining
-      res.send({remainingQuestions: 0})
-      return
-    } else
+    } else {
+      // else if (answeredQuestions.length === numQuestions - 1) {
+      //   //if we have answered all the questions we don't need to do anything else. just return 0 remaining
+      //   res.send({ remainingQuestions: 0 })
       //otherwise, we have 2 or more questions answered. add the current question to the answered array.
       answeredQuestions.push(currentQuestionId)
+    }
 
     //now make an array of all the unanswered questions
     const unansweredQuestions = []
@@ -124,7 +125,6 @@ router.put(`/changequestion`, async (req, res, next) => {
         unansweredQuestions.push(i)
       }
     }
-
     //now pick an unanswered question from this array
     newQuestionId =
       unansweredQuestions[
@@ -141,7 +141,7 @@ router.put(`/changequestion`, async (req, res, next) => {
       .ref(`rooms/${slug}/${ANSWERED_QUESTIONS}`)
       .set(answeredQuestions)
 
-    res.status(201).send({remainingQuestions: unansweredQuestions.length})
+    res.status(201).end()
   } catch (err) {
     console.error(err)
     next(err)

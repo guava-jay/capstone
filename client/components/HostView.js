@@ -1,10 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import database from '../../firebase'
-import {startGameThunk} from '../../store/game'
-import {deletePlayerThunk} from '../../store/user'
-import HostPlaying from './HostPlaying'
-import HostFinished from './HostFinished'
+import database from '../firebase'
+import {startGameThunk} from '../store/game'
+import {deletePlayerThunk} from '../store/user'
+import HostPlaying from './quiz/HostPlaying'
+import HostFinished from './quiz/HostFinished'
 
 class HostView extends React.Component {
   constructor(props) {
@@ -80,7 +80,7 @@ class HostView extends React.Component {
           <div id="list-player-host-container">
             <h2>Players</h2>
             {!this.state.players.length ? (
-              <h3>Wiating for players to join...</h3>
+              <h3>Waiting for players to join...</h3>
             ) : (
               <ul>
                 {this.state.players.map((player, i) => {
