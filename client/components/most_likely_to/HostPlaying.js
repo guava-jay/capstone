@@ -1,15 +1,16 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-shadow */
 /* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
 import database from '../../firebase'
-import {checkAnswersThunk, getNewQuestion, endGameThunk} from '../../store/game'
+import {getNewQuestion, endGameThunk} from '../../store/game'
 
 class HostPlaying extends React.Component {
   constructor() {
     super()
     this.state = {
       questionCount: 0,
-      currentQuestion: null,
       question: {},
       count: 0,
       currentQuestionAnswer: null,
@@ -57,7 +58,7 @@ class HostPlaying extends React.Component {
       `rooms/${this.props.game.slug}/active_game/current_answers`
     )
 
-    await answerRef.on('value', async snapshot => {
+    await answerRef.on('value', snapshot => {
       if (snapshot.val()) {
         this.setState(prevState => {
           return {
@@ -66,18 +67,50 @@ class HostPlaying extends React.Component {
         })
       }
       if (this.state.count === this.props.players.length) {
-        let getAnswer = await this.props.checkAnswersThunk(
-          snapshot.val(),
-          this.state.currentQuestion,
-          this.props.game.slug
+        //getWinner
+        const votes = database.ref(
+          `rooms/${this.props.game.slug}/active_game/current_answers/`
         )
-        document.getElementById('ding').play()
-        this.setState({currentQuestionAnswer: getAnswer})
-        setTimeout(this.updateQuestion, 3000)
-        //set timer to call next question
+        votes.once('value', snap => {
+          let votedFor = Object.values(snap.val())
+          //make an object holding votees and # votes they got
+          let voteCounts = {}
+          votedFor.forEach(person => {
+            if (!voteCounts[person]) {
+              voteCounts[person] = 1
+            } else {
+              voteCounts[person]++
+            }
+          })
+          //voteCounts is working
+          let winners = []
+          let max = Math.max(...Object.values(voteCounts))
+          for (let votee in voteCounts) {
+            if (voteCounts[votee] === max) {
+              winners.push(votee)
+            }
+          }
+          let winnerNames = []
+          winners.forEach(uid => {
+            database
+              .ref(`rooms/${this.props.game.slug}/players/${uid}`)
+              .once('value')
+              .then(s => {
+                winnerNames.push(s.val().displayName)
+              })
+              .then(() => {
+                this.setState({
+                  currentQuestionAnswer: winnerNames.join(' and ')
+                })
+              })
+            document.getElementById('ding').play()
+            setTimeout(this.updateQuestion, 3000)
+            //set timer to call next question
+          })
+        })
       }
     })
-  }
+  } //end initialize state
 
   componentDidMount() {
     this.initializeState()
@@ -120,25 +153,6 @@ class HostPlaying extends React.Component {
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
         />
         <audio id="ding" src="https://s3.amazonaws.com/stackbox/ding.mp3" />
-        <div id="host-playing-players-container">
-          <h2>Players</h2>
-          <div id="list-players-host-playing">
-            {!this.props.players.length ? (
-              <div>All players have left the game</div>
-            ) : (
-              <ul>
-                {this.props.players.map(x => {
-                  let key = Object.keys(x)
-                  return (
-                    <li key={key}>
-                      {x[key].displayName} : {x[key].currentScore}
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-        </div>
         {this.state.questionCount === 9 && <h2>One more question!</h2>}
         {this.state.questionCount === 10 && <h2>Last one!</h2>}
         {this.state.question.question ? (
@@ -148,7 +162,11 @@ class HostPlaying extends React.Component {
           </div>
         ) : null}
         <div id="question-host-container">
-          {this.state.currentQuestionAnswer !== null ? <p>Moving on</p> : ''}
+          {this.state.currentQuestionAnswer !== null ? (
+            <p>{this.state.currentQuestionAnswer}</p>
+          ) : (
+            ''
+          )}
           {/* show answer or display question */}
           <div id="host-play-buttons">
             <button
@@ -196,8 +214,6 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    checkAnswersThunk: (answers, currentQuestion, slug) =>
-      dispatch(checkAnswersThunk(answers, currentQuestion, slug)),
     getNewQuestion: (slug, gameName) =>
       dispatch(getNewQuestion(slug, gameName)),
     endGameThunk: slug => dispatch(endGameThunk(slug))
