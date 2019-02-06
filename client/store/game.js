@@ -57,9 +57,8 @@ export const checkAnswersThunk = (
   return data
 }
 
-export const getNewQuestion = slug => async dispatch => {
-  let {data} = await axios.put(`/api/quiz/changequestion`, {slug})
-
+export const getNewQuestion = (slug, gameName) => async dispatch => {
+  let {data} = await axios.put(`/api/${gameName}/changequestion`, {slug})
   if (data.remainingQuestions === 0) {
     await axios.put(`/api/game/${slug}`, {status: 'finished'})
   }

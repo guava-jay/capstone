@@ -3,8 +3,9 @@ import {connect} from 'react-redux'
 import database from '../firebase'
 import {startGameThunk} from '../store/game'
 import {deletePlayerThunk} from '../store/user'
-import HostPlaying from './quiz/HostPlaying'
-import HostFinished from './quiz/HostFinished'
+import QuizHostPlaying from './quiz/HostPlaying'
+import QuizHostFinished from './quiz/HostFinished'
+import MLTHostPlaying from './most_likely_to/HostPlaying'
 
 class HostView extends React.Component {
   constructor(props) {
@@ -117,14 +118,16 @@ class HostView extends React.Component {
       )
     } else if (this.state.status === 'playing') {
       // CHANGE GAME PLAYING COMPONENTS HERE
-      // if (this.state.selectedGame === 'quiz') {
-      return <HostPlaying players={this.state.players} />
-      //}
+      if (this.state.selectedGame === 'quiz') {
+        return <QuizHostPlaying players={this.state.players} />
+      } else if (this.state.selectedGame === 'most_likely_to') {
+        return <MLTHostPlaying players={this.state.players} />
+      }
     } else if (this.state.status === 'finished') {
       // CHANGE GAME ENDING COMPONENT HERE
-      //if (this.state.selectedGame === 'quiz') {
-      return <HostFinished slug={this.props.slug} />
-      //}
+      if (this.state.selectedGame === 'quiz') {
+        return <QuizHostFinished slug={this.props.slug} />
+      }
     } else {
       return null
     }

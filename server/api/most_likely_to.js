@@ -12,11 +12,11 @@ router.put('/changequestion', async (req, res, next) => {
   await questionref.once('value', snapshot => {
     currentQuestion = snapshot.val()
   })
-  if (currentQuestion >= 50) {
+  if (currentQuestion >= 52) {
     res.status(201).send({remainingQuestions: 0})
   } else {
     questionref.set(currentQuestion + 1)
-    res.status(201).send({remainingQuestions: 50 - currentQuestion})
+    res.status(201).send({remainingQuestions: 52 - currentQuestion})
   }
 })
 
