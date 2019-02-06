@@ -110,8 +110,8 @@ export const joinGameThunk = (slug, uid, displayName) => {
         uid,
         displayName
       })
-      history.push(`/newGame/${slug}`)
       dispatch(joinGame(slug, 'player'))
+      history.push(`/newGame/${slug}`)
     } catch (error) {
       console.error(error)
     }
