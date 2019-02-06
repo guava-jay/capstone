@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 const router = require('express').Router()
 const database = require('../db/index')
-const firebase = require('firebase-admin')
 module.exports = router
 
 //slug generator

@@ -100,10 +100,10 @@ class HostPlaying extends React.Component {
     //stops the game at 10 questions
     if (this.state.questionCount === 10) {
       this.props.endGameThunk(this.props.game.slug)
-      this.setState({count: 0, currentQuestionAnswer: null})
+      this.setState({count: 0, currentQuestionAnswer: null, choices: []})
     } else {
       this.props.getNewQuestion(this.props.game.slug, this.props.game.gameName)
-      this.setState({count: 0, currentQuestionAnswer: null})
+      this.setState({count: 0, currentQuestionAnswer: null, choices: []})
     }
   }
 
@@ -157,19 +157,19 @@ class HostPlaying extends React.Component {
             <p id="show-answer-host">
               Answer : {this.state.currentQuestionAnswer}
             </p>
+          ) : this.state.choices.length >= 0 ? (
+            <div id="list-choice-host">
+              <ul>
+                {this.state.choices.map(x => (
+                  <React.Fragment key={x}>
+                    <li>{x}</li>
+                    <hr />
+                  </React.Fragment>
+                ))}
+              </ul>
+            </div>
           ) : (
-            this.state.choices.length && (
-              <div id="list-choice-host">
-                <ul>
-                  {this.state.choices.map(x => (
-                    <React.Fragment key={x}>
-                      <li>{x}</li>
-                      <hr />
-                    </React.Fragment>
-                  ))}
-                </ul>
-              </div>
-            )
+            ''
           )}
           <div id="host-play-buttons">
             <button

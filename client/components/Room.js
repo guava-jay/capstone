@@ -21,7 +21,7 @@ class Room extends React.Component {
       .ref(`/rooms/${this.props.match.params.slug}`)
       .once('value')
       .then(snapshot => {
-        if (!snapshot) {
+        if (!snapshot.val()) {
           this.props.history.push('/')
         } else {
           this.setState({
@@ -58,8 +58,7 @@ class Room extends React.Component {
         return <MLTPlayerView slug={this.props.game.slug} />
       }
     }
-    // return <h1 id="loading">Loading...</h1>
-    return <Welcome />
+    return null
   }
 }
 
