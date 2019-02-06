@@ -163,7 +163,7 @@ class HostPlaying extends React.Component {
         ) : null}
         <div id="question-host-container">
           {this.state.currentQuestionAnswer !== null ? (
-            <p>{this.state.currentQuestionAnswer}</p>
+            <p className="center">It's {this.state.currentQuestionAnswer}!</p>
           ) : (
             ''
           )}
