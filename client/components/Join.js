@@ -13,9 +13,9 @@ class Join extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(e) {
-    e.persist()
+  async handleSubmit(e) {
     e.preventDefault()
+    e.persist()
 
     if (!e.target.code.value) {
       alert('Please enter a code.')
@@ -26,7 +26,7 @@ class Join extends React.Component {
       return
     }
     const code = e.target.code.value.toUpperCase()
-    this.props.joinGameThunk(
+    await this.props.joinGameThunk(
       //add player
       code,
       this.props.user.uid,

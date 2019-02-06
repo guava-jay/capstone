@@ -58,7 +58,6 @@ class Room extends React.Component {
         return <MLTPlayerView slug={this.props.game.slug} />
       }
     }
-
     // return <h1 id="loading">Loading...</h1>
     return <Welcome />
   }
