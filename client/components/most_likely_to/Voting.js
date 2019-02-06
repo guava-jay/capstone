@@ -6,7 +6,6 @@ const Voting = props => {
     <div>
       <form onSubmit={props.submitChoice} onChange={props.setChoice}>
         {Object.keys(props.otherPlayers).map(key => {
-          console.log(key)
           return (
             <label key={key}>
               <input type="radio" name="choices" value={key} />

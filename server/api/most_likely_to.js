@@ -27,7 +27,6 @@ router.put('/changequestion', async (req, res, next) => {
 
 //expects slug, userid, playerid
 router.put('/vote', async (req, res, next) => {
-  console.log(req.body)
   const slug = req.body.slug.toUpperCase()
   const uId = req.body.uId
   const playerId = req.body.playerId
