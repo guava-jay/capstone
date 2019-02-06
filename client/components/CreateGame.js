@@ -66,7 +66,7 @@ class CreateGame extends Component {
                   onClick={() => this.handleChange('test 1')}
                   className="list-games"
                 >
-                  <h3>test 1</h3>
+                  <h3>COMING SOON...</h3>
                 </div>
                 <div
                   id={
@@ -75,7 +75,7 @@ class CreateGame extends Component {
                   onClick={() => this.handleChange('test 2')}
                   className="list-games"
                 >
-                  <h3>test 2</h3>
+                  <h3>COMING SOON...</h3>
                 </div>
                 <div
                   id={
@@ -84,17 +84,17 @@ class CreateGame extends Component {
                   onClick={() => this.handleChange('test 3')}
                   className="list-games"
                 >
-                  <h3>test 3</h3>
+                  <h3>COMING SOON...</h3>
                 </div>
-                <div
+                {/* <div
                   id={
                     this.state.selectedGame === 'test 4' ? 'selectedGame' : ''
                   }
                   onClick={() => this.handleChange('test 4')}
                   className="list-games"
                 >
-                  <h3>test 4</h3>
-                </div>
+                  <h3>COMING SOON...</h3>
+                </div> */}
                 {/* PLACEHOLD TESTS */}
               </div>
             </React.Fragment>
