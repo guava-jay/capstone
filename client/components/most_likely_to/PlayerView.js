@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
 import {Voting} from '../../components'
 import axios from 'axios'
+import FinishedButtons from '../FinishedButtons'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -43,10 +44,17 @@ class PlayerView extends React.Component {
       .once('value')
       .then(snapshot => Object.keys(snapshot.val()))
 
+    const questionList = await database
+      .ref(`/game_list/most_likely_to/questions`)
+      .once('value')
+      .then(snapshot => snapshot.val())
+
     // Get inital current question
     const currentQuestion = await currentQuestionRef
       .once('value')
-      .then(snapshot => snapshot.val())
+      .then(snapshot => questionList[snapshot.val()])
+
+    console.log(questionList)
 
     // Set state based on db
     this.setState({
@@ -77,7 +85,7 @@ class PlayerView extends React.Component {
           .once('value')
           .then(snapshot => snapshot.val())
         this.setState({
-          currentQuestion: snapshot.val(),
+          currentQuestion: questionList[snapshot.val()],
           submitted: false
         })
       }
@@ -104,13 +112,16 @@ class PlayerView extends React.Component {
       await axios.put('/api/most_likely_to/vote', {
         slug: this.props.slug,
         uId: this.props.user.uid,
-        playerId: this.state.currentChoice
+        playerId: this.state.currentChoice,
+        currentQuestion: this.state.currentQuestion
       })
       this.setState({submitted: true, currentChoice: null})
     }
   }
 
   render() {
+    console.log(this.state)
+
     if (this.state.gameStatus === 'waiting') {
       return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (this.state.gameStatus === 'playing') {
@@ -129,6 +140,13 @@ class PlayerView extends React.Component {
             />
           )}
         </React.Fragment>
+      )
+    } else if (this.state.gameStatus === 'finished') {
+      return (
+        <div id="player-finished">
+          <h1 className="center">You're done!</h1>
+          <FinishedButtons />
+        </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
       return <Redirect to="/" />

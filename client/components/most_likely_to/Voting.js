@@ -3,7 +3,7 @@ import React from 'react'
 //rewriting this to expect the players as a prop
 const Voting = props => {
   return (
-    <div>
+    <div id="player-choice-container">
       <form onSubmit={props.submitChoice} onChange={props.setChoice}>
         {Object.keys(props.otherPlayers).map(key => {
           return (

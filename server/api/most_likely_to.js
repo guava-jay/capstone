@@ -118,15 +118,9 @@ router.put('/vote', async (req, res, next) => {
   const slug = req.body.slug.toUpperCase()
   const uId = req.body.uId
   const playerId = req.body.playerId
+  const currentQuestion = req.body.currentQuestion
   try {
     //get the current question
-    let currentQuestion = 0
-    await database.ref(`/rooms/${slug}/`).once('value', snapshot => {
-      if (!snapshot) {
-        next('Could not find room')
-      }
-      currentQuestion = snapshot.child('/active_game/current_question').val()
-    })
     //now add their vote. votes are added onto the player under votes/question number
     await database
       .ref(`rooms/${slug}/players/${playerId}/votes`)
