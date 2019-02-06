@@ -2,19 +2,31 @@ import React from 'react'
 import {connect} from 'react-redux'
 import database from '../firebase'
 import HostView from './HostView'
-import PlayerView from './quiz/PlayerView'
+import QuizPlayerView from './quiz/PlayerView'
+import MLTPlayerView from './most_likely_to/PlayerView'
 import Welcome from './Welcome'
 import {resetThunk} from '../store/game'
 
 class Room extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedGame: ''
+    }
+  }
+
   componentDidMount() {
     //checks to see if room exists
     database
-      .ref('/rooms')
+      .ref(`/rooms/${this.props.match.params.slug}`)
       .once('value')
       .then(snapshot => {
-        if (!snapshot.hasChild(this.props.match.params.slug)) {
+        if (!snapshot) {
           this.props.history.push('/')
+        } else {
+          this.setState({
+            selectedGame: snapshot.child('active_game/game_name/').val()
+          })
         }
       })
   }
@@ -40,8 +52,11 @@ class Room extends React.Component {
         .ref(`rooms/${this.props.game.slug}/players/${this.props.user.uid}`)
         .onDisconnect()
         .remove()
-
-      return <PlayerView slug={this.props.game.slug} />
+      if (this.state.selectedGame === 'quiz') {
+        return <QuizPlayerView slug={this.props.game.slug} />
+      } else if (this.state.selectedGame === 'most_likely_to') {
+        return <MLTPlayerView slug={this.props.game.slug} />
+      }
     }
 
     // return <h1 id="loading">Loading...</h1>

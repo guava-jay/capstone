@@ -89,6 +89,10 @@ router.put(`/changequestion`, async (req, res, next) => {
     let newQuestionId = 0
     //add array and num remaining
 
+    await database
+      .ref(`/rooms/${req.body.slug}/active_game/current_answers/`)
+      .set(null)
+
     //first pull the array of answered questions from the room
     let answeredQuestions = []
     await database.ref(`rooms/${slug}`).once('value', snapshot => {

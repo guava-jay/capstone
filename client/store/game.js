@@ -7,9 +7,10 @@ export const CREATE_GAME = 'CREATE_GAME'
 export const RESET = 'RESET'
 
 //Action creators
-const createGame = slug => ({
+const createGame = (slug, gameName) => ({
   type: CREATE_GAME,
-  slug
+  slug,
+  gameName
 })
 
 const reset = () => ({type: RESET})
@@ -19,7 +20,7 @@ const reset = () => ({type: RESET})
 export const createNewGame = (uid, game) => async dispatch => {
   const {data: slug} = await axios.post('/api/game', {uid, game})
   history.push(`/newGame/${slug}`)
-  dispatch(createGame(slug))
+  dispatch(createGame(slug, game))
 }
 
 export const resetThunk = () => dispatch => {
@@ -56,9 +57,8 @@ export const checkAnswersThunk = (
   return data
 }
 
-export const getNewQuestion = slug => async dispatch => {
-  let {data} = await axios.put(`/api/quiz/changequestion`, {slug})
-
+export const getNewQuestion = (slug, gameName) => async dispatch => {
+  let {data} = await axios.put(`/api/${gameName}/changequestion`, {slug})
   if (data.remainingQuestions === 0) {
     await axios.put(`/api/game/${slug}`, {status: 'finished'})
   }
@@ -72,7 +72,7 @@ const gameReducer = (state = initialState, action) => {
     case JOIN_GAME:
       return {...state, slug: action.slug}
     case CREATE_GAME:
-      return {...state, slug: action.slug}
+      return {...state, slug: action.slug, gameName: action.gameName}
     case RESET:
       return {}
     default:

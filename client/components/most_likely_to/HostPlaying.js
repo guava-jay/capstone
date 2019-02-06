@@ -12,7 +12,6 @@ class HostPlaying extends React.Component {
       questionCount: 0,
       currentQuestion: null,
       question: {},
-      choices: [],
       count: 0,
       currentQuestionAnswer: null,
       muted: false
@@ -20,7 +19,8 @@ class HostPlaying extends React.Component {
     this.updateQuestion = this.updateQuestion.bind(this)
     this.endGame = this.endGame.bind(this)
   }
-  async componentDidMount() {
+
+  async initializeState() {
     await this.props.getNewQuestion(
       this.props.game.slug,
       this.props.game.gameName
@@ -33,24 +33,20 @@ class HostPlaying extends React.Component {
     await currentQuestionRef.on('value', async snapshot => {
       if (snapshot.val() >= 0) {
         let question
-        let func
-        let choices
+
         await database
-          .ref(`game_list/quiz/${snapshot.val()}`)
+          .ref(
+            `game_list/${this.props.game.gameName}/questions/${snapshot.val()}`
+          )
           .once('value')
-          .then(snapshots => {
-            if (snapshots.val()) {
-              question = snapshots.val().question || null
-              func = snapshots.val().function || null
-              choices = snapshots.val().choices || null
-            }
+          .then(snapshot => {
+            question = snapshot.val() || null
           })
         this.setState(prevState => {
           return {
             questionCount: prevState.questionCount + 1,
             currentQuestion: snapshot.val(),
-            question: {question, func},
-            choices: choices
+            question: {question}
           }
         })
       }
@@ -84,6 +80,10 @@ class HostPlaying extends React.Component {
     })
   }
 
+  componentDidMount() {
+    this.initializeState()
+  }
+
   componentWillUnmount() {
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`
@@ -100,7 +100,6 @@ class HostPlaying extends React.Component {
     //stops the game at 10 questions
     if (this.state.questionCount === 10) {
       this.props.endGameThunk(this.props.game.slug)
-      this.setState({count: 0, currentQuestionAnswer: null})
     } else {
       this.props.getNewQuestion(this.props.game.slug, this.props.game.gameName)
       this.setState({count: 0, currentQuestionAnswer: null})
@@ -144,33 +143,14 @@ class HostPlaying extends React.Component {
         {this.state.questionCount === 9 && <h2>One more question!</h2>}
         {this.state.questionCount === 10 && <h2>Last one!</h2>}
         {this.state.question.question ? (
-          <h1 className="host-q-display">{this.state.question.question}</h1>
+          <div className="host-q-display">
+            <h1>Who is the most likely to...</h1>
+            <h1>{this.state.question.question}?</h1>
+          </div>
         ) : null}
         <div id="question-host-container">
-          {this.state.question.func ? (
-            <Highlight language="javascript">
-              {this.state.question.func}
-            </Highlight>
-          ) : null}
+          {this.state.currentQuestionAnswer !== null ? <p>Moving on</p> : ''}
           {/* show answer or display question */}
-          {this.state.currentQuestionAnswer !== null ? (
-            <p id="show-answer-host">
-              Answer : {this.state.currentQuestionAnswer}
-            </p>
-          ) : (
-            this.state.choices.length && (
-              <div id="list-choice-host">
-                <ul>
-                  {this.state.choices.map(x => (
-                    <React.Fragment key={x}>
-                      <li>{x}</li>
-                      <hr />
-                    </React.Fragment>
-                  ))}
-                </ul>
-              </div>
-            )
-          )}
           <div id="host-play-buttons">
             <button
               title="end game"
