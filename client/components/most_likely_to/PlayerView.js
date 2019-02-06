@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
 import {Voting} from '../../components'
 import axios from 'axios'
+import FinishedButtons from '../FinishedButtons'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -129,6 +130,13 @@ class PlayerView extends React.Component {
             />
           )}
         </React.Fragment>
+      )
+    } else if (this.state.gameStatus === 'finished') {
+      return (
+        <div id="player-finished">
+          <h1 className="center">You're done!</h1>
+          <FinishedButtons />
+        </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
       return <Redirect to="/" />
