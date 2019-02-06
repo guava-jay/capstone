@@ -138,7 +138,9 @@ class HostPlaying extends React.Component {
         {this.state.questionCount === 9 && <h2>One more question!</h2>}
         {this.state.questionCount === 10 && <h2>Last one!</h2>}
         {this.state.question.question ? (
-          <h1 className="host-q-display">{this.state.question.question}</h1>
+          <h1 className="host-q-display">
+            Who is the most likely to {this.state.question.question}?
+          </h1>
         ) : null}
         <div id="question-host-container">
           {this.state.currentQuestionAnswer !== null ? <p>Moving on</p> : ''}
