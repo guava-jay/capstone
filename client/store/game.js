@@ -4,7 +4,7 @@ import {JOIN_GAME} from './user'
 
 //Action types
 export const CREATE_GAME = 'CREATE_GAME'
-const CHECK_ANSWERS = 'CHECK_ANSWERS'
+export const RESET = 'RESET'
 
 //Action creators
 const createGame = (slug, gameName) => ({
@@ -12,6 +12,8 @@ const createGame = (slug, gameName) => ({
   slug,
   gameName
 })
+
+const reset = () => ({type: RESET})
 //and then join game the role will be player
 
 //thunk creators
@@ -21,12 +23,24 @@ export const createNewGame = (uid, game) => async dispatch => {
   dispatch(createGame(slug, game))
 }
 
+export const resetThunk = () => dispatch => {
+  dispatch(reset())
+}
+
 export const endGameThunk = slug => async dispatch => {
   await axios.put(`/api/game/${slug}`, {status: 'finished'})
 }
 
 export const startGameThunk = slug => async dispatch => {
   await axios.put(`/api/game/${slug}`, {status: 'playing'})
+}
+
+export const deleteGameThunk = slug => async dispatch => {
+  await axios.put(`/api/game/remove/${slug}`)
+}
+
+export const resetGameThunk = slug => async dispatch => {
+  await axios.put(`/api/game/${slug}/replay`)
 }
 
 export const checkAnswersThunk = (
@@ -60,6 +74,8 @@ const gameReducer = (state = initialState, action) => {
       return {...state, slug: action.slug}
     case CREATE_GAME:
       return {...state, slug: action.slug, gameName: action.gameName}
+    case RESET:
+      return {}
     default:
       return state
   }

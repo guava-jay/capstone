@@ -2,7 +2,7 @@ import axios from 'axios'
 import history from '../history'
 import firebase from 'firebase'
 import database from '../firebase'
-import {CREATE_GAME} from './game'
+import {CREATE_GAME, RESET} from './game'
 
 //ACTION TYPES
 const SET_PLAYER = 'SET_PLAYER'
@@ -90,7 +90,9 @@ export const joinGameThunk = (slug, uid, displayName) => {
         dispatch(errorOut('Error: game is full'))
         return
       } else if (!gameWaiting) {
-        dispatch(errorOut('Error: Game is not awaiting new players'))
+        dispatch(
+          errorOut('Error: Game is no longer allowing new players to join')
+        )
         return
       }
     } else {
@@ -151,6 +153,8 @@ export default function(state = defaultUser, action) {
       return {...state, uid: action.playeruid}
     case ERROR_OUT:
       return {...state, errorMsg: action.errorMsg}
+    case RESET:
+      return {...state, role: null}
     default:
       return state
   }

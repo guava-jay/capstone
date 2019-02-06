@@ -79,26 +79,30 @@ class HostView extends React.Component {
           <h1>CODE : {this.props.slug}</h1>
           <div id="list-player-host-container">
             <h2>Players</h2>
-            <ul>
-              {this.state.players.map((player, i) => {
-                let pid = Object.keys(player)[0]
-                return (
-                  <div key={i + ''}>
-                    <li>
-                      <p>
-                        <i
-                          onClick={e => {
-                            this.deletePlayer(pid)
-                          }}
-                          className="fas fa-times icon-move"
-                        />
-                        {player[pid].displayName}
-                      </p>
-                    </li>
-                  </div>
-                )
-              })}
-            </ul>
+            {!this.state.players.length ? (
+              <h3>Wiating for players to join...</h3>
+            ) : (
+              <ul>
+                {this.state.players.map((player, i) => {
+                  let pid = Object.keys(player)[0]
+                  return (
+                    <div key={i + ''}>
+                      <li>
+                        <p>
+                          <i
+                            onClick={e => {
+                              this.deletePlayer(pid)
+                            }}
+                            className="fas fa-times icon-move"
+                          />
+                          {player[pid].displayName}
+                        </p>
+                      </li>
+                    </div>
+                  )
+                })}
+              </ul>
+            )}
           </div>
           <button
             title="start game"

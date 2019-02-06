@@ -1,11 +1,14 @@
+/* eslint-disable complexity */
 import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
+import Welcome from '../Welcome'
 import {connect} from 'react-redux'
-import {NavLink, Redirect} from 'react-router-dom'
-import Navbar from '../navbar'
-
-import {PieChart, Pie, Cell, Label} from 'recharts'
+import {Redirect} from 'react-router-dom'
+import PlayerDisconnected from './PlayerDisconnected'
+import PlayerRemoved from './PlayerRemoved'
+import PlayerFinished from './PlayerFinished'
+import PlayerChoices from './PlayerChoices'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -17,7 +20,8 @@ class PlayerView extends React.Component {
       answerChoices: [],
       responses: {},
       answeredCurrent: false,
-      currentScore: 0
+      currentScore: 0,
+      redirectHome: false
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -90,6 +94,7 @@ class PlayerView extends React.Component {
     await playerRef.on('value', snapshot => {
       if (!snapshot.val()) {
         this.setState({gameStatus: 'non-participant'})
+        setTimeout(() => this.setState({redirectHome: true}), 5000)
       }
     })
 
@@ -131,6 +136,9 @@ class PlayerView extends React.Component {
   }
 
   render() {
+    if (!this.props.user.uid) {
+      return <Welcome />
+    }
     const numCorrect = this.state.currentScore
     const numIncorrect = Object.keys(this.state.responses).length - numCorrect
 
@@ -141,6 +149,7 @@ class PlayerView extends React.Component {
 
     // We want to disable the submit button if there has been no selected response OR if the player has already selected a response
     const NoSelectedCurrent = !this.state.responses[this.state.currentQuestion]
+
     if (this.state.gameStatus === 'waiting') {
       return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (
@@ -151,67 +160,25 @@ class PlayerView extends React.Component {
       return (
         <React.Fragment>
           {this.state.answeredCurrent ? (
-            <h1 id="player-submit">submitted!</h1>
+            <h1 id="player-submit">Submitted!</h1>
           ) : (
-            <div id="player-choice-container">
-              <h2>Choose carefully...</h2>
-              <form onSubmit={this.submitChoice} onChange={this.setChoice}>
-                {this.state.answerChoices.map(choice => (
-                  <label key={choice}>
-                    <input type="radio" name="choices" value={choice} />
-                    <p>{choice}</p>
-                  </label>
-                ))}
-                <br />
-                <button
-                  title="submit answer"
-                  className="button6"
-                  type="submit"
-                  disabled={NoSelectedCurrent}
-                  onClick={this.submitChoice}
-                >
-                  Submit choice
-                </button>
-              </form>
-            </div>
+            <PlayerChoices
+              submitChoice={this.submitChoice}
+              setChoice={this.setChoice}
+              answerChoices={this.state.answerChoices}
+              NoSelectedCurrent={NoSelectedCurrent}
+            />
           )}
         </React.Fragment>
       )
     } else if (this.state.gameStatus === 'finished') {
-      return (
-        <div>
-          <h1 className="center">Results</h1>
-          <PieChart width={400} height={300}>
-            <Pie
-              data={answerData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={80}
-              outerRadius={100}
-              paddingAngle={0}
-              fill="#8884d8"
-            >
-              <Cell fill="#00C49F" />
-              <Cell fill="#ff3860" />
-              <Label position="center">{`${numCorrect} Correct`}</Label>
-            </Pie>
-          </PieChart>
-
-          <Navbar />
-        </div>
-      )
+      return <PlayerFinished answerData={answerData} numCorrect={numCorrect} />
     } else if (this.state.gameStatus === 'non-participant') {
-      return <Redirect to="/" />
+      if (this.state.redirectHome) return <Redirect to="/" />
+      else return <PlayerRemoved />
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
-      return (
-        <div>
-          <h1>Game has been ended</h1>
-          <NavLink to="/">Play again</NavLink>
-        </div>
-      )
+      return <PlayerDisconnected />
     } else {
       return null
     }

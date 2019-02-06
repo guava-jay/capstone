@@ -13,6 +13,7 @@
 :root {
   --darkBlue: #1a535c;
   --yellow: #ffe66d;
+  --darkYellow: #5d5428;
   --pink: #ff6b6b;
   --blue: #4ecdc4;
   --white: #fff;
@@ -78,8 +79,9 @@ a {
 }
 
 label {
-  display: block;
+  display: flex;
   font-size: 2em;
+  align-items: center;
 }
 input {
   font-size: 19pt;
@@ -119,12 +121,12 @@ button:disabled {
   background-color: lightgrey;
 }
 
-button:disabled {
-  background-color: lightgrey;
-}
-
 input::placeholder {
   opacity: 0.4;
+}
+
+.cursor-hover:hover {
+  cursor: pointer;
 }
 
 .button6 {
@@ -158,13 +160,33 @@ input::placeholder {
   /* padding:0.3em 2em; */
 }
 
+.buttonHome {
+  background-color: var(--yellow);
+  color: var(--darkYellow);
+}
+
+.buttonJoin {
+  background-color: var(--pink);
+  color: var(--darkPink);
+}
+
+.buttonNewGame {
+  background-color: var(--blue);
+  color: var(--darkBlue);
+}
+
 .button6:active:enabled {
   top: 0.1em;
 }
 
 .button6:hover:enabled {
-  filter: brightness(150%);
+  filter: brightness(115%);
   cursor: pointer;
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
 }
 
 .icon-move {
@@ -177,6 +199,13 @@ input::placeholder {
   color: var(--pink);
   cursor: pointer;
 }
+
+.finished-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* @media all and (max-width:30em) {
    .button6{
       display: block;
@@ -187,5 +216,15 @@ input::placeholder {
 @media only screen and (min-width: 768px) {
   .button6 {
     padding: 0.7em 3em;
+  }
+
+  .finished-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .finished-button-container .button6 {
+    margin: 0 0.5em 0 0.5em;
   }
 }

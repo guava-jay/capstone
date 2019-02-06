@@ -3,7 +3,7 @@
   /* justify-content: center; */
   flex-direction: column;
   align-items: center;
-  padding: 1em 3em;
+  padding: 2em 3em;
 }
 
 #loading {
@@ -21,13 +21,9 @@
 }
 
 #host-playing-container {
-  padding: 1em 3em;
+  padding: 2em 3em;
   padding-bottom: 3em;
   min-height: calc(100vh - 84px);
-}
-
-#host-playing-container h1 {
-  /* padding-bottom:.5em; */
 }
 
 #list-players-host-playing ul {
@@ -61,6 +57,18 @@
   padding: 1em 0;
 }
 
+#host-finished {
+  padding: 1.5em;
+}
+
+.winner-display {
+  padding: 1em 0em;
+}
+
+.recharts-surface {
+  max-width: 350px;
+}
+
 @media only screen and (min-width: 768px) {
   #question-host-container {
     max-width: 700px;
@@ -75,5 +83,9 @@
   #list-choice-host ul hr {
     width: 75%;
     margin: auto;
+  }
+
+  .recharts-surface {
+    max-width: 600px;
   }
 }

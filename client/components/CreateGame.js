@@ -32,7 +32,7 @@ class CreateGame extends Component {
   handleSubmit(e) {
     e.preventDefault()
     if (this.state.selectedGame === '') {
-      alert('please select a game')
+      alert('Please select a game.')
     } else {
       this.props.createNewGame(this.props.user.uid, this.state.selectedGame)
     }

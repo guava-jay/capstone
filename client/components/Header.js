@@ -1,24 +1,25 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {endGameThunk} from '../store/game'
+import {Link, withRouter} from 'react-router-dom'
+import {deleteGameThunk} from '../store/game'
 import {deletePlayerThunk} from '../store/user'
 
 const Header = props => {
-  const deleteCurrentUser = () => {
+  const deleteCurrentUser = async () => {
     if (props.role === 'host') {
-      props.endGameThunk(props.slug)
+      await props.deleteGameThunk(props.slug)
     }
     if (props.role === 'player') {
-      props.deletePlayerThunk(props.slug, props.uid)
+      await props.deletePlayerThunk(props.slug, props.uid)
     }
+    props.history.push('/')
   }
   return (
     <h1 id="header">
-      <Link to="/" title="home" onClick={deleteCurrentUser}>
-        <span className="yellowFont">Stackbox {'\u00A0'}</span>
+      <span className="cursor-hover" title="home" onClick={deleteCurrentUser}>
+        <span className="yellowFont">Stackbox{'\u00A0'}</span>
         <span className="pinkFont">Games</span>
-      </Link>
+      </span>
     </h1>
   )
 }
@@ -32,8 +33,8 @@ const mapState = state => {
 }
 const mapDispatch = dispatch => {
   return {
-    endGameThunk: slug => dispatch(endGameThunk(slug)),
+    deleteGameThunk: slug => dispatch(deleteGameThunk(slug)),
     deletePlayerThunk: (slug, uid) => dispatch(deletePlayerThunk(slug, uid))
   }
 }
-export default connect(mapState, mapDispatch)(Header)
+export default withRouter(connect(mapState, mapDispatch)(Header))

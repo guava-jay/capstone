@@ -21,7 +21,7 @@
 }
 
 .links a:hover {
-  filter: brightness(150%);
+  filter: brightness(120%);
 }
 
 .links a:nth-child(4n-3) {
@@ -38,7 +38,7 @@
 
 .links a:nth-child(4n-1) {
   background: var(--yellow);
-  color: var(--darkBlue);
+  color: var(--darkYellow);
   margin: 0.5em 0;
 }
 
@@ -67,7 +67,7 @@
 #header {
   text-align: center;
   background: var(--darkBlue);
-  font-size: 2.3em;
+  font-size: 2.5em;
   padding: 0.5em;
   min-height: 84px;
 }
@@ -81,6 +81,35 @@
   font-size: 3em;
 }
 
+.display-static {
+  padding: 2em;
+  text-align: center;
+}
+
+.display-static p {
+  font-size: 1.2em;
+}
+
+.display-static h3 {
+  margin-bottom: 0.5em;
+}
+
+.about-text {
+  padding: 1em 0em;
+}
+
+.how-to-play-step {
+  padding: 1em 0em;
+}
+
+.instructions {
+  color: var(--darkBlue);
+  font-size: smaller;
+  border: 1px solid;
+  padding: 0.1em;
+  display: inline-block;
+}
+
 #welcome-title-container {
   padding-top: 3em;
 }
@@ -91,14 +120,37 @@
 
 /* tablet  and up*/
 @media only screen and (min-width: 768px) {
+  #header {
+    font-size: 3em;
+  }
+
   .welcome {
     min-height: 100vh;
   }
 
   .box {
-    bottom: -136px;
-    right: -442px;
-    width: 299px;
+    bottom: -160px;
+    width: 200px;
     z-index: -1;
+  }
+
+  .links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 50em;
+  }
+
+  .links a {
+    flex-basis: 45%;
+    text-align: center;
+  }
+
+  .display-static {
+    padding: 2em 20em;
+  }
+
+  .display-static p {
+    font-size: 1.5em;
   }
 }

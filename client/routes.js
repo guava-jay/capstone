@@ -25,7 +25,9 @@ firebase
 
 class Routes extends Component {
   componentDidMount() {
-    this.props.setPlayerThunk()
+    if (!this.props.user.uid) {
+      this.props.setPlayerThunk()
+    }
   }
 
   render() {

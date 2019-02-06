@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
 import Highlight from 'react-highlight'
@@ -20,7 +21,7 @@ class HostPlaying extends React.Component {
     this.endGame = this.endGame.bind(this)
   }
   async componentDidMount() {
-    this.props.getNewQuestion(this.props.game.slug)
+    await this.props.getNewQuestion(this.props.game.slug)
     //listening for current question and upating
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`
@@ -34,15 +35,11 @@ class HostPlaying extends React.Component {
         await database
           .ref(`game_list/quiz/${snapshot.val()}`)
           .once('value')
-          .then(snapshot => {
-            if (snapshot.val().question !== null) {
-              question = snapshot.val().question || null
-            }
-            if (snapshot.val().function !== null) {
-              func = snapshot.val().function || null
-            }
-            if (snapshot.val().choices !== null) {
-              choices = snapshot.val().choices || null
+          .then(snapshots => {
+            if (snapshots.val()) {
+              question = snapshots.val().question || null
+              func = snapshots.val().function || null
+              choices = snapshots.val().choices || null
             }
           })
         this.setState(prevState => {
@@ -62,7 +59,7 @@ class HostPlaying extends React.Component {
       `rooms/${this.props.game.slug}/active_game/current_answers`
     )
 
-    answerRef.on('value', async snapshot => {
+    await answerRef.on('value', async snapshot => {
       if (snapshot.val()) {
         this.setState(prevState => {
           return {
@@ -76,6 +73,7 @@ class HostPlaying extends React.Component {
           this.state.currentQuestion,
           this.props.game.slug
         )
+        document.getElementById('ding').play()
         this.setState({currentQuestionAnswer: getAnswer})
         setTimeout(this.updateQuestion, 3000)
         //set timer to call next question
@@ -83,13 +81,25 @@ class HostPlaying extends React.Component {
     })
   }
 
-  async updateQuestion() {
+  componentWillUnmount() {
+    const currentQuestionRef = database.ref(
+      `rooms/${this.props.game.slug}/active_game/current_question`
+    )
+    const answerRef = database.ref(
+      `rooms/${this.props.game.slug}/active_game/current_answers`
+    )
+
+    answerRef.off()
+    currentQuestionRef.off()
+  }
+
+  updateQuestion() {
     //stops the game at 10 questions
     if (this.state.questionCount === 10) {
-      await this.props.endGameThunk(this.props.game.slug)
+      this.props.endGameThunk(this.props.game.slug)
     } else {
-      let idk = await this.props.getNewQuestion(this.props.game.slug)
-      this.setState({count: 0, answers: {}, currentQuestionAnswer: null})
+      this.props.getNewQuestion(this.props.game.slug)
+      this.setState({count: 0, currentQuestionAnswer: null})
     }
   }
 
@@ -107,19 +117,24 @@ class HostPlaying extends React.Component {
           loop
           src="https://s3.amazonaws.com/stackbox/Marimba-music.mp3"
         />
+        <audio id="ding" src="https://s3.amazonaws.com/stackbox/ding.mp3" />
         <div id="host-playing-players-container">
           <h2>Players</h2>
           <div id="list-players-host-playing">
-            <ul>
-              {this.props.players.map(x => {
-                let key = Object.keys(x)
-                return (
-                  <li key={key}>
-                    {x[key].displayName} : {x[key].currentScore}
-                  </li>
-                )
-              })}
-            </ul>
+            {!this.props.players.length ? (
+              <div>All players have left the game</div>
+            ) : (
+              <ul>
+                {this.props.players.map(x => {
+                  let key = Object.keys(x)
+                  return (
+                    <li key={key}>
+                      {x[key].displayName} : {x[key].currentScore}
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </div>
         </div>
         {this.state.questionCount === 9 && <h2>One more question!</h2>}

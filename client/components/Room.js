@@ -4,6 +4,9 @@ import database from '../firebase'
 import HostView from './quiz/HostView'
 import QuizPlayerView from './quiz/PlayerView'
 import MLTPlayerView from './most_likely_to/PlayerView'
+import Welcome from './Welcome'
+import {resetThunk} from '../store/game'
+
 
 class Room extends React.Component {
   constructor(props) {
@@ -27,6 +30,10 @@ class Room extends React.Component {
           })
         }
       })
+  }
+
+  componentWillUnmount() {
+    this.props.resetThunk()
   }
 
   render() {
@@ -53,7 +60,8 @@ class Room extends React.Component {
       }
     }
 
-    return <h1 id="loading">loading</h1>
+    // return <h1 id="loading">Loading...</h1>
+    return <Welcome />
   }
 }
 
@@ -64,4 +72,10 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(Room)
+const mapDispatch = dispatch => {
+  return {
+    resetThunk: () => dispatch(resetThunk())
+  }
+}
+
+export default connect(mapState, mapDispatch)(Room)
