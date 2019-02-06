@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
-import Highlight from 'react-highlight'
 import database from '../../firebase'
 import {checkAnswersThunk, getNewQuestion, endGameThunk} from '../../store/game'
 

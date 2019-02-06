@@ -95,14 +95,12 @@ class PlayerView extends React.Component {
   }
 
   setChoice(event) {
-    console.log(event.target.value)
     this.setState({currentChoice: event.target.value})
   }
 
   async submitChoice(event) {
     event.preventDefault()
     if (!this.state.submitted) {
-      console.log('player submitted')
       await axios.put('/api/most_likely_to/vote', {
         slug: this.props.slug,
         uId: this.props.user.uid,
@@ -113,8 +111,6 @@ class PlayerView extends React.Component {
   }
 
   render() {
-    console.log(this.state)
-
     if (this.state.gameStatus === 'waiting') {
       return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (this.state.gameStatus === 'playing') {
@@ -145,7 +141,7 @@ class PlayerView extends React.Component {
         </div>
       )
     } else {
-      return null
+      return <h1>Loading</h1>
     }
   }
 }
