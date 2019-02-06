@@ -23,7 +23,10 @@ class HostFinished extends React.Component {
     database
       .ref(`/rooms/${this.props.game.slug}`)
       .once('value')
-      .then(snapshot => console.log(snapshot.val()))
+      .then(snapshot => {
+        const dataObj = snapshot.val()
+        const players = Object.keys(dataObj.players)
+      })
   }
 
   componentDidMount() {
