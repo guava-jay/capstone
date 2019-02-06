@@ -25,10 +25,14 @@ class PlayerView extends React.Component {
     const ROOM = `/rooms/${this.props.slug}`
     const ACTIVE_GAME = ROOM + '/active_game'
 
-    const playerRef = database.ref(`${ROOM}/players/${this.props.user.uid}`)
-    const currentQuestionRef = database.ref(`${ACTIVE_GAME}/current_question`)
-    const allPlayersRef = database.ref(`${ROOM}/players/`)
-    const gameStatusRef = database.ref(`${ROOM}/status`)
+    const playerRef = await database.ref(
+      `${ROOM}/players/${this.props.user.uid}`
+    )
+    const currentQuestionRef = await database.ref(
+      `${ACTIVE_GAME}/current_question`
+    )
+    const allPlayersRef = await database.ref(`${ROOM}/players/`)
+    const gameStatusRef = await database.ref(`${ROOM}/status`)
 
     // Get initial game status
     const gameStatus = await gameStatusRef
@@ -37,7 +41,7 @@ class PlayerView extends React.Component {
 
     const otherPlayers = await allPlayersRef
       .once('value')
-      .then(snapshot => snapshot.val())
+      .then(snapshot => Object.keys(snapshot.val()))
 
     // Get inital current question
     const currentQuestion = await currentQuestionRef
@@ -68,7 +72,7 @@ class PlayerView extends React.Component {
 
     await currentQuestionRef.on('value', async snapshot => {
       if (snapshot.val() >= 0) {
-        const answerChoices = await database
+        await database
           .ref(`game_list/${this.state.gameName}/${snapshot.val()}/choices`)
           .once('value')
           .then(snapshot => snapshot.val())
@@ -96,15 +100,15 @@ class PlayerView extends React.Component {
   }
 
   async submitChoice(event) {
-    console.log(this.state)
     event.preventDefault()
     if (!this.state.submitted) {
+      console.log('player submitted')
       await axios.put('/api/most_likely_to/vote', {
         slug: this.props.slug,
         uId: this.props.user.uid,
         playerId: this.state.currentChoice
       })
-      this.setState({submitted: true})
+      this.setState({submitted: true, currentChoice: null})
     }
   }
 

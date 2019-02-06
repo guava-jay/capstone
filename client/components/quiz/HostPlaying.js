@@ -21,7 +21,10 @@ class HostPlaying extends React.Component {
     this.endGame = this.endGame.bind(this)
   }
   async componentDidMount() {
-    await this.props.getNewQuestion(this.props.game.slug)
+    await this.props.getNewQuestion(
+      this.props.game.slug,
+      this.props.game.gameName
+    )
     //listening for current question and upating
     const currentQuestionRef = database.ref(
       `rooms/${this.props.game.slug}/active_game/current_question`
@@ -98,7 +101,7 @@ class HostPlaying extends React.Component {
     if (this.state.questionCount === 10) {
       this.props.endGameThunk(this.props.game.slug)
     } else {
-      this.props.getNewQuestion(this.props.game.slug)
+      this.props.getNewQuestion(this.props.game.slug, this.props.game.gameName)
       this.setState({count: 0, currentQuestionAnswer: null})
     }
   }
@@ -215,7 +218,8 @@ const mapDispatch = dispatch => {
   return {
     checkAnswersThunk: (answers, currentQuestion, slug) =>
       dispatch(checkAnswersThunk(answers, currentQuestion, slug)),
-    getNewQuestion: slug => dispatch(getNewQuestion(slug)),
+    getNewQuestion: (slug, gameName) =>
+      dispatch(getNewQuestion(slug, gameName)),
     endGameThunk: slug => dispatch(endGameThunk(slug))
   }
 }

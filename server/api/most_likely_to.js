@@ -12,6 +12,11 @@ router.put('/changequestion', async (req, res, next) => {
   await questionref.once('value', snapshot => {
     currentQuestion = snapshot.val()
   })
+
+  await database
+    .ref(`/rooms/${req.body.slug}/active_game/current_answers/`)
+    .set(null)
+
   if (currentQuestion >= 52) {
     res.status(201).send({remainingQuestions: 0})
   } else {

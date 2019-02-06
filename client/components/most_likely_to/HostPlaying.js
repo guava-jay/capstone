@@ -19,7 +19,8 @@ class HostPlaying extends React.Component {
     this.updateQuestion = this.updateQuestion.bind(this)
     this.endGame = this.endGame.bind(this)
   }
-  async componentDidMount() {
+
+  async initializeState() {
     await this.props.getNewQuestion(
       this.props.game.slug,
       this.props.game.gameName
@@ -77,6 +78,10 @@ class HostPlaying extends React.Component {
         //set timer to call next question
       }
     })
+  }
+
+  componentDidMount() {
+    this.initializeState()
   }
 
   componentWillUnmount() {
@@ -138,9 +143,10 @@ class HostPlaying extends React.Component {
         {this.state.questionCount === 9 && <h2>One more question!</h2>}
         {this.state.questionCount === 10 && <h2>Last one!</h2>}
         {this.state.question.question ? (
-          <h1 className="host-q-display">
-            Who is the most likely to {this.state.question.question}?
-          </h1>
+          <div className="host-q-display">
+            <h1>Who is the most likely to...</h1>
+            <h1>{this.state.question.question}?</h1>
+          </div>
         ) : null}
         <div id="question-host-container">
           {this.state.currentQuestionAnswer !== null ? <p>Moving on</p> : ''}
