@@ -10,7 +10,7 @@ export const JOIN_GAME = 'JOIN_GAME'
 // const DELETE_PLAYER = 'DELETE_PLAYER'
 const ERROR_OUT = 'ERROR_OUT'
 
-const MAX_PLAYERS = 4
+const MAX_PLAYERS = 6
 
 //INITIAL STATE
 const defaultUser = {}
