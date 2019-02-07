@@ -15,7 +15,8 @@ class PlayerView extends React.Component {
       currentQuestion: null,
       currentChoice: null,
       otherPlayers: [],
-      submitted: false
+      submitted: false,
+      wonRounds: {}
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -54,8 +55,6 @@ class PlayerView extends React.Component {
       .once('value')
       .then(snapshot => questionList[snapshot.val()])
 
-    console.log(questionList)
-
     // Set state based on db
     this.setState({
       gameStatus,
@@ -75,7 +74,19 @@ class PlayerView extends React.Component {
 
     // Listens to changes of the gameStatus
     await gameStatusRef.on('value', snapshot => {
-      this.setState({gameStatus: snapshot.val()})
+      if (snapshot.val() === 'finished') {
+        database
+          .ref(`${ROOM}/players/${this.props.user.uid}/won`)
+          .once('value')
+          .then(wonRounds =>
+            this.setState({
+              gameStatus: snapshot.val(),
+              wonRounds: Object.keys(wonRounds.val())
+            })
+          )
+      } else {
+        this.setState({gameStatus: snapshot.val()})
+      }
     })
 
     await currentQuestionRef.on('value', async snapshot => {
@@ -120,8 +131,6 @@ class PlayerView extends React.Component {
   }
 
   render() {
-    console.log(this.state)
-
     if (this.state.gameStatus === 'waiting') {
       return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (this.state.gameStatus === 'playing') {
@@ -142,9 +151,19 @@ class PlayerView extends React.Component {
         </React.Fragment>
       )
     } else if (this.state.gameStatus === 'finished') {
+      console.log(this.state.wonRounds)
+
       return (
         <div id="player-finished">
           <h1 className="center">You're done!</h1>
+          <h2>You were voted most likely to...</h2>
+          <ul>
+            {this.state.wonRounds.map(won => (
+              <li key={won}>
+                <p>{won}</p>
+              </li>
+            ))}
+          </ul>
           <FinishedButtons />
         </div>
       )
