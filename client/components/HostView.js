@@ -48,6 +48,10 @@ class HostView extends React.Component {
     await playersRef.on(
       'value',
       snapshot => {
+        let gameName = null
+        selectGameRef.on('value', s => {
+          gameName = s.val()
+        })
         let playerArr = []
         if (snapshot.val()) {
           let playerKeys = Object.keys(snapshot.val())
@@ -55,10 +59,6 @@ class HostView extends React.Component {
             playerArr.push({[key]: snapshot.val()[key]})
           })
           this.setState({players: playerArr})
-          let gameName = null
-          selectGameRef.on('value', s => {
-            gameName = s.val()
-          })
           if (gameName === 'quiz') {
             this.setState({ready: true})
           }
