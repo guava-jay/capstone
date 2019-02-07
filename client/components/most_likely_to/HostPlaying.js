@@ -91,6 +91,8 @@ class HostPlaying extends React.Component {
             }
           }
           let winnerNames = []
+
+          // TODO: Move this into thunk
           winners.forEach(uid => {
             database
               .ref(

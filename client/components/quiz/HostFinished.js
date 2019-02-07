@@ -148,15 +148,12 @@ class HostFinished extends React.Component {
             margin={{top: 20, right: 30, left: 20, bottom: 5}}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="name"
-              label={{value: 'Question', position: 'bottom', dx: -150}}
-            />
+            <XAxis dataKey="name" />
             <YAxis
               domain={[0, this.state.players.length]}
               allowDecimals={false}
               label={{
-                value: 'Num of players answering correctly',
+                value: 'Num players answering correctly',
                 angle: -90,
                 position: 'insideBottomLeft'
               }}
