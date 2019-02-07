@@ -66,6 +66,8 @@
 
 .qr-code {
   padding: 1em;
+  height: 300px;
+  width: 300px;
 }
 
 @media only screen and (min-width: 768px) {
