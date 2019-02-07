@@ -126,6 +126,14 @@ class HostView extends React.Component {
           >
             Start Game
           </button>
+          <img
+            className="qr-code"
+            src={`https://api.qrserver.com/v1/create-qr-code/?data=stackbox.herokuapp.com/join/${
+              this.props.slug
+            }size=200x200`}
+            alt=""
+            title=""
+          />
         </div>
       )
     } else if (this.state.status === 'playing') {

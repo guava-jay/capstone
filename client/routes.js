@@ -35,7 +35,8 @@ class Routes extends Component {
       <Switch>
         <Route exact path="/" component={Welcome} />
         <Route path="/home" component={Welcome} />
-        <Route path="/join" component={Join} />
+        <Route exact path="/join" component={Join} />
+        <Route path="/join/:slug" component={Join} />
         <Route path="/how-to-play" component={HowToPlay} />
         <Route path="/about" component={About} />
         <Route exact path="/newGame" component={CreateGame} />

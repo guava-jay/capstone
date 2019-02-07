@@ -115,7 +115,11 @@ class PlayerView extends React.Component {
 
     // Listens to changes of the gameStatus
     gameStatusRef.on('value', snapshot => {
-      this.setState({gameStatus: snapshot.val()})
+      if (snapshot.val() === 'playing') {
+        this.setState({gameStatus: snapshot.val(), responses: {}})
+      } else {
+        this.setState({gameStatus: snapshot.val()})
+      }
     })
 
     database
