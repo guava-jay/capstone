@@ -86,16 +86,6 @@ class CreateGame extends Component {
                 >
                   <h3>COMING SOON...</h3>
                 </div>
-                {/* <div
-                  id={
-                    this.state.selectedGame === 'test 4' ? 'selectedGame' : ''
-                  }
-                  onClick={() => this.handleChange('test 4')}
-                  className="list-games"
-                >
-                  <h3>COMING SOON...</h3>
-                </div> */}
-                {/* PLACEHOLD TESTS */}
               </div>
             </React.Fragment>
           ) : null}
