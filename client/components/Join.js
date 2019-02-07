@@ -41,12 +41,22 @@ class Join extends React.Component {
   }
 
   render() {
+    console.log(this.props)
+
     return (
       <div id="join-container">
         <h1>Join a Game</h1>
         <form id="join-form" onSubmit={this.handleSubmit}>
           <label htmlFor="code">Game Room Code :</label>
-          <input name="code" placeholder="####" />
+          {this.props.match.params.slug ? (
+            <input
+              name="code"
+              placeholder="####"
+              value={this.props.match.params.slug}
+            />
+          ) : (
+            <input name="code" placeholder="####" />
+          )}
           <label htmlFor="playerName">Player Name :</label>
           <input name="playerName" placeholder="Stackbox" />
           <button title="join game" className="button6" type="submit">
