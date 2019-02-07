@@ -1,6 +1,5 @@
 #host-view-container {
   display: flex;
-  /* justify-content: center; */
   flex-direction: column;
   align-items: center;
   padding: 2em 3em;
@@ -63,6 +62,10 @@
 
 .winner-display {
   padding: 1em 0em;
+}
+
+.qr-code {
+  padding: 1em;
 }
 
 @media only screen and (min-width: 768px) {

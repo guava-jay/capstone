@@ -54,7 +54,7 @@ class CreateGame extends Component {
                       className="list-games"
                       key={x}
                     >
-                      <h3>{x}</h3>
+                      <h3>{x.split('_').join(' ')}</h3>
                     </div>
                   )
                 })}
