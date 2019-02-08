@@ -171,7 +171,7 @@ class PlayerView extends React.Component {
         )
       } else {
         endDisplay = (
-          <div className="player-list">
+          <div className="player-list center">
             {this.state.wonRounds.map(won => <li key={won}>{won}</li>)}
           </div>
         )

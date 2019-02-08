@@ -70,6 +70,16 @@
   width: 300px;
 }
 
+.mlt-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mlt-list-item {
+  margin: 2em;
+}
+
 @media only screen and (min-width: 768px) {
   #question-host-container {
     max-width: 700px;

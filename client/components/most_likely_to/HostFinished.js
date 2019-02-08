@@ -66,18 +66,23 @@ class HostFinished extends React.Component {
           src="https://s3.amazonaws.com/stackbox/applause.mp3"
         />
         <h1 className="center">Finished!</h1>
-        <h2>Here's what each person was voted "most likely" for:</h2>
-        {this.state.players.map(player => (
-          <div key={player}>
-            <p>{player}</p>
-            {this.state.wonRounds[player].length ? (
-              this.state.wonRounds[player].map(won => <li key={won}>{won}</li>)
-            ) : (
-              <p>Sorry, you didn't win any rounds!</p>
-            )}
-          </div>
-        ))}
-
+        <h2 className="center">
+          Here's what each person was voted "most likely" for:
+        </h2>
+        <div className="mlt-list">
+          {this.state.players.map(player => (
+            <div className="mlt-list-item" key={player}>
+              <p>{player}</p>
+              {this.state.wonRounds[player].length ? (
+                this.state.wonRounds[player].map(won => (
+                  <li key={won}>{won}</li>
+                ))
+              ) : (
+                <p>Sorry, you didn't win any rounds!</p>
+              )}
+            </div>
+          ))}
+        </div>
         <FinishedButtons
           secondButton="create"
           resetGame={this.resetGame}
