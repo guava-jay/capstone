@@ -41,8 +41,6 @@ class Join extends React.Component {
   }
 
   render() {
-    console.log(this.props)
-
     return (
       <div id="join-container">
         <h1>Join a Game</h1>

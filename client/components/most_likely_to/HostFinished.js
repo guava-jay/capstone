@@ -31,7 +31,10 @@ class HostFinished extends React.Component {
 
         playersIds.forEach(uid => {
           const displayName = playerAnswers[uid].displayName
-          const wonRounds = Object.keys(playerAnswers[uid].won)
+          let wonRounds = []
+          if (playerAnswers[uid].won) {
+            wonRounds = Object.keys(playerAnswers[uid].won)
+          }
 
           playerNames.push(displayName)
           stateObj[displayName] = wonRounds
@@ -63,11 +66,11 @@ class HostFinished extends React.Component {
           src="https://s3.amazonaws.com/stackbox/applause.mp3"
         />
         <h1 className="center">Finished!</h1>
-        <h2>Here's what each person was voted most likely to:</h2>
+        <h2>Here's what each person was voted "most likely" for:</h2>
         {this.state.players.map(player => (
           <div key={player}>
             <p>{player}</p>
-            {this.state.wonRounds[player] ? (
+            {this.state.wonRounds[player].length ? (
               this.state.wonRounds[player].map(won => <li key={won}>{won}</li>)
             ) : (
               <p>Sorry, you didn't win any rounds!</p>

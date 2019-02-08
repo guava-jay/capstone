@@ -1,8 +1,9 @@
+/* eslint-disable complexity */
 import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
-import {NavLink, Redirect} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {Voting} from '../../components'
 import axios from 'axios'
 import FinishedButtons from '../game/FinishedButtons'
@@ -18,7 +19,7 @@ class PlayerView extends React.Component {
       currentChoice: null,
       otherPlayers: [],
       submitted: false,
-      wonRounds: {},
+      wonRounds: [],
       redirectHome: false
     }
     this.setState = this.setState.bind(this)
@@ -82,12 +83,16 @@ class PlayerView extends React.Component {
         database
           .ref(`${ROOM}/players/${this.props.user.uid}/won`)
           .once('value')
-          .then(wonRounds =>
-            this.setState({
-              gameStatus: snapshot.val(),
-              wonRounds: Object.keys(wonRounds.val())
-            })
-          )
+          .then(wonRounds => {
+            if (wonRounds.val()) {
+              this.setState({
+                gameStatus: snapshot.val(),
+                wonRounds: Object.keys(wonRounds.val())
+              })
+            } else {
+              this.setState({gameStatus: snapshot.val()})
+            }
+          })
       } else {
         this.setState({gameStatus: snapshot.val()})
       }
@@ -155,19 +160,30 @@ class PlayerView extends React.Component {
         </React.Fragment>
       )
     } else if (this.state.gameStatus === 'finished') {
-      console.log(this.state.wonRounds)
+      let endDisplay
+
+      if (!this.state.wonRounds.length) {
+        endDisplay = (
+          <div className="center">
+            <h2>...sorry, you didn't win any rounds this time!</h2>
+            <p>But WE vote you "most likely to play again" :-)</p>
+          </div>
+        )
+      } else {
+        endDisplay = (
+          <div className="player-list">
+            {this.state.wonRounds.map(won => <li key={won}>{won}</li>)}
+          </div>
+        )
+      }
 
       return (
         <div id="player-finished">
-          <h1 className="center">You're done!</h1>
-          <h2>You were voted most likely to...</h2>
-          <ul>
-            {this.state.wonRounds.map(won => (
-              <li key={won}>
-                <p>{won}</p>
-              </li>
-            ))}
-          </ul>
+          <div className="center">
+            <h1>You're done!</h1>
+            <h2>You were voted most likely to...</h2>
+          </div>
+          {endDisplay}
           <FinishedButtons />
         </div>
       )
