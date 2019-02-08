@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import database from '../../firebase'
 import {startGameThunk, resetGameThunk, deleteGameThunk} from '../../store/game'
-import FinishedButtons from '../FinishedButtons'
+import FinishedButtons from '../game/FinishedButtons'
 
 class HostFinished extends React.Component {
   constructor(props) {

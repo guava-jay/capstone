@@ -1,6 +1,4 @@
 import firebase from 'firebase'
-
-// TODO: Should we secure this?
 const config = {
   apiKey: 'AIzaSyC06e0qnZ45BnyVL8mvGC1BC24aoedgRBk',
   authDomain: 'guava-stackbox.firebaseapp.com',

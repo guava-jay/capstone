@@ -5,7 +5,9 @@ import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
 import {Voting} from '../../components'
 import axios from 'axios'
-import FinishedButtons from '../FinishedButtons'
+import FinishedButtons from '../game/FinishedButtons'
+import PlayerDisconnected from '../game/PlayerDisconnected'
+import PlayerRemoved from '../game/PlayerRemoved'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -16,7 +18,8 @@ class PlayerView extends React.Component {
       currentChoice: null,
       otherPlayers: [],
       submitted: false,
-      wonRounds: {}
+      wonRounds: {},
+      redirectHome: false
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -66,6 +69,7 @@ class PlayerView extends React.Component {
     await playerRef.on('value', snapshot => {
       if (!snapshot.val()) {
         this.setState({gameStatus: 'non-participant'})
+        setTimeout(() => this.setState({redirectHome: true}), 5000)
       }
     })
     await allPlayersRef.on('value', snapshot => {
@@ -168,15 +172,11 @@ class PlayerView extends React.Component {
         </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
-      return <Redirect to="/" />
+      if (this.state.redirectHome) return <Redirect to="/" />
+      else return <PlayerRemoved />
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
-      return (
-        <div>
-          <h1>Game has been ended</h1>
-          <NavLink to="/">Play again</NavLink>
-        </div>
-      )
+      return <PlayerDisconnected />
     } else {
       return null
     }
