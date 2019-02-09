@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import database from '../../firebase'
 import {startGameThunk, resetGameThunk, deleteGameThunk} from '../../store/game'
-import FinishedButtons from '../FinishedButtons'
+import FinishedButtons from '../game/FinishedButtons'
 import {
   BarChart,
   Bar,
@@ -148,15 +148,12 @@ class HostFinished extends React.Component {
             margin={{top: 20, right: 30, left: 20, bottom: 5}}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="name"
-              label={{value: 'Question', position: 'bottom', dx: -150}}
-            />
+            <XAxis dataKey="name" />
             <YAxis
               domain={[0, this.state.players.length]}
               allowDecimals={false}
               label={{
-                value: 'Num of players answering correctly',
+                value: 'Num players answering correctly',
                 angle: -90,
                 position: 'insideBottomLeft'
               }}

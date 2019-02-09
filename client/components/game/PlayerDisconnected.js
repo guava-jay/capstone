@@ -1,5 +1,5 @@
 import React from 'react'
-import FinishedButtons from '../FinishedButtons'
+import FinishedButtons from './FinishedButtons'
 
 const PlayerDisconnected = () => (
   <div id="player-disconnected">

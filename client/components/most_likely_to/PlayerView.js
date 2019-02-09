@@ -1,11 +1,14 @@
+/* eslint-disable complexity */
 import React from 'react'
 import database from '../../firebase'
 import {setResponseThunk} from '../../store/user'
 import {connect} from 'react-redux'
-import {NavLink, Redirect} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {Voting} from '../../components'
 import axios from 'axios'
-import FinishedButtons from '../FinishedButtons'
+import FinishedButtons from '../game/FinishedButtons'
+import PlayerDisconnected from '../game/PlayerDisconnected'
+import PlayerRemoved from '../game/PlayerRemoved'
 
 class PlayerView extends React.Component {
   constructor() {
@@ -15,7 +18,9 @@ class PlayerView extends React.Component {
       currentQuestion: null,
       currentChoice: null,
       otherPlayers: [],
-      submitted: false
+      submitted: false,
+      wonRounds: [],
+      redirectHome: false
     }
     this.setState = this.setState.bind(this)
     this.setChoice = this.setChoice.bind(this)
@@ -54,8 +59,6 @@ class PlayerView extends React.Component {
       .once('value')
       .then(snapshot => questionList[snapshot.val()])
 
-    console.log(questionList)
-
     // Set state based on db
     this.setState({
       gameStatus,
@@ -67,6 +70,7 @@ class PlayerView extends React.Component {
     await playerRef.on('value', snapshot => {
       if (!snapshot.val()) {
         this.setState({gameStatus: 'non-participant'})
+        setTimeout(() => this.setState({redirectHome: true}), 5000)
       }
     })
     await allPlayersRef.on('value', snapshot => {
@@ -75,7 +79,23 @@ class PlayerView extends React.Component {
 
     // Listens to changes of the gameStatus
     await gameStatusRef.on('value', snapshot => {
-      this.setState({gameStatus: snapshot.val()})
+      if (snapshot.val() === 'finished') {
+        database
+          .ref(`${ROOM}/players/${this.props.user.uid}/won`)
+          .once('value')
+          .then(wonRounds => {
+            if (wonRounds.val()) {
+              this.setState({
+                gameStatus: snapshot.val(),
+                wonRounds: Object.keys(wonRounds.val())
+              })
+            } else {
+              this.setState({gameStatus: snapshot.val()})
+            }
+          })
+      } else {
+        this.setState({gameStatus: snapshot.val()})
+      }
     })
 
     await currentQuestionRef.on('value', async snapshot => {
@@ -120,8 +140,6 @@ class PlayerView extends React.Component {
   }
 
   render() {
-    console.log(this.state)
-
     if (this.state.gameStatus === 'waiting') {
       return <h1 id="player-waiting">Waiting to start...</h1>
     } else if (this.state.gameStatus === 'playing') {
@@ -142,22 +160,39 @@ class PlayerView extends React.Component {
         </React.Fragment>
       )
     } else if (this.state.gameStatus === 'finished') {
+      let endDisplay
+
+      if (!this.state.wonRounds.length) {
+        endDisplay = (
+          <div className="center">
+            <h2>...sorry, you didn't win any rounds this time!</h2>
+            <p>But WE vote you "most likely to play again" :-)</p>
+          </div>
+        )
+      } else {
+        endDisplay = (
+          <div className="player-list center">
+            {this.state.wonRounds.map(won => <li key={won}>{won}</li>)}
+          </div>
+        )
+      }
+
       return (
         <div id="player-finished">
-          <h1 className="center">You're done!</h1>
+          <div className="center">
+            <h1>You're done!</h1>
+            <h2>You were voted most likely to...</h2>
+          </div>
+          {endDisplay}
           <FinishedButtons />
         </div>
       )
     } else if (this.state.gameStatus === 'non-participant') {
-      return <Redirect to="/" />
+      if (this.state.redirectHome) return <Redirect to="/" />
+      else return <PlayerRemoved />
       // Change this to "is_active_game"
     } else if (!this.state.gameStatus) {
-      return (
-        <div>
-          <h1>Game has been ended</h1>
-          <NavLink to="/">Play again</NavLink>
-        </div>
-      )
+      return <PlayerDisconnected />
     } else {
       return null
     }

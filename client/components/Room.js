@@ -1,10 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import database from '../firebase'
-import HostView from './HostView'
+import HostView from './game/HostView'
 import QuizPlayerView from './quiz/PlayerView'
 import MLTPlayerView from './most_likely_to/PlayerView'
-import Welcome from './Welcome'
 import {resetThunk} from '../store/game'
 
 class Room extends React.Component {

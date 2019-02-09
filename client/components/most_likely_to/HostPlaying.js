@@ -91,7 +91,17 @@ class HostPlaying extends React.Component {
             }
           }
           let winnerNames = []
+
+          // TODO: Move this into thunk
           winners.forEach(uid => {
+            database
+              .ref(
+                `rooms/${this.props.game.slug}/players/${uid}/won/${
+                  this.state.question.question
+                }`
+              )
+              .set(true)
+
             database
               .ref(`rooms/${this.props.game.slug}/players/${uid}`)
               .once('value')

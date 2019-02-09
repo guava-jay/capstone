@@ -2,14 +2,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 import database from '../../firebase'
 import {startGameThunk, resetGameThunk, deleteGameThunk} from '../../store/game'
-import FinishedButtons from '../FinishedButtons'
+import FinishedButtons from '../game/FinishedButtons'
 
 class HostFinished extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      highScore: 0,
-      winners: [],
+      wonRounds: {},
       players: []
     }
     this.resetGame = this.resetGame.bind(this)
@@ -20,12 +19,28 @@ class HostFinished extends React.Component {
   // findHighScore() {}
 
   initializeState() {
+    const stateObj = {}
+
     database
-      .ref(`/rooms/${this.props.game.slug}`)
+      .ref(`/rooms/${this.props.game.slug}/players`)
       .once('value')
       .then(snapshot => {
-        const dataObj = snapshot.val()
-        const players = Object.keys(dataObj.players)
+        const playerAnswers = snapshot.val()
+        const playersIds = Object.keys(playerAnswers)
+        const playerNames = []
+
+        playersIds.forEach(uid => {
+          const displayName = playerAnswers[uid].displayName
+          let wonRounds = []
+          if (playerAnswers[uid].won) {
+            wonRounds = Object.keys(playerAnswers[uid].won)
+          }
+
+          playerNames.push(displayName)
+          stateObj[displayName] = wonRounds
+        })
+
+        this.setState({wonRounds: stateObj, players: playerNames})
       })
   }
 
@@ -51,7 +66,23 @@ class HostFinished extends React.Component {
           src="https://s3.amazonaws.com/stackbox/applause.mp3"
         />
         <h1 className="center">Finished!</h1>
-
+        <h2 className="center">
+          Here's what each person was voted "most likely" for:
+        </h2>
+        <div className="mlt-list">
+          {this.state.players.map(player => (
+            <div className="mlt-list-item" key={player}>
+              <p>{player}</p>
+              {this.state.wonRounds[player].length ? (
+                this.state.wonRounds[player].map(won => (
+                  <li key={won}>{won}</li>
+                ))
+              ) : (
+                <p>Sorry, you didn't win any rounds!</p>
+              )}
+            </div>
+          ))}
+        </div>
         <FinishedButtons
           secondButton="create"
           resetGame={this.resetGame}

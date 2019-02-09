@@ -1,13 +1,16 @@
 /* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
-import database from '../firebase'
-import {startGameThunk} from '../store/game'
-import {deletePlayerThunk} from '../store/user'
-import QuizHostPlaying from './quiz/HostPlaying'
-import QuizHostFinished from './quiz/HostFinished'
-import MLTHostPlaying from './most_likely_to/HostPlaying'
-import MLTHostFinished from './most_likely_to/HostFinished'
+import database from '../../firebase'
+import {startGameThunk} from '../../store/game'
+import {deletePlayerThunk} from '../../store/user'
+
+// Host views for each game
+import QuizHostPlaying from '../quiz/HostPlaying'
+import QuizHostFinished from '../quiz/HostFinished'
+import MLTHostPlaying from '../most_likely_to/HostPlaying'
+import MLTHostFinished from '../most_likely_to/HostFinished'
+import HostWaiting from './HostWaiting'
 
 class HostView extends React.Component {
   constructor(props) {
@@ -88,53 +91,12 @@ class HostView extends React.Component {
   render() {
     if (this.state.status === 'waiting') {
       return (
-        <div id="host-view-container">
-          <h1>CODE : {this.props.slug}</h1>
-          <div id="list-player-host-container">
-            <h2>Players</h2>
-            {!this.state.players.length ? (
-              <h3>Waiting for players to join...</h3>
-            ) : (
-              <ul>
-                {this.state.players.map((player, i) => {
-                  let pid = Object.keys(player)[0]
-                  return (
-                    <div key={i + ''}>
-                      <li>
-                        <p>
-                          <i
-                            onClick={e => {
-                              this.deletePlayer(pid)
-                            }}
-                            className="fas fa-times icon-move"
-                          />
-                          {player[pid].displayName}
-                        </p>
-                      </li>
-                    </div>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-          <button
-            title="start game"
-            className="button6"
-            type="button"
-            onClick={this.startGame}
-            disabled={!this.state.ready}
-          >
-            Start Game
-          </button>
-          <img
-            className="qr-code"
-            src={`https://api.qrserver.com/v1/create-qr-code/?data=stackbox.herokuapp.com/join/${
-              this.props.slug
-            }`}
-            alt=""
-            title=""
-          />
-        </div>
+        <HostWaiting
+          slug={this.props.slug}
+          players={this.state.players}
+          startGame={this.startGame}
+          ready={this.state.ready}
+        />
       )
     } else if (this.state.status === 'playing') {
       // CHANGE GAME PLAYING COMPONENTS HERE
