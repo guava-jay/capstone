@@ -142,6 +142,21 @@ export const setResponseThunk = (slug, uid, answer) => {
   }
 }
 
+export const voteThunk = (slug, uId, playerId, currentQuestion) => {
+  return async dispatch => {
+    try {
+      await axios.put('/api/most_likely_to/vote', {
+        slug,
+        uId,
+        playerId,
+        currentQuestion
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
 //REDUCER
 export default function(state = defaultUser, action) {
   switch (action.type) {

@@ -1,11 +1,10 @@
 /* eslint-disable complexity */
 import React from 'react'
 import database from '../../firebase'
-import {setResponseThunk} from '../../store/user'
+import {voteThunk} from '../../store/user'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {Voting} from '../../components'
-import axios from 'axios'
 import FinishedButtons from '../game/FinishedButtons'
 import PlayerDisconnected from '../game/PlayerDisconnected'
 import PlayerRemoved from '../game/PlayerRemoved'
@@ -126,15 +125,15 @@ class PlayerView extends React.Component {
     this.setState({currentChoice: event.target.value})
   }
 
-  async submitChoice(event) {
+  submitChoice(event) {
     event.preventDefault()
     if (!this.state.submitted) {
-      await axios.put('/api/most_likely_to/vote', {
-        slug: this.props.slug,
-        uId: this.props.user.uid,
-        playerId: this.state.currentChoice,
-        currentQuestion: this.state.currentQuestion
-      })
+      const slug = this.props.slug
+      const uId = this.props.user.uid
+      const playerId = this.state.currentChoice
+      const currentQuestion = this.state.currentQuestion
+
+      this.props.voteThunk(slug, uId, playerId, currentQuestion)
       this.setState({submitted: true, currentChoice: null})
     }
   }
@@ -207,8 +206,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    setResponseThunk: (slug, uid, answer) =>
-      dispatch(setResponseThunk(slug, uid, answer))
+    voteThunk: (slug, uId, playerId, currentQuestion) =>
+      dispatch(voteThunk(slug, uId, playerId, currentQuestion))
   }
 }
 
